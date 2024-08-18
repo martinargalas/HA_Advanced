@@ -14,5 +14,15 @@ secrets.yaml
 .storage
 .cloud
 .google.token 
+*.txt
+*.log
 home-assistant.log*
 
+*.db
+*.db-shm
+*.db-wal
+home-assistant_v2.db.corrupt.2024-02-19T16:32:02.815750+00:00
+home-assistant_v2.db.corrupt.2024-03-12T03:13:13.641999+00:00
+zigbee.db-wal
+zigbee.db-shm
+zigbee.db
