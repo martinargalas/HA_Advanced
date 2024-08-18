@@ -1,0 +1,82 @@
+
+launch_spotify_on_android_tab:
+  url: http://192.168.68.64:2323/?cmd=startApplication&package=com.spotify.music&password=12345
+  method: POST
+
+launch_ho_on_android_tab:
+  url: http://192.168.68.64:2323/?cmd=toForeground&password=12345
+  method: POST
+
+pipup_text_on_tv:
+  # Use Pipup to display image notifications on Android TV devices.
+  url: http://{{ ip }}:{{ port | default(7979) }}/notify
+  content_type: 'application/json'
+  verify_ssl: false
+  method: 'post'
+  timeout: 20
+  payload: >
+    {
+      "duration": {{ duration | default(20) }},
+      "position": {{ position | default(0) }},
+      "title": "{{ title | default('') }}",
+      "titleColor": "{{ titleColor | default('#50BFF2') }}",
+      "titleSize": {{ titleSize | default(12) }},
+      "message": "{{ message }}",
+      "messageColor": "{{ messageColor | default('#fbf5f5') }}",
+      "messageSize": {{ messageSize | default(14) }},
+      "backgroundColor": "{{ backgroundColor | default('#0f0e0e') }}"
+    }
+
+pipup_image_on_tv:
+  # Use Pipup to display image notifications on Android TV devices.
+  url: http://{{ ip }}:{{ port | default(7979) }}/notify
+  content_type: 'application/json'
+  verify_ssl: false
+  method: 'post'
+  timeout: 20
+  payload: >
+    {
+      "duration": {{ duration | default(20) }},
+      "position": {{ position | default(0) }},
+      "title": "{{ title | default('') }}",
+      "titleColor": "{{ titleColor | default('#50BFF2') }}",
+      "titleSize": {{ titleSize | default(12) }},
+      "message": "{{ message }}",
+      "messageColor": "{{ messageColor | default('#fbf5f5') }}",
+      "messageSize": {{ messageSize | default(14) }},
+      "backgroundColor": "{{ backgroundColor | default('#0f0e0e') }}",
+      "media": { 
+        "image": {
+          "uri": "{{ url }}",
+          "width": {{ width | default(640) }}
+        }
+      }
+    }
+
+pipup_url_on_tv:
+  # Use with Webrtc camera as described here:
+  # https://github.com/AlexxIT/WebRTC/wiki/Cast-or-share-camera-stream#html-page
+  url: http://{{ ip }}:{{ port | default(7979) }}/notify
+  content_type: 'application/json'
+  verify_ssl: false
+  method: 'post'
+  timeout: 10
+  payload: >
+    {
+      "duration": {{ duration | default(20) }},
+      "position": {{ position | default(0) }},
+      "title": "{{ title | default('') }}",
+      "titleColor": "{{ titleColor | default('#50BFF2') }}",
+      "titleSize": {{ titleSize | default(12) }},
+      "message": "{{ message }}",
+      "messageColor": "{{ messageColor | default('#fbf5f5') }}",
+      "messageSize": {{ messageSize | default(14) }},
+      "backgroundColor": "{{ backgroundColor | default('#0f0e0e') }}",
+      "media": { 
+        "web": {
+          "uri": "{{ url }}", 
+          "width": {{ width | default(640) }},
+          "height": {{ height | default(480) }}
+        }
+      }
+    }

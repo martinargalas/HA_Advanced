@@ -1,0 +1,107 @@
+# Loads default set of integrations. Do not remove.
+default_config:
+
+# Load frontend themes from the themes folder
+
+automation: !include automations.yaml
+script: !include scripts.yaml
+scene: !include scenes.yaml
+sensor: !include sensors.yaml
+switch: !include switches.yaml
+utility_meter: !include utility_meters.yaml
+
+binary_sensor:
+  - platform: cezdistribuce
+    name: nizky_tarif
+    region: morava
+    code: PTV4
+
+frontend:
+  themes: !include_dir_merge_named themes/
+
+notify:
+  name: "martin-pc"
+  platform: hass_agent_notifier
+  resource: !secret notify_pc
+
+spotcast:
+  sp_dc: !secret sp_dc
+  sp_key: !secret sp_key
+  country: CZ
+
+rest_command: !include rest_commands.yaml
+
+lovelace:
+  mode: storage
+  # Add yaml dashboards
+  dashboards:
+    lovelace-minimalist-2:
+      mode: yaml
+      title: Energie
+      icon: mdi:home-lightning-bolt-outline
+      show_in_sidebar: true
+      filename: ui_lovelace_minimalist/dashboard/adaptive-dash2/adaptive-ui.yaml
+    lovelace-minimalist-2-mobile:
+      mode: yaml
+      title: Energie
+      icon: mdi:home-lightning-bolt-outline
+      show_in_sidebar: true
+      filename: ui_lovelace_minimalist/dashboard/adaptive-dash2-mobile/adaptive-ui.yaml
+
+feedreader:
+  urls:
+    - https://servis.idnes.cz/rss.aspx?c=zpravodaj
+  scan_interval:
+    minutes: 5
+  max_entries: 5
+
+template:
+  - sensor:
+    - name: ViewAssist-test
+      state: ""
+      attributes:
+        type: view_audio
+        mic_device: "sensor.streamassist_kitchen2_stt"
+        mediaplayer_device: "media_player.tabletkiosk"
+        display_device: "sensor.tabletkiosk_browser_path"
+        browser_id: "TabletKiosk" #"streamassist_kitchen"
+        timer_device: "timer.viewassist_kitchen"
+        view_timeout: "20"
+        mode: "normal"
+        title: ""
+        message: ""
+        message_font_size: "3vw"
+        image: ""
+        timer: ""
+        alarm: "idle"
+        cycle_view: ""
+        do_not_disturb: false
+
+group:
+  viewassist_satellites:
+    name: View Assist Satellites
+    entities:
+      - sensor.viewassist_kitchen
+
+input_datetime:
+  lightalarm_time:
+    name: Alarm Time
+    has_date: false
+    has_time: true
+
+input_number:
+  lightalarm_duration:
+    name: Alarm Duration
+    unit_of_measurement: min
+    min: 0
+    max: 60
+    step: 1
+
+input_select:
+  lightalarm_mode:
+    name: ' '
+    icon: mdi:alarm-plus
+    options:
+      - 'Pracovní dny'
+      - 'Pouze jednou'
+      - 'Každý den'

@@ -1,0 +1,90 @@
+- platform: wake_on_lan
+  mac: F8:E4:3B:8A:3F:3B
+  name: "martin-pc"
+  host: "192.168.68.75"
+
+- platform: template
+  switches:
+
+    garden_camera_switch:
+      turn_on:
+      turn_off:
+
+    front_camera_switch:
+      turn_on:
+      turn_off:
+
+    office_blinds_user_switch:
+      turn_on:
+      turn_off:
+    
+    bedroom_blinds_user_switch:
+      turn_on:
+      turn_off:
+
+    kids_blinds_user_switch:
+      turn_on:
+      turn_off:
+    
+    energy_daily_view:
+      turn_on:
+        - service: switch.turn_off
+          data: {}
+          target: 
+            entity_id: switch.energy_monthly_view 
+        - service: switch.turn_off
+          data: {}
+          target: 
+            entity_id: switch.energy_yearly_view 
+      turn_off:
+    
+    energy_monthly_view:
+      turn_on:
+        - service: switch.turn_off
+          data: {}
+          target: 
+            entity_id: switch.energy_daily_view 
+        - service: switch.turn_off
+          data: {}
+          target: 
+            entity_id: switch.energy_yearly_view 
+      turn_off:
+    
+    energy_yearly_view:
+      turn_on:
+        - service: switch.turn_off
+          data: {}
+          target: 
+            entity_id: switch.energy_monthly_view 
+        - service: switch.turn_off
+          data: {}
+          target: 
+            entity_id: switch.energy_daily_view 
+      turn_off:
+
+    martin_pc_switch:
+      unique_id: "1234"
+      value_template: "{{ is_state('sensor.desktopargi', 'on') }}"
+      turn_on:
+        - service: switch.toggle
+          data: {}
+          target: 
+            entity_id: switch.martin_pc_switch 
+            
+      turn_off:
+        - service: button.press
+          data: {}
+          target:
+            entity_id: button.martin_pc_sleep 
+    
+    ofice_blinds_close:
+      turn_on:
+        - service: cover.toggle
+          data: {}
+          target: 
+            entity_id: cover.office
+      turn_off:
+        - service: cover.toggle
+          data: {}
+          target:
+            entity_id: cover.office
