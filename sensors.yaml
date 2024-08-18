@@ -1,0 +1,978 @@
+- platform: time_date
+  display_options:
+    - 'time'
+
+- platform: google_geocode
+  origin: device_tracker.samsung_s23
+  name: geocode_martin
+  api_key: !secret google_geocode_martin
+  language: czech
+
+- platform: google_geocode
+  origin: device_tracker.samsung_s21
+  name: geocode_kristyna
+  api_key: !secret google_geocode_kistyna
+  language: czech
+
+# - platform: time_date
+#   display_options:
+#     - time
+#     - date
+#     - date_time
+#     - date_time_utc
+#     - date_time_iso
+#     - time_date
+#     - time_utc
+#     - beat
+
+- platform: derivative
+  source: sensor.e3_vitocal_energy_consumption_of_hot_water_gas_heating_current_year
+  name: Heat_pump_consumption_per_seconds
+  round: 0
+  unit_time: s # the resulting "unit_of_measurement" will be °C/h if the sensor.temperate has set °C as its unit
+  time_window: "00:00:05"  # we look at the change over the last half hour
+
+- platform: template
+  sensors:
+    lightalarm_time_start:
+      value_template: >-
+        {{ (strptime(states("input_datetime.lightalarm_time"), "%H:%M:%S") - timedelta(minutes=(states("input_number.lightalarm_duration") | int) )).strftime("%H:%M") }}
+
+    grid_consumption_non_negative:
+      value_template: >-
+        {% set value = states('sensor.active_power')| int %}
+        {% if value > 0 | int %}
+          {%set current = 0 | int %}
+        {%endif%}
+        {{value}}
+      unit_of_measurement: "W"
+
+    power_buy:
+      friendly_name: "Power Buy"
+      device_class: power
+      unit_of_measurement: 'W'
+      value_template: >-
+        {% set l1 = states('sensor.meter_active_power_l1')|float(default = 0) %}
+        {% set l2 = states('sensor.meter_active_power_l2')|float(default = 0) %}
+        {% set l3 = states('sensor.meter_active_power_l3')|float(default = 0) %}
+        {{ '%i'|format( iif(l1 < 0, 0, l1) + iif(l2 < 0, 0, l2) + iif(l3 < 0, 0, l3) ) }}
+  
+    power_buy2:
+      friendly_name: "Power Buy 2"
+      device_class: power
+      unit_of_measurement: 'W'
+      value_template: >-
+        {% set l1 = states('sensor.meter_active_power_l1')|float(default = 0) %}
+        {% set l2 = states('sensor.meter_active_power_l2')|float(default = 0) %}
+        {% set l3 = states('sensor.meter_active_power_l3')|float(default = 0) %}
+        {% if states('sensor.on_grid_mode') == 'Exporting' %}
+          {{ '%i'|format( iif(l1 < 0, 0, l1) + iif(l2 < 0, 0, l2) + iif(l3 < 0, 0, l3) ) }}
+        {% else %}
+          0
+        {% endif %}
+
+    energy_real_consumption_monthly:
+      friendly_name: "Real consumption monthly"
+      unit_of_measurement: 'kWh'
+      value_template: >-
+        {% set totalPower = states('sensor.energy_consumption_monthly')|float %}
+        {% set totalBuy = states('sensor.energy_sell_monthly')|float %}
+        {% set result = (totalPower - totalBuy) | float | round(1) | abs%}
+        {{result}}
+
+    energy_real_consumption_yearly:
+      friendly_name: "Real consumption yearly"
+      unit_of_measurement: 'kWh'
+      value_template: >-
+        {% set totalPower = states('sensor.energy_consumption_yearly')|float %}
+        {% set totalBuy = states('sensor.energy_sell_yearly')|float %}
+        {% set result = (totalPower - totalBuy) | float | round(1) | abs%}
+        {{result}}
+
+    power_sell:
+      friendly_name: "Power Sell"
+      device_class: power
+      unit_of_measurement: 'W'
+      value_template: >-
+        {% set l1 = states('sensor.meter_active_power_l1')|float(default = 0) %}
+        {% set l2 = states('sensor.meter_active_power_l2')|float(default = 0) %}
+        {% set l3 = states('sensor.meter_active_power_l3')|float(default = 0) %}
+        {{ '%i'|format( -1 * (iif(l1 > 0, 0, l1) + iif(l2 > 0, 0, l2) + iif(l3 > 0, 0, l3)) ) }}
+
+    house_consumption_0floor:
+      value_template: >-
+        {%set value = states('sensor.load_l1')| float | abs %}
+        {{value}}
+      unit_of_measurement: "W"
+
+    house_consumption_rest:
+      value_template: >-
+        {%set value = states('sensor.load_l2')| float | abs %}
+        {{value}}
+      unit_of_measurement: "W"
+
+    house_consumption_1floor:
+      value_template: >-
+        {%set value = states('sensor.load_l3')| float | abs %}
+        {{value}}
+      unit_of_measurement: "W"
+
+    elektrina_const_obchod:
+      value_template: >-
+        {% set value =  ("3980.90") | float | round(2)%}
+        {{value}}
+      unit_of_measurement: "Kč"
+
+    elektrina_const_distribuce_vysoky:
+      value_template: >-
+        {% set value =  ("784.83") | float | round(2)%}
+        {{value}}
+      unit_of_measurement: "Kč"
+
+    elektrina_const_distribuce_nizky:
+      value_template: >-
+        {% set value =  ("530.09") | float | round(2)%}
+        {{value}}
+      unit_of_measurement: "Kč"
+    
+    elektrina_const_dan_z_elektriny:
+      value_template: >-
+        {% set value =  ("34.24") | float | round(2)%}
+        {{value}}
+      unit_of_measurement: "Kč"
+
+    elektrina_const_systemove_sluzby:
+      value_template: >-
+        {% set value =  ("257.51") | float | round(2)%}
+        {{value}}
+      unit_of_measurement: "Kč"
+
+    elektrina_const_cinnost_ote:
+      value_template: >-
+        {% set value =  ("5.01") | float | round(2)%}
+        {{value}}
+      unit_of_measurement: "Kč"
+
+    elektrina_const_jistic_3x40:
+      value_template: >-
+        {% set value =  ("756.25") | float | round(2)%}
+        {{value}}
+      unit_of_measurement: "Kč"
+
+    elektrina_const_poze:
+      value_template: >-
+        {% set value =  ("102.49") | float | round(2)%}
+        {% set cost = value * 40 * 3 %}
+        {{cost}}
+      unit_of_measurement: "Kč"
+
+    elektrina_const_poze_spotreba:
+      value_template: >-
+        {% set value =  ("598.95") | float | round(2)%}
+        {{value}}
+      unit_of_measurement: "Kč"
+
+    elektrina_cena_day:
+      value_template: >-
+        {% set costDistribution = states('sensor.elektrina_cena_distribution_day') | float %}
+        {% set costMarket = states('sensor.elektrina_cena_market_day') | float %}
+        {% set costJistic = states('sensor.elektrina_cena_jistic_day') | float %}
+        {% set costDanZElektriny = states('sensor.elektrina_cena_dan_z_elektriny_day') | float %}
+        {% set costSystemoveSluzby = states('sensor.elektrina_cena_systemove_sluzby_day') | float %}
+        {% set costOte = states('sensor.elektrina_cena_ote_day') | float %}
+        {% set costPoze = states('sensor.elektrina_cena_poze_day') | float %}
+        {% set price = (costDistribution + costMarket + costJistic + costDanZElektriny + costSystemoveSluzby + costOte + costPoze)| float | round(1)%}
+        {{price}}
+      unit_of_measurement: "Kč"
+    
+    elektrina_cena_month:
+      value_template: >-
+        {% set costDistribution = states('sensor.elektrina_cena_distribution_month') | float %}
+        {% set costMarket = states('sensor.elektrina_cena_market_month') | float %}
+        {% set costJistic = states('sensor.elektrina_cena_jistic_month') | float %}
+        {% set costDanZElektriny = states('sensor.elektrina_cena_dan_z_elektriny_month') | float %}
+        {% set costSystemoveSluzby = states('sensor.elektrina_cena_systemove_sluzby_month') | float %}
+        {% set costOte = states('sensor.elektrina_cena_ote_month') | float %}
+        {% set costPoze = states('sensor.elektrina_cena_poze_month') | float %}
+        {% set price = (costDistribution + costMarket + costJistic + costDanZElektriny + costSystemoveSluzby + costOte + costPoze)| float | round(1)%}
+        {{price}}
+      unit_of_measurement: "Kč"
+
+    elektrina_cena_year:
+      value_template: >-
+        {% set costDistribution = states('sensor.elektrina_cena_distribution_year') | float %}
+        {% set costMarket = states('sensor.elektrina_cena_market_year') | float %}
+        {% set costJistic = states('sensor.elektrina_cena_jistic_year') | float %}
+        {% set costDanZElektriny = states('sensor.elektrina_cena_dan_z_elektriny_year') | float %}
+        {% set costSystemoveSluzby = states('sensor.elektrina_cena_systemove_sluzby_year') | float %}
+        {% set costOte = states('sensor.elektrina_cena_ote_year') | float %}
+        {% set costPoze = states('sensor.elektrina_cena_poze_year') | float %}
+        {% set price = (costDistribution + costMarket + costJistic + costDanZElektriny + costSystemoveSluzby + costOte + costPoze)| float | round(1)%}
+        {{price}}
+      unit_of_measurement: "Kč"
+
+    
+    elektrina_cena_market_day:
+      value_template: >-
+        {% set batteryYear = states('sensor.energy_virtual_batery_year') | float %}
+        {% set batteryDay = states('sensor.energy_virtual_batery_day') | float %}
+        {% set price = 0 %}
+        {% if (batteryYear | float) < 0 %}
+          {% set price = ((batteryDay | abs / 1000) * states('sensor.elektrina_const_obchod') | float | round(2))%}
+        {% endif %}
+        {{price}}
+      unit_of_measurement: "Kč"  
+
+    elektrina_cena_market_month:
+      value_template: >-
+        {% set batteryYear = states('sensor.energy_virtual_batery_year') | float %}
+        {% set batteryMonth = states('sensor.energy_virtual_batery_month') | float %}
+        {% set price = 0 %}
+        {% if (batteryYear | float) < 0 %}
+          {% set price = ((batteryMonth | abs / 1000) * states('sensor.elektrina_const_obchod') | float | round(2))%}
+        {% endif %}
+        {{price}}
+      unit_of_measurement: "Kč"  
+
+    elektrina_cena_market_year:
+      value_template: >-
+        {% set batteryYear = states('sensor.energy_virtual_batery_year') | float %}
+        {% set price = 0 %}
+        {% if (batteryYear | float) < 0 %}
+          {% set price = ((batteryYear | abs / 1000) * states('sensor.elektrina_const_obchod') | float | round(2))%}
+        {% endif %}
+        {{price}}
+      unit_of_measurement: "Kč"  
+
+    elektrina_cena_market:
+      value_template: >-
+        {% set price = 0 %}
+        {% if is_state('switch.energy_daily_view', 'on') %}
+          {% set batteryYear = states('sensor.energy_virtual_batery_year') | float %}
+          {% set batteryDay = states('sensor.energy_virtual_batery_day') | float %}
+          {% set price = 0 %}
+          {% if (batteryYear | float) < 0 %}
+            {% set price = ((batteryDay | abs / 1000) * states('sensor.elektrina_const_obchod') | float | round(2))%}
+          {% endif %}
+        {% elif is_state('switch.energy_monthly_view', 'on') %}
+          {% set batteryYear = states('sensor.energy_virtual_batery_year') | float %}
+          {% set batteryMonth = states('sensor.energy_virtual_batery_month') | float %}
+          {% set price = 0 %}
+          {% if (batteryYear | float) < 0 %}
+            {% set price = ((batteryMonth | abs / 1000) * states('sensor.elektrina_const_obchod') | float | round(2))%}
+          {% endif %}
+        {% elif is_state('switch.energy_yearly_view', 'on') %}
+          {% set batteryYear = states('sensor.energy_virtual_batery_year') | float %}
+          {% set price = 0 %}
+          {% if (batteryYear | float) < 0 %}
+            {% set price = ((batteryYear | abs / 1000) * states('sensor.elektrina_const_obchod') | float | round(2))%}
+          {% endif %}
+        {% endif %}
+        {{price}}
+      unit_of_measurement: "Kč"  
+
+    elektrina_cena_distribution_day:
+      value_template: >-
+        {% set costDistributionLow = ((states('sensor.elektrina_nakup_den_nizky') | float / 1000) * states('sensor.elektrina_const_distribuce_nizky') | float)%}
+        {% set costDistributionHigh = ((states('sensor.elektrina_nakup_den_vysoky') | float / 1000) * states('sensor.elektrina_const_distribuce_vysoky') | float)%}
+        {% set price = (costDistributionLow + costDistributionHigh)| float | round(2)%}
+        {{price}}
+      unit_of_measurement: "Kč"  
+
+    elektrina_cena_distribution_month:
+      value_template: >-
+        {% set costDistributionLow = ((states('sensor.elektrina_nakup_mesic_nizky') | float / 1000) * states('sensor.elektrina_const_distribuce_nizky') | float)%}
+        {% set costDistributionHigh = ((states('sensor.elektrina_nakup_mesic_vysoky') | float / 1000) * states('sensor.elektrina_const_distribuce_vysoky') | float)%}
+        {% set price = (costDistributionLow + costDistributionHigh)| float | round(2)%}
+        {{price}}
+      unit_of_measurement: "Kč"  
+
+    elektrina_cena_distribution_year:
+      value_template: >-
+        {% set costDistributionLow = (((states('sensor.elektrina_nakup_rok_nizky') | float + (629.0 | float)) / 1000) * states('sensor.elektrina_const_distribuce_nizky') | float)%}
+        {% set costDistributionHigh = (((states('sensor.elektrina_nakup_rok_vysoky') | float + (47.0 | float)) / 1000) * states('sensor.elektrina_const_distribuce_vysoky') | float)%}
+        {% set price = (costDistributionLow + costDistributionHigh)| float | round(2)%}
+        {{price}}
+      unit_of_measurement: "Kč"  
+
+    elektrina_cena_distribution:
+      value_template: >-
+        {% set price = 0 %}
+        {% if is_state('switch.energy_daily_view', 'on') %}
+          {% set costDistributionLow = ((states('sensor.elektrina_nakup_den_nizky') | float / 1000) * states('sensor.elektrina_const_distribuce_nizky') | float)%}
+          {% set costDistributionHigh = ((states('sensor.elektrina_nakup_den_vysoky') | float / 1000) * states('sensor.elektrina_const_distribuce_vysoky') | float)%}
+          {% set price = (costDistributionLow + costDistributionHigh)| float | round(2)%}
+        {% elif is_state('switch.energy_monthly_view', 'on') %}
+          {% set costDistributionLow = ((states('sensor.elektrina_nakup_mesic_nizky') | float / 1000) * states('sensor.elektrina_const_distribuce_nizky') | float)%}
+          {% set costDistributionHigh = ((states('sensor.elektrina_nakup_mesic_vysoky') | float / 1000) * states('sensor.elektrina_const_distribuce_vysoky') | float)%}
+          {% set price = (costDistributionLow + costDistributionHigh)| float | round(2)%}
+        {% elif is_state('switch.energy_yearly_view', 'on') %}
+          {% set costDistributionLow = (((states('sensor.elektrina_nakup_rok_nizky') | float + (629.0 | float)) / 1000) * states('sensor.elektrina_const_distribuce_nizky') | float)%}
+          {% set costDistributionHigh = (((states('sensor.elektrina_nakup_rok_vysoky') | float + (47.0 | float)) / 1000) * states('sensor.elektrina_const_distribuce_vysoky') | float)%}
+          {% set price = (costDistributionLow + costDistributionHigh)| float | round(2)%}
+        {% endif %}
+        {{price}}
+      unit_of_measurement: "Kč"
+
+    elektrina_cena_dan_z_elektriny_day:
+      value_template: >-
+        {% set distributionLow = (states('sensor.elektrina_nakup_den_nizky') | float / 1000) %}
+        {% set distributionHigh = (states('sensor.elektrina_nakup_den_vysoky') | float / 1000) %}
+        {% set constDanZElektriny = states('sensor.elektrina_const_dan_z_elektriny') | float %}
+        {% set price = (((distributionLow + distributionHigh) * constDanZElektriny) | float | round(2))%}
+        {{price}}
+      unit_of_measurement: "Kč"
+
+    elektrina_cena_dan_z_elektriny_month:
+      value_template: >-
+        {% set distributionLow = (states('sensor.elektrina_nakup_mesic_nizky') | float / 1000) %}
+        {% set distributionHigh = (states('sensor.elektrina_nakup_mesic_vysoky') | float / 1000) %}
+        {% set constDanZElektriny = states('sensor.elektrina_const_dan_z_elektriny') | float %}
+        {% set price = (((distributionLow + distributionHigh) * constDanZElektriny) | float | round(2))%}
+        {{price}}
+      unit_of_measurement: "Kč"
+
+    elektrina_cena_dan_z_elektriny_year:
+      value_template: >-
+        {% set distributionLow = ((states('sensor.elektrina_nakup_rok_nizky') | float + (629.0 | float)) / 1000) %}
+        {% set distributionHigh = ((states('sensor.elektrina_nakup_rok_vysoky') | float + (47.0 | float)) / 1000) %}
+        {% set constDanZElektriny = states('sensor.elektrina_const_dan_z_elektriny') | float %}
+        {% set price = (((distributionLow + distributionHigh) * constDanZElektriny) | float | round(2))%}
+        {{price}}
+      unit_of_measurement: "Kč"
+
+    elektrina_cena_dan_z_elektriny:
+      value_template: >-
+        {% set price = 0 %}
+        {% if is_state('switch.energy_daily_view', 'on') %}
+          {% set distributionLow = (states('sensor.elektrina_nakup_den_nizky') | float / 1000) %}
+          {% set distributionHigh = (states('sensor.elektrina_nakup_den_vysoky') | float / 1000) %}
+          {% set constDanZElektriny = states('sensor.elektrina_const_dan_z_elektriny') | float %}
+          {% set price = (((distributionLow + distributionHigh) * constDanZElektriny) | float | round(2))%}
+        {% elif is_state('switch.energy_monthly_view', 'on') %}
+          {% set distributionLow = (states('sensor.elektrina_nakup_mesic_nizky') | float / 1000) %}
+          {% set distributionHigh = (states('sensor.elektrina_nakup_mesic_vysoky') | float / 1000) %}
+          {% set constDanZElektriny = states('sensor.elektrina_const_dan_z_elektriny') | float %}
+          {% set price = (((distributionLow + distributionHigh) * constDanZElektriny) | float | round(2))%}
+        {% elif is_state('switch.energy_yearly_view', 'on') %}
+          {% set distributionLow = ((states('sensor.elektrina_nakup_rok_nizky') | float + (629.0 | float)) / 1000) %}
+          {% set distributionHigh = ((states('sensor.elektrina_nakup_rok_vysoky') | float + (47.0 | float)) / 1000) %}
+          {% set constDanZElektriny = states('sensor.elektrina_const_dan_z_elektriny') | float %}
+          {% set price = (((distributionLow + distributionHigh) * constDanZElektriny) | float | round(2))%}
+        {% endif %}
+        {{price}}
+      unit_of_measurement: "Kč"
+
+    elektrina_cena_systemove_sluzby_day:
+      value_template: >-
+        {% set distributionLow = (states('sensor.elektrina_nakup_den_nizky') | float / 1000) %}
+        {% set distributionHigh = (states('sensor.elektrina_nakup_den_vysoky') | float / 1000) %}
+        {% set constSystemoveSluzby = states('sensor.elektrina_const_systemove_sluzby') | float %}
+        {% set price = (((distributionLow + distributionHigh) * constSystemoveSluzby) | float | round(2))%}
+        {{price}}
+      unit_of_measurement: "Kč"
+
+    elektrina_cena_systemove_sluzby_month:
+      value_template: >-
+        {% set distributionLow = (states('sensor.elektrina_nakup_mesic_nizky') | float / 1000) %}
+        {% set distributionHigh = (states('sensor.elektrina_nakup_mesic_vysoky') | float / 1000) %}
+        {% set constSystemoveSluzby = states('sensor.elektrina_const_systemove_sluzby') | float %}
+        {% set price = (((distributionLow + distributionHigh) * constSystemoveSluzby) | float | round(2))%}
+        {{price}}
+      unit_of_measurement: "Kč"
+
+    elektrina_cena_systemove_sluzby_year:
+      value_template: >-
+        {% set distributionLow = ((states('sensor.elektrina_nakup_rok_nizky') | float + (629.0 | float)) / 1000) %}
+        {% set distributionHigh = ((states('sensor.elektrina_nakup_rok_vysoky') | float + (47.0 | float)) / 1000) %}
+        {% set constSystemoveSluzby = states('sensor.elektrina_const_systemove_sluzby') | float %}
+        {% set price = (((distributionLow + distributionHigh) * constSystemoveSluzby) | float | round(2))%}
+        {{price}}
+      unit_of_measurement: "Kč"
+
+    elektrina_cena_systemove_sluzby:
+      value_template: >-
+        {% set price = 0 %}
+        {% if is_state('switch.energy_daily_view', 'on') %}
+          {% set distributionLow = (states('sensor.elektrina_nakup_den_nizky') | float / 1000) %}
+          {% set distributionHigh = (states('sensor.elektrina_nakup_den_vysoky') | float / 1000) %}
+          {% set constSystemoveSluzby = states('sensor.elektrina_const_systemove_sluzby') | float %}
+          {% set price = (((distributionLow + distributionHigh) * constSystemoveSluzby) | float | round(2))%}
+        {% elif is_state('switch.energy_monthly_view', 'on') %}
+          {% set distributionLow = (states('sensor.elektrina_nakup_mesic_nizky') | float / 1000) %}
+          {% set distributionHigh = (states('sensor.elektrina_nakup_mesic_vysoky') | float / 1000) %}
+          {% set constSystemoveSluzby = states('sensor.elektrina_const_systemove_sluzby') | float %}
+          {% set price = (((distributionLow + distributionHigh) * constSystemoveSluzby) | float | round(2))%}
+        {% elif is_state('switch.energy_yearly_view', 'on') %}
+          {% set distributionLow = ((states('sensor.elektrina_nakup_rok_nizky') | float + (629.0 | float)) / 1000) %}
+          {% set distributionHigh = ((states('sensor.elektrina_nakup_rok_vysoky') | float + (47.0 | float)) / 1000) %}
+          {% set constSystemoveSluzby = states('sensor.elektrina_const_systemove_sluzby') | float %}
+          {% set price = (((distributionLow + distributionHigh) * constSystemoveSluzby) | float | round(2))%}
+        {% endif %}
+        {{price}}
+      unit_of_measurement: "Kč"
+
+    elektrina_cena_ote_day:
+      value_template: >-
+        {% set constOte = states('sensor.elektrina_const_cinnost_ote') | float %}
+        {% set price = ((constOte / (((now().replace(day=1) + timedelta(days = 32)).replace(day=1) -timedelta(days=1)).day) ) | float | round(2))%}
+        {{price}}
+      unit_of_measurement: "Kč"
+
+    elektrina_cena_ote_month:
+      value_template: >-
+        {% set price = states('sensor.elektrina_const_cinnost_ote') | float %}
+        {{price}}
+      unit_of_measurement: "Kč"
+
+    elektrina_cena_ote_year:
+      value_template: >-
+        {% set constOte = states('sensor.elektrina_const_cinnost_ote') | float %}
+        {% set price = ((constOte * (now().month-6)) | float | round(2))%}
+        {{price}}
+      unit_of_measurement: "Kč"
+
+    elektrina_cena_ote:
+      value_template: >-
+        {% set price = 0 %}
+        {% if is_state('switch.energy_daily_view', 'on') %}
+          {% set constOte = states('sensor.elektrina_const_cinnost_ote') | float %}
+          {% set price = ((constOte / (((now().replace(day=1) + timedelta(days = 32)).replace(day=1) -timedelta(days=1)).day) ) | float | round(2))%}
+        {% elif is_state('switch.energy_monthly_view', 'on') %}
+          {% set price = states('sensor.elektrina_const_cinnost_ote') | float %}
+        {% elif is_state('switch.energy_yearly_view', 'on') %}
+          {% set constOte = states('sensor.elektrina_const_cinnost_ote') | float %}
+          {% set price = ((constOte * (now().month-6)) | float | round(2))%}
+        {% endif %}
+        {{price}}
+      unit_of_measurement: "Kč"
+
+    elektrina_cena_jistic_day:
+      value_template: >-
+        {% set constJistic = states('sensor.elektrina_const_jistic_3x40') | float %}
+        {% set price = ((constJistic / (((now().replace(day=1) + timedelta(days = 32)).replace(day=1) -timedelta(days=1)).day)) | float | round(2))%}
+        {{price}}
+      unit_of_measurement: "Kč"
+
+    elektrina_cena_jistic_month:
+      value_template: >-
+        {% set price = states('sensor.elektrina_const_jistic_3x40') | float %}
+        {{price}}
+      unit_of_measurement: "Kč"
+
+    elektrina_cena_jistic_year:
+      value_template: >-
+        {% set constJistic = states('sensor.elektrina_const_jistic_3x40') | float %}
+        {% set price = ((constJistic * (now().month-6)) | float | round(2))%}
+        {{price}}
+      unit_of_measurement: "Kč"
+
+    elektrina_cena_jistic:
+      value_template: >-
+        {% set price = 0 %}
+        {% if is_state('switch.energy_daily_view', 'on') %}
+          {% set constJistic = states('sensor.elektrina_const_jistic_3x40') | float %}
+          {% set price = ((constJistic / (((now().replace(day=1) + timedelta(days = 32)).replace(day=1) -timedelta(days=1)).day)) | float | round(2))%}
+        {% elif is_state('switch.energy_monthly_view', 'on') %}
+          {% set price = states('sensor.elektrina_const_jistic_3x40') | float %}
+        {% elif is_state('switch.energy_yearly_view', 'on') %}
+          {% set constJistic = states('sensor.elektrina_const_jistic_3x40') | float %}
+          {% set price = ((constJistic * (now().month-6)) | float | round(2))%}
+        {% endif %}
+        {{price}}
+      unit_of_measurement: "Kč"
+
+    elektrina_cena_poze_day:
+      value_template: >-
+        {% set distributionLow = (states('sensor.elektrina_nakup_den_nizky') | float / 1000) %}
+        {% set distributionHigh = (states('sensor.elektrina_nakup_den_vysoky') | float / 1000) %}
+        {% set constPoze = states('sensor.elektrina_const_poze_spotreba') | float %}
+        {% set price = (((distributionLow + distributionHigh) * constPoze) | float | round(2))%}
+        {{price}}
+      unit_of_measurement: "Kč"
+
+    elektrina_cena_poze_month:
+      value_template: >-
+        {% set distributionLow = (states('sensor.elektrina_nakup_mesic_nizky') | float / 1000) %}
+        {% set distributionHigh = (states('sensor.elektrina_nakup_mesic_vysoky') | float / 1000) %}
+        {% set constPoze = states('sensor.elektrina_const_poze_spotreba') | float %}
+        {% set price = (((distributionLow + distributionHigh) * constPoze) | float | round(2))%}
+        {{price}}
+      unit_of_measurement: "Kč"
+
+    elektrina_cena_poze_year:
+      value_template: >-
+        {% set distributionLow = ((states('sensor.elektrina_nakup_rok_nizky') | float + (629.0 | float)) / 1000) %}
+        {% set distributionHigh = ((states('sensor.elektrina_nakup_rok_vysoky') | float + (47.0 | float)) / 1000) %}
+        {% set constPoze = states('sensor.elektrina_const_poze_spotreba') | float %}
+        {% set price = (((distributionLow + distributionHigh) * constPoze) | float | round(2))%}
+        {{price}}
+      unit_of_measurement: "Kč"
+        
+
+    energy_virtual_batery_day:
+      value_template: >-
+        {% set value =  (((states('sensor.energy_buy_daily')| float ) - (states('sensor.energy_sell_daily')|float ))) | float | round(1)%}
+        {{value}}
+      unit_of_measurement: "kWh"
+    
+    energy_virtual_batery_month:
+      value_template: >-
+        {% set value =  (((states('sensor.energy_buy_monthly')| float ) - (states('sensor.energy_sell_monthly')|float ) ) ) | float | round(1)%}
+        {{value}}
+      unit_of_measurement: "kWh"
+
+    energy_virtual_batery_year:
+      value_template: >-
+        {% set value =  (((states('sensor.energy_buy_yearly')| float)-524) - ((states('sensor.energy_sell_yearly')| float)-1872))|float | round(1)%}
+        {{value}}
+      unit_of_measurement: "kWh"
+      
+
+    energy_virtual_batery2:
+      value_template: >-
+        {% set value = "" %}
+        {% if is_state('switch.energy_daily_view', 'on') %}
+          {% set value = (1 - ((states('sensor.energy_sell_daily')| float | abs) - (states('sensor.energy_buy_daily')|float ) ) ) | float%}
+        {% elif is_state('switch.energy_monthly_view', 'on') %}
+          {% set value = (1 - ((states('sensor.energy_sell_monthly')| float | abs) - (states('sensor.energy_buy_monthly')|float ) ) ) | float%}
+        {% elif is_state('switch.energy_yearly_view', 'on') %}
+          {% set value = ((((states('sensor.energy_sell_yearly')| float)-931) - ((states('sensor.energy_buy_yearly')|float )- 1361) ) ) | float%}
+        {% endif %}
+        {{value}}
+      unit_of_measurement: "kWh"
+
+    energy_effectivity:
+      value_template: >-
+        {% set value = "" %}
+        {% if is_state('switch.energy_daily_view', 'on') %}
+          {% set value = ((1 - ((states('sensor.energy_sell_daily')| float | abs) / (states('sensor.energy_consumption_daily')|float ) ) | float) * 100) | int%}
+        {% elif is_state('switch.energy_monthly_view', 'on') %}
+          {% set value = ((1 - ((states('sensor.energy_sell_monthly')| float | abs) / (states('sensor.energy_consumption_monthly')|float ) ) | float) * 100) | int%}
+        {% elif is_state('switch.energy_yearly_view', 'on') %}
+          {% set value = ((1 - ((states('sensor.energy_sell_yearly')| float | abs) / (states('sensor.energy_consumption_yearly')|float ) ) | float) * 100) | int%}
+        {% endif %}
+        {{value}}
+      unit_of_measurement: "%"
+
+    consumption_inverter:
+      value_template: >-
+        {% set total_load = states('sensor.house_consumption')|float %}
+        {% set load_l1 = states('sensor.load_l1')| float %}
+        {% set load_l2 = states('sensor.load_l2')| float %}
+        {% set load_l3 = states('sensor.load_l3')| float %}
+        {% set result = (total_load - load_l1 - load_l2 - load_l3) | float | abs%}
+        {{result}}
+      unit_of_measurement: "W"
+
+    grid_consumption_absolute:
+      value_template: >-
+        {%set value = states('sensor.active_power')| int | abs %}
+        {{value}}
+      unit_of_measurement: "W"
+
+    grid_consumption:
+      value_template: >-
+        {%set value = states('sensor.active_power')| int * (-1) %}
+        {{value}}
+      unit_of_measurement: "W"
+
+
+    house_consumption_1floor_other:
+      value_template: >-
+        {%set value = (states('sensor.load_l3')| int | abs
+        - states('sensor.smart_plug_3_power')|int 
+        - states('sensor.smart_plug_office_power')|int)
+        %}
+        {{value}}
+      unit_of_measurement: "W"
+
+    blinds_tilt_determine_max_low:
+      value_template: >-
+        {% set isSunHigh =  6 <= now().month <= 11%}
+        {%if isSunHigh %} 0
+        {% else %} 47
+        {% endif %}
+    
+    blinds_tilt_determine_max_high:
+      value_template: >-
+        {% set isSunHigh =  6 <= now().month <= 11%}
+        {%if isSunHigh %} 0
+        {% else %} 53
+        {% endif %}
+
+    blinds_tilt_determine_max:
+      value_template: >-
+        {% set isSunHigh =  6 <= now().month <= 11%}
+        {%if isSunHigh %} 0
+        {% else %} 50
+        {% endif %}
+
+    blinds_tilt_determine_mid_low:
+      value_template: >-
+        {% set isSunHigh =  6 <= now().month <= 11%}
+        {%if isSunHigh %} 35
+        {% else %} 55
+        {% endif %}
+
+    blinds_tilt_determine_mid_high:
+      value_template: >-
+        {% set isSunHigh =  6 <= now().month <= 11%}
+        {%if isSunHigh %} 45
+        {% else %} 65
+        {% endif %}
+
+
+    blinds_tilt_determine_mid:
+      value_template: >-
+        {% set isSunHigh =  6 <= now().month <= 11%}
+        {%if isSunHigh %} 40
+        {% else %} 60
+        {% endif %}
+
+    blinds_tilt_determine_min_low:
+      value_template: >-
+        {% set isSunHigh =  6 <= now().month <= 11%}
+        {%if isSunHigh %} 75
+        {% else %} 95
+        {% endif %}  
+        
+    blinds_tilt_determine_min_high:
+      value_template: >-
+        {% set isSunHigh =  6 <= now().month <= 11%}
+        {%if isSunHigh %} 85
+        {% else %} 100
+        {% endif %}
+
+    blinds_tilt_determine_min:
+      value_template: >-
+        {% set isSunHigh =  6 <= now().month <= 11%}
+        {%if isSunHigh %} 80
+        {% else %} 100
+        {% endif %}
+
+    apex_chart_color:
+      value_template: >-
+        {% set current = "" %}
+        {%if states('sun.sun')|title == 'Above_horizon' %}
+          {%set current = "rgb(128, 201, 148)" %}
+        {%endif%}
+        {% if states('sun.sun')|title == 'Below_horizon' %}
+          {%set current = "rgb(252, 214, 124)" %}
+        {%endif%}
+        {{current }}
+
+    living_room_temperature:
+      value_template: >-
+        {% set temperature = states.sensor.livingroom_temperature_1.state | float | round(1)%}
+        {{temperature}}
+
+    kitchen_temperature:
+      value_template: >-
+        {% set temperature = states.sensor.livingroom_temperature_1.state | float | round(1)%}
+        {{temperature}}
+
+    office_temperature:
+      value_template: >-
+        {% set temperature = states.sensor.offce_temperature_1.state | float | round(1)%}
+        {{temperature}}
+    
+    wc_temperature:
+      value_template: >-
+        {% set temperature = states.sensor.wc_temperature_1.state | float | round(1)%}
+        {{temperature}}
+
+    kids_room_temperature:
+      value_template: >-
+        {% set temperature = states.sensor.kidsroom_temperature_1.state | float | round(1)%}
+        {{temperature}}
+
+    hallway_room_temperature:
+      value_template: >-
+        {% set temperature = states.sensor.hallway.state | float | round(1)%}
+        {{temperature}}
+
+    bedroom_temperature:
+      value_template: >-
+        {% set temperature = states.sensor.bedroom_temperature_1.state | float | round(1)%}
+        {{temperature}}
+
+    office_cover_state:
+      value_template: >-
+        {% set status = states('cover.office')|title %}
+        {% if status == 'Closing' %} Zavírání žaluzií...         
+        {% elif status == 'Opening'%} Otevírání žaluzií...
+        {% else %}           
+        {%endif%}
+    
+    heating_on:
+      value_template: >-
+        {% set current = states.sensor.e3_vitocal_supply_temperature.state %}
+        {% set heating = states.climate.e3_vitocal_heating.attributes.hvac_action%}
+        {%if heating == 'heating'%} {{current}}
+        {% else %} ' '
+        {%endif%}
+
+    water_heating_on:
+      value_template: >-
+        {% set current = states.sensor.e3_vitocal_supply_temperature.state | int %}
+        {%if current > 45%} on
+        {% else %} off
+        {%endif%}
+
+    kids_cover_state:
+      value_template: >-
+        {% set status = states('cover.kids_room')|title %}
+        {% if status == 'Closing' %} Zavírání žaluzií...         
+        {% elif status == 'Opening'%} Otevírání žaluzií...
+        {% else %}           
+        {%endif%}
+
+    bedroom_cover_state:
+      value_template: >-
+        {% set status = states('cover.kids_room')|title %}
+        {% if status == 'Closing' %} Zavírání žaluzií...         
+        {% elif status == 'Opening'%} Otevírání žaluzií...
+        {% else %}           
+        {%endif%}    
+
+    current_water_temperature:
+      value_template: >-
+        {% set current = states.water_heater.e3_vitocal_water.attributes.current_temperature %}
+        {{current }}
+    
+    water_temperature:
+      value_template: >-
+        {% set current = states.water_heater.e3_vitocal_water.attributes.temperature %}
+        {{current }}
+
+    nameday:
+      value_template: >-
+        {%- set event = states.calendar.ceska_jmena.attributes.message  %}
+        {{event}}
+
+    washer_remaining_time:
+      friendly_name: "Remaining Time"
+      value_template: >-
+        {% set rem_h = (as_timestamp(states.sensor.washer_washer_completion_time.state, default=0) - as_timestamp(now(), default=0)) | timestamp_custom("%-H", false) %}
+        {% set rem_m = (as_timestamp(states.sensor.washer_washer_completion_time.state, default=0) - as_timestamp(now(), default=0)) | timestamp_custom("%-M", false) %}
+        {% if int(rem_h) > 0.9 %} 
+        {{ rem_h }} hodin a {{ rem_m }} minut  
+        {% else %} 
+        {{ rem_m }} minut 
+        {% endif %}
+
+    forecast_today:
+      value_template: >-
+        {{(state_attr('weather.forecast_domov', 'forecast')|selectattr('datetime', 'lt', (now().replace(hour=11,minute=59)).isoformat()))| map(attribute='temperature') | list | max | round | int}}
+
+    random_good_day:
+      value_template: >-
+        {{ [
+          "Ať se vám dnes daří!",
+          "Mějte úspěšný den!"
+        ] | random }}
+
+
+
+    event_utilities_tomorrow:
+      value_template: >-
+        {% set message = states.calendar.utilities.attributes.message%}
+        {% set todayDate = int((as_timestamp(now(), default=0)) | timestamp_custom("%-d", false)) %}
+        {% set eventDate = int((as_timestamp(states.calendar.utilities.attributes.start_time, default=0)) | timestamp_custom("%-d", false)) %}
+
+        {% if todayDate == eventDate-1%}
+        Zítra proběhne {{message}}.
+        {% endif %}       
+
+    nearest_calendar_event:
+      value_template: >-
+        {% set message = states.calendar.family.attributes.message%}
+
+        {% set todayDate = int((as_timestamp(now(), default=0)) | timestamp_custom("%-d", false)) %}
+        {% set eventDate = int((as_timestamp(states.calendar.utilities.attributes.start_time, default=0)) | timestamp_custom("%-d", false)) %}
+
+        {% set eventWeek = int((as_timestamp(states.calendar.family.attributes.start_time, default=0)) | timestamp_custom("%-U", false)) %}
+        {% set currentWeek = int((as_timestamp(now(), default=0)) | timestamp_custom("%-U", false)) %}
+        {% set event_day = (as_timestamp(states.calendar.family.attributes.start_time, default=0)) | timestamp_custom("%-A", false) %}
+        {% set event_day_Czech = "" %}
+        {% set event_hour = (int((as_timestamp(states.calendar.family.attributes.start_time, default=0)) | timestamp_custom("%-H", false))+1) | string%}
+        {% set event_minute = (as_timestamp(states.calendar.family.attributes.start_time, default=0)) | timestamp_custom("%-M", false) %}
+        {% set event_time = "" %}
+        {% set result = "" %}
+        {% set v_or_ve_text = "" %}
+        {% set hour_text = "" %} 
+
+        {% if event_day == 'Monday' %}  
+          {% set event_day_Czech = "pondělí" %}
+        {% elif event_day == 'Tuesday' %} 
+          {% set event_day_Czech = "úterý" %}
+        {% elif event_day == 'Wednesday' %} 
+          {% set event_day_Czech = "středu" %}
+        {% elif event_day == 'Thursday' %} 
+          {% set event_day_Czech = "čtvrtek" %}
+        {% elif event_day == 'Friday' %} 
+          {% set event_day_Czech = "pátek" %}
+        {% elif event_day == 'Saturday' %} 
+          {% set event_day_Czech = "sobotu" %}
+        {% elif event_day == 'Sunday' %} 
+          {% set event_day_Czech = "neděli" %}
+        {% endif %}
+        
+        {% if int(event_hour) == 1 or 
+              int(event_hour) == 5 or
+              int(event_hour) == 6 or
+              int(event_hour) == 7 or
+              int(event_hour) == 8 or
+              int(event_hour) == 9 or
+              int(event_hour) == 10 or
+              int(event_hour) == 11 %}
+          {% set v_or_ve_text = "v" %} 
+        {% else %}
+          {% set v_or_ve_text = "ve" %} 
+        {% endif %}
+        
+        {% if int(event_hour) == 1 %}
+          {% set hour_text = "hodinu" %} 
+        {% elif int(event_hour) == 2 or
+                int(event_hour) == 3 or
+                int(event_hour) == 4 %}
+          {% set hour_text = "hodiny" %} 
+        {% else %}
+          {% set hour_text = "hodin" %}
+        {% endif %}
+        
+        {% if int(event_hour) != 24 %} 
+          {% if (int(event_minute) > 0) %}
+            {% set event_time = ", " + v_or_ve_text + " " + event_hour + " "+ hour_text +" a " + event_minute + " minut" %}
+          {% endif %}  
+            {% set event_time = ", " + v_or_ve_text + " " + event_hour + " " + hour_text %}
+        {% endif %}   
+        {% if eventWeek == currentWeek and todayDate >= eventDate %}
+          {% set result = "V kalendáři máte v " + event_day_Czech + "" + event_time + " naplánováno " + message + "." %} 
+        {% endif %}   
+        {{ result }}
+
+    translate_weather_statuses_actual:
+      value_template: >-
+        {% set state = states.weather.accuweatherforecast.state %}
+        {% if state == 'clear-night' %} je jasná noc
+        {% elif state == 'cloudy' %} je oblačno
+        {% elif state == 'exceptional' %} bylo hlášeno varování
+        {% elif state == 'fog' %} je mlha
+        {% elif state == 'hail' %} padají kroupy
+        {% elif state == 'lightning' %} se vyskytují bouřky
+        {% elif state == 'lightning-rainy' %} je bouřka a prší
+        {% elif state == 'partlycloudy' %} je polojasno
+        {% elif state == 'pouring' %} prší
+        {% elif state == 'rainy' %} je deštivo
+        {% elif state == 'snowy' %} sněží
+        {% elif state == 'snowy-rainy' %} padá déšť se sněhem
+        {% elif state == 'sunny' %} je slunečno
+        {% elif state == 'windy' %} je větrno
+        {% elif state == 'windy-variant' %} je větrno
+        {% else %} nemám data o počasí
+        {% endif %}
+
+    translate_weather_statuses_forecast:
+      value_template: >-
+        {% set state = states.sensor.openweathermap_forecast_condition.state %}
+        {% if state == 'clear-night' %} jasnou noc
+        {% elif state == 'cloudy' %} oblačno
+        {% elif state == 'exceptional' %} varování
+        {% elif state == 'fog' %} mlhu
+        {% elif state == 'hail' %} kroupy
+        {% elif state == 'lightning' %} výskyt bouřek
+        {% elif state == 'lightning-rainy' %} výskyt bouřek a déšť
+        {% elif state == 'partlycloudy' %} polojasno
+        {% elif state == 'pouring' %} déšť
+        {% elif state == 'rainy' %} déšť
+        {% elif state == 'snowy' %} sníh
+        {% elif state == 'snowy-rainy' %} déšť se sněhem
+        {% elif state == 'sunny' %} slunečno
+        {% elif state == 'windy' %} větrno
+        {% elif state == 'windy-variant' %} větrno
+        {% else %} že nemám data o počasí
+        {% endif %}
+
+    weather_give_advice_rain:
+      value_template: >-
+        {% set state = states.sensor.openweathermap_forecast_condition.state %}
+        {% if state == 'rainy' %} Nezapomeňte si sebou dnes vzít deštník.
+        {% elif state == 'pouring' %} Nezapomeňte si sebou dnes vzít deštník.
+        {% elif state == 'lightning-rainy' %} Nezapomeňte si sebou dnes vzít deštník.
+        {% endif %}
+
+    weather_give_advice_wind:
+      value_template: >-
+        {% set state = states.sensor.openweathermap_wind_speed.state|int %}
+        {% if state > 13 %} Venku je větrno, dávejte na sebe pozor.
+        {% endif %}
+
+    weather_give_advice_sun:
+      value_template: >-
+        {% set stav = states.sensor.openweathermap_forecast_condition.state %}
+        {% set teplota = states.sensor.openweathermap_forecast_temperature.state|round|int %}
+        {% if stav == 'sunny' and teplota > 25 %} Možná by to chtělo přibalit opalovací krém.
+        {% endif %}
+
+    welcome_time_of_day:
+      value_template: >-
+        {% set current_hour = (as_timestamp(now(), default=0)) | timestamp_custom("%-H", false) %}
+        {% if int(current_hour)+2 < 12 %}
+          Dobré ráno.
+        {% elif 12 <= int(current_hour)+2 < 18 %}
+          Dobré odpoledne.
+        {% else %}
+          Dobrý večer.
+        {% endif %}
+
+    day_in_week:
+      value_template: >-
+        {% set current_day = (as_timestamp(now(), default=0)) | timestamp_custom("%-d", false) %}
+        {{current_day}}
+
+    month_number:
+      value_template: >-
+        {% set month = (as_timestamp(now(), default=0)) | timestamp_custom("%-m", false) %}
+        {{month}}
+
+    day_in_week_name:
+      value_template: >-
+        {% set current_day = (as_timestamp(now(), default=0)) | timestamp_custom("%-A", false) %}
+        {% if current_day == 'Monday' %}  Pondělí
+        {% elif current_day == 'Tuesday' %} Úterý
+        {% elif current_day == 'Wednesday' %} Středa
+        {% elif current_day == 'Thursday' %} Čtvrtek
+        {% elif current_day == 'Friday' %} Pátek
+        {% elif current_day == 'Saturday' %} Sobota
+        {% elif current_day == 'Sunday' %} Neděle
+        {% endif %}
+
+    month_name:
+      value_template: >-
+        {% set current_month = (as_timestamp(now(), default=0)) | timestamp_custom("%-m", false) %}
+        {% if int(current_month) == 1 %}  leden
+        {% elif int(current_month) == 2 %} únor
+        {% elif int(current_month) == 3 %} březen
+        {% elif int(current_month) == 4 %} duben
+        {% elif int(current_month) == 5 %} květen
+        {% elif int(current_month) == 6 %} červen
+        {% elif int(current_month) == 7 %} červenec
+        {% elif int(current_month) == 8 %} srpen
+        {% elif int(current_month) == 9 %} září
+        {% elif int(current_month) == 10 %} řijen
+        {% elif int(current_month) == 11 %} listopad
+        {% elif int(current_month) == 12 %} prosinec
+        {% endif %}
+
+    desktopargi:
+      value_template: >-
+        {% set state = states.binary_sensor.martin_pc_power_status.state %}
+        {% if state == 'on' %} on
+        {% elif state == 'off' %} off
+        {% elif state == 'unavailable' %} off
+        {% else %} off
+        {% endif %}
+    
+

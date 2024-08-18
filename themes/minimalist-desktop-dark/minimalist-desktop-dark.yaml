@@ -1,0 +1,89 @@
+---
+minimalist-desktop-dark:
+  # Journal
+  state-icon-color: "rgb(var(--color-theme))"
+  border-radius: "20px"
+  ha-card-border-radius: "var(--border-radius)"
+  error-color: "var(--google-red)"
+  warning-color: "var(--google-yellow)"
+  success-color: "var(--google-green)"
+  info-color: "var(--google-blue)"
+  divider-color: "rgba(var(--color-theme),.12)"
+  accent-color: "var(--google-yellow)"
+  ha-dialog-border-radius: "10px"
+  # fix added border-lines in 2022.11
+  ha-card-border-width: "0px"
+
+  card-mod-theme: "minimalist-desktop"
+  card-mod-view-yaml: |
+    "*:first-child$": |
+      #columns .column > * {
+        padding-left: 5px;
+        padding-right: 5px;
+        padding-bottom: 5px;
+      }
+  # text
+  primary-text-color: "#DDDDDD"
+  # main interface colors
+  primary-color: "#89B3F8"
+  google-red: "#F18B82"
+  google-green: "#80C994"
+  google-yellow: "#FCD663"
+  google-blue: "#89B3F8"
+  google-violet: "#BB86FC"
+  google-grey: "#BBBBBB"
+  color-red: "241, 139, 130"
+  color-green: "128, 201, 148"
+  color-yellow: "252, 214, 99"
+  color-blue: "137, 179, 248"
+  color-theme: "221,221,221"
+  color-purple: "102, 31, 255"
+  color-grey: "187, 187, 187"
+  color-pink: "233, 30, 99"
+  color-black: "0, 0, 0"
+  color-background-yellow: "var(--color-yellow)"
+  color-background-grey: "var(--color-grey)"
+  color-background-blue: "var(--color-blue)"
+  color-background-blue2: "var(--color-blue)"
+  color-background-green: "var(--color-green)"
+  color-background-red: "var(--color-red)"
+  color-background-pink: "var(--color-pink)"
+  color-background-purple: "var(--color-purple)"
+  color-background-black: "var(--color-black)"
+  color-yellow-text: "var(--color-yellow)"
+  color-blue-text: "var(--color-blue)"
+  color-green-text: "var(--color-green)"
+  color-red-text: "var(--color-red)"
+  color-pink-text: "var(--color-pink)"
+  color-purple-text: "var(--color-purple)"
+
+  opacity-bg: "0.1"
+  # floating button text color
+  mdc-theme-on-secondary: "var(--card-background-color)"
+  # background and sidebarbackground-color: rgba(var(--color-grey),0.1)
+  # "#1D1D1D"
+  card-background-color: rgba(var(--color-background-grey),var(--opacity-bg))
+  primary-background-color: "#121212"
+  secondary-background-color: "#121212"
+  # header
+  app-header-text-color: "var(--primary-text-color)"
+  app-header-background-color: "var(--primary-background-color)"
+  paper-tabs-selection-bar-color: "var(--primary-text-color)"
+  # Sidebar
+  sidebar-selected-text-color: "rgb(var(--color-blue))"
+  sidebar-selected-icon-color: "rgb(var(--color-blue))"
+  # Slider
+  slider-color: "rgb(var(--color-blue))"
+  slider-bar-color: "rgba(var(--color-blue),0.38)"
+  # card
+  box-shadow: "none"
+  # media player
+  mini-media-player-accent-color: "var(--google-blue)"
+  # Journal
+  lovelace-background: center / cover no-repeat fixed url('/local/community/spotify/background3.jpg')
+
+  honeycomb-menu-icon-color: rgb(var(--color-background-grey))
+  honeycomb-menu-icon-active-color: rgb(var(--color-background-blue))
+  honeycomb-menu-background-color:  rgba(var(--color-background-grey),var(--opacity-bg))
+  honeycomb-menu-active-background-color: rgba(var(--color-background-blue),0.8)
+  honeycomb-menu-disabled: rgba(var(--primary-background-color),var(--opacity-bg))

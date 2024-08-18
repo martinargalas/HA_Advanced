@@ -1,0 +1,127 @@
+call_method:
+  fields:
+    entity_id:
+      example: "media_player.ytube_music_player"
+      required: true
+      selector:
+        entity:
+          domain: media_player
+    command:
+      example: "rate_track"
+      required: true
+      selector:
+        text:
+    parameters:
+      example: "thumb_up"
+      required: true
+      selector:
+        text:
+
+search:
+  fields:
+    entity_id:
+      example: "media_player.ytube_music_player"
+      required: true
+      selector:
+        entity:
+          domain: media_player
+    query:
+      example: "2pm tetris"
+      required: true
+      selector:
+        text:
+    filter:
+      required: false
+      selector:
+        text:
+    limit:
+      required: false
+      example: "20"
+      default: 20
+      selector:
+        number:
+          min: 1
+          max: 1000
+
+add_to_playlist:
+  fields:
+    entity_id:
+      example: "media_player.ytube_music_player"
+      required: true
+      selector:
+        entity:
+          domain: media_player
+    song_id:
+      required: false
+      example: ""
+      selector:
+        text:
+    playlist_id:
+      required: false
+      example: ""
+      selector:
+        text:
+
+remove_from_playlist:
+  fields:
+    entity_id:
+      example: "media_player.ytube_music_player"
+      required: true
+      selector:
+        entity:
+          domain: media_player
+    song_id:
+      example: ""
+    playlist_id:
+      example: ""
+
+rate_track:
+  fields:
+    entity_id:
+      example: "media_player.ytube_music_player"
+      required: true
+      selector:
+        entity:
+          domain: media_player
+    rating:
+      example: "thumb_up"
+      required: true
+      selector:
+        select:
+          options:
+            - "thumb_up"
+            - "thumb_down"
+            - "thumb_middle"
+            - "thumb_toggle_up_middle"
+    song_id:
+      example: ""
+
+limit_count:
+  fields:
+    entity_id:
+      example: "media_player.ytube_music_player"
+      required: true
+      selector:
+        entity:
+          domain: media_player
+    limit:
+      example: "20"
+      required: true
+      selector:
+        number:
+          min: 1
+          max: 1000
+
+start_radio:
+  fields:
+    entity_id:
+      example: "media_player.ytube_music_player"
+      required: true
+      selector:
+        entity:
+          domain: media_player
+    interrupt:
+      required: true
+      example: "true"
+      selector:
+        boolean:

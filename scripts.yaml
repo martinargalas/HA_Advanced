@@ -1,0 +1,763 @@
+multi_tap_action:
+  alias: Multi Tap Action
+  sequence:
+    - repeat:
+        for_each: "{{actions}}"
+        sequence:
+          - if:
+              - condition: template
+                value_template: >-
+                  {{repeat.item.entity_id is not defined and repeat.item.data is
+                  not defined }}
+            then:
+              service: "{{ repeat.item.service }}"
+          - if:
+              - condition: template
+                value_template: >-
+                  {{repeat.item.entity_id is defined and repeat.item.data is not
+                  defined }}
+            then:
+              service: "{{ repeat.item.service }}"
+              target:
+                entity_id: "{{ repeat.item.entity_id }}"
+          - if:
+              - condition: template
+                value_template: >-
+                  {{repeat.item.entity_id is not defined and repeat.item.data is
+                  defined }}
+            then:
+              service: "{{ repeat.item.service }}"
+              data: >-
+                {% set b =  {"browser_id": browser_id} if
+                browser_id is defined and "browser_mod" in repeat.item.service else {} %} {{ dict(
+                repeat.item.data, **b) }}
+          - if:
+              - condition: template
+                value_template: >-
+                  {{repeat.item.entity_id is defined and repeat.item.data is
+                  defined }}
+            then:
+              service: "{{ repeat.item.service }}"
+              target:
+                entity_id: "{{repeat.item.entity_id}}"
+              data: >-
+                {% set b =  {"browser_id": browser_id} if
+                browser_id is defined and "browser_mod" in repeat.item.service else {} %} {{ dict(
+                repeat.item.data, **b) }}
+  mode: parallel
+
+living_room_tv:
+  alias: living room tv
+  sequence:
+  - if:
+    - condition: state
+      entity_id: media_player.tv2
+      state: 'off'
+    then:
+    - service: media_player.turn_on
+      target:
+        entity_id: media_player.tv2
+      data: {}
+    else:
+    - service: media_player.turn_off
+      target:
+        entity_id: media_player.tv2
+      data: {}
+
+fade_volume:
+  alias: Fade the volume of a media player
+  mode: restart
+  fields:
+    target_player:
+      name: Target media player
+      description: Target media player of volume fade.
+      required: true
+      example: media_player.lounge_sonos
+      selector:
+        entity:
+          domain: media_player
+    target_volume:
+      name: Target volume
+      description: Volume the media play will be at the end of the fade duration.
+      required: true
+      default: 0.5
+      example: '0.5'
+      selector:
+        number:
+          max: 1
+          min: 0
+          step: 0.01
+          mode: slider
+    duration:
+      name: Fade duration
+      description: Length of time in seconds the fade should take.
+      required: true
+      default: 5
+      example: '5'
+      selector:
+        number:
+          mode: box
+          min: 0
+          max: 100000
+          unit_of_measurement: s
+    curve:
+      name: Fade curve algorithm
+      description: Shape of the fade curve to apply.
+      required: true
+      default: logarithmic
+      example: logarithmic
+      selector:
+        select:
+          options:
+          - logarithmic
+          - bezier
+          - linear
+  variables:
+    steps_per_second: 10
+    total_steps: '{{ (steps_per_second * duration) | int(0) }}'
+    start_volume: '{{ state_attr(target_player, ''volume_level'') | float(0) }}'
+    start_diff: '{{ (target_volume - start_volume) | float(0) }}'
+  sequence:
+  - repeat:
+      while:
+      - condition: template
+        value_template: '{{ repeat.index < total_steps }}'
+      - condition: template
+        value_template: '{{ ((state_attr(target_player, "volume_level") - target_volume)
+          | abs) > 0.001 }}'
+      sequence:
+      - service: media_player.volume_set
+        data_template:
+          entity_id: '{{ target_player }}'
+          volume_level: "{% set t = repeat.index / total_steps %} {% if curve == 'logarithmic'\
+            \ %}\n  {{ (start_volume + (t / (1 + (1 - t))) * start_diff) | float(0)\
+            \ }}\n{% elif curve == 'bezier' %}\n  {{ (start_volume + (t * t * (3 -\
+            \ 2 * t)) * start_diff) | float(0) }}\n{% else %}\n  {{ (start_volume\
+            \ + t * start_diff) | float(0) }}\n{% endif %}\n"
+      - delay: '00:00:00.1'
+  - service: media_player.volume_set
+    data_template:
+      entity_id: '{{ target_player }}'
+      volume_level: '{{ target_volume }}'
+  icon: mdi:tune-vertical
+
+spotify_app:
+  sequence:
+  - service: rest_command.launch_spotify_on_android_tab
+ho_app:
+  sequence:
+  - service: rest_command.launch_ho_on_android_tab
+search_ma:
+  mode: queued
+  alias: Jukebox MA search
+  sequence:
+  - service: mass.search
+    data:
+      limit: 8
+      name: Draconian
+    response_variable: results
+  - service: input_text.set_value
+    data:
+      entity_id: input_text.MusicAssistTrack
+      value: '{{ results.tracks[0].name }}'
+  - service: input_text.set_value
+    data:
+      entity_id: input_text.MusicAssistArtist
+      value: '{{ results.tracks[0].artists[0].name }}'
+convert_to_action:
+  alias: Convert to actions
+  sequence:
+  - service: '{{ service1 }}'
+    data:
+      entity_id: '{{ entity_id1 }}'
+  - if:
+    - condition: template
+      value_template: '{{ service2 is defined }}'
+    then:
+    - service: '{{ service2 }}'
+      data:
+        entity_id: '{{ entity_id2 }}'
+  - if:
+    - condition: template
+      value_template: '{{ service3 is defined }}'
+    then:
+    - service: '{{ service3 }}'
+      data:
+        entity_id: '{{ entity_id3 }}'
+  - if:
+    - condition: template
+      value_template: '{{ service4 is defined }}'
+    then:
+    - service: '{{ service4 }}'
+      data:
+        entity_id: '{{ entity_id4 }}'
+  mode: single
+camera_front_stream:
+  alias: Stream front camera
+  sequence:
+  - if:
+    - condition: state
+      entity_id: switch.front_door_rtsp_stream
+      state: 'off'
+    then:
+    - service: script.convert_to_action
+      data:
+        service1: switch.turn_on
+        entity_id1: switch.front_door_rtsp_stream
+        milliseconds: 0
+    - wait_template: '{{ (states("switch.front_door_rtsp_stream") == ''on'') }}'
+      continue_on_timeout: false
+    - service: script.convert_to_action
+      data:
+        service1: camera.turn_on
+        entity_id1: camera.front_door
+        milliseconds: 0
+    - service: script.convert_to_action
+      data:
+        service1: input_boolean.turn_on
+        entity_id1: input_boolean.bubble_stream_tablet_brightness
+        milliseconds: 0
+    - service: number.set_value
+      data:
+        value: '255'
+      target:
+        entity_id: number.zarizeni_tab_a8_uzivatele_martin_screen_brightness
+    - delay:
+        hours: 0
+        minutes: 0
+        seconds: 35
+        milliseconds: 0
+    - service: script.convert_to_action
+      data:
+        service1: input_boolean.turn_off
+        entity_id1: input_boolean.bubble_stream_tablet_brightness
+        milliseconds: 0
+    - service: script.convert_to_action
+      data:
+        service1: camera.turn_off
+        entity_id1: camera.front_door
+        milliseconds: 0
+    - service: script.convert_to_action
+      data:
+        service1: switch.turn_off
+        entity_id1: switch.front_door_rtsp_stream
+        milliseconds: 0
+camera_garden_stream:
+  alias: Stream garden camera
+  sequence:
+  - if:
+    - condition: state
+      entity_id: switch.garden_rtsp_stream
+      state: 'off'
+    then:
+    - service: script.convert_to_action
+      data:
+        service1: switch.turn_on
+        entity_id1: switch.garden_rtsp_stream
+    - delay:
+        hours: 0
+        minutes: 0
+        seconds: 3
+        milliseconds: 0
+    - delay:
+        hours: 0
+        minutes: 0
+        seconds: 40
+        milliseconds: 0
+    - service: script.convert_to_action
+      data:
+        service1: switch.turn_off
+        entity_id1: switch.garden_rtsp_stream
+tilt_blinds_office_max:
+  alias: Tilt blinds office max
+  sequence:
+  - if:
+    - condition: state
+      entity_id: cover.office
+      state: closed
+    then:
+    - service: cover.set_cover_tilt_position
+      data:
+        tilt_position: '{{ states(''sensor.blinds_tilt_determine_max'')}}'
+      target:
+        device_id: d0393edaa4cef9acaa5f75affa7207ea
+    - service: switch.turn_on
+      data: {}
+      target:
+        entity_id: switch.office_blinds_user_switch
+    else:
+    - service: cover.close_cover
+      target:
+        device_id: d0393edaa4cef9acaa5f75affa7207ea
+    - delay:
+        hours: 0
+        minutes: 0
+        seconds: 37
+        milliseconds: 0
+    - service: cover.set_cover_tilt_position
+      data:
+        tilt_position: '{{ states(''sensor.blinds_tilt_determine_max'')}}'
+      target:
+        device_id: d0393edaa4cef9acaa5f75affa7207ea
+    - service: switch.turn_on
+      data: {}
+      target:
+        entity_id: switch.office_blinds_user_switch
+tilt_blinds_office_mid:
+  alias: Tilt blinds office mid
+  sequence:
+  - if:
+    - condition: state
+      entity_id: cover.office
+      state: closed
+    then:
+    - service: cover.set_cover_tilt_position
+      data:
+        tilt_position: '{{ states(''sensor.blinds_tilt_determine_mid'')}}'
+      target:
+        device_id: d0393edaa4cef9acaa5f75affa7207ea
+    - service: switch.turn_on
+      data: {}
+      target:
+        entity_id: switch.office_blinds_user_switch
+    else:
+    - service: cover.close_cover
+      target:
+        device_id: d0393edaa4cef9acaa5f75affa7207ea
+    - delay:
+        hours: 0
+        minutes: 0
+        seconds: 37
+        milliseconds: 0
+    - service: cover.set_cover_tilt_position
+      data:
+        tilt_position: '{{ states(''sensor.blinds_tilt_determine_mid'')}}'
+      target:
+        device_id: d0393edaa4cef9acaa5f75affa7207ea
+    - service: switch.turn_on
+      data: {}
+      target:
+        entity_id: switch.office_blinds_user_switch
+tilt_blinds_office_min:
+  alias: Tilt blinds office min
+  sequence:
+  - if:
+    - condition: state
+      entity_id: cover.office
+      state: closed
+    then:
+    - service: cover.set_cover_tilt_position
+      data:
+        tilt_position: '{{ states(''sensor.blinds_tilt_determine_min'')}}'
+      target:
+        device_id: d0393edaa4cef9acaa5f75affa7207ea
+    - service: switch.turn_on
+      data: {}
+      target:
+        entity_id: switch.office_blinds_user_switch
+    else:
+    - service: cover.close_cover
+      target:
+        device_id: d0393edaa4cef9acaa5f75affa7207ea
+    - delay:
+        hours: 0
+        minutes: 0
+        seconds: 37
+        milliseconds: 0
+    - service: cover.set_cover_tilt_position
+      data:
+        tilt_position: '{{ states(''sensor.blinds_tilt_determine_min'')}}'
+      target:
+        device_id: d0393edaa4cef9acaa5f75affa7207ea
+    - service: switch.turn_on
+      data: {}
+      target:
+        entity_id: switch.office_blinds_user_switch
+open_blinds_office:
+  alias: Open blinds office
+  sequence:
+  - service: cover.open_cover
+    target:
+      device_id: d0393edaa4cef9acaa5f75affa7207ea
+  - service: switch.turn_on
+    data: {}
+    target:
+      entity_id: switch.office_blinds_user_switch
+close_blinds_office:
+  alias: Close blinds office
+  sequence:
+  - service: cover.close_cover
+    target:
+      device_id: d0393edaa4cef9acaa5f75affa7207ea
+  - service: switch.turn_on
+    data: {}
+    target:
+      entity_id: switch.office_blinds_user_switch
+tilt_blinds_bedroom_max:
+  alias: Tilt blinds bedroom max
+  sequence:
+  - if:
+    - condition: state
+      entity_id: cover.balcony
+      state: closed
+    then:
+    - service: cover.set_cover_tilt_position
+      data:
+        tilt_position: '{{ states(''sensor.blinds_tilt_determine_max'')}}'
+      target:
+        device_id: 09367c252cb8e70a1bb9513c1aa3842d
+    - service: switch.turn_on
+      data: {}
+      target:
+        entity_id: switch.bedroom_blinds_user_switch
+    else:
+    - service: cover.close_cover
+      target:
+        device_id: 09367c252cb8e70a1bb9513c1aa3842d
+    - delay:
+        hours: 0
+        minutes: 0
+        seconds: 61
+        milliseconds: 0
+    - service: cover.set_cover_tilt_position
+      data:
+        tilt_position: '{{ states(''sensor.blinds_tilt_determine_max'')}}'
+      target:
+        device_id: 09367c252cb8e70a1bb9513c1aa3842d
+    - service: switch.turn_on
+      data: {}
+      target:
+        entity_id: switch.bedroom_blinds_user_switch
+tilt_blinds_bedroom_mid:
+  alias: Tilt blinds bedroom mid
+  sequence:
+  - if:
+    - condition: state
+      entity_id: cover.balcony
+      state: closed
+    then:
+    - service: cover.set_cover_tilt_position
+      data:
+        tilt_position: '{{ states(''sensor.blinds_tilt_determine_mid'')}}'
+      target:
+        device_id: 09367c252cb8e70a1bb9513c1aa3842d
+    - service: switch.turn_on
+      data: {}
+      target:
+        entity_id: switch.bedroom_blinds_user_switch
+    else:
+    - service: cover.close_cover
+      target:
+        device_id: 09367c252cb8e70a1bb9513c1aa3842d
+    - delay:
+        hours: 0
+        minutes: 0
+        seconds: 61
+        milliseconds: 0
+    - service: cover.set_cover_tilt_position
+      data:
+        tilt_position: '{{ states(''sensor.blinds_tilt_determine_mid'')}}'
+      target:
+        device_id: 09367c252cb8e70a1bb9513c1aa3842d
+    - service: switch.turn_on
+      data: {}
+      target:
+        entity_id: switch.bedroom_blinds_user_switch
+tilt_blinds_bedroom_min:
+  alias: Tilt blinds bedroom min
+  sequence:
+  - if:
+    - condition: state
+      entity_id: cover.balcony
+      state: closed
+    then:
+    - service: cover.set_cover_tilt_position
+      data:
+        tilt_position: '{{ states(''sensor.blinds_tilt_determine_min'')}}'
+      target:
+        device_id: 09367c252cb8e70a1bb9513c1aa3842d
+    - service: switch.turn_on
+      data: {}
+      target:
+        entity_id: switch.bedroom_blinds_user_switch
+    else:
+    - service: cover.close_cover
+      target:
+        device_id: 09367c252cb8e70a1bb9513c1aa3842d
+    - delay:
+        hours: 0
+        minutes: 0
+        seconds: 61
+        milliseconds: 0
+    - service: cover.set_cover_tilt_position
+      data:
+        tilt_position: '{{ states(''sensor.blinds_tilt_determine_min'')}}'
+      target:
+        device_id: 09367c252cb8e70a1bb9513c1aa3842d
+    - service: switch.turn_on
+      data: {}
+      target:
+        entity_id: switch.bedroom_blinds_user_switch
+open_blinds_bedroom:
+  alias: Open blinds bedroom
+  sequence:
+  - service: cover.open_cover
+    target:
+      device_id: 09367c252cb8e70a1bb9513c1aa3842d
+  - service: switch.turn_on
+    data: {}
+    target:
+      entity_id: switch.bedroom_blinds_user_switch
+close_blinds_bedroom:
+  alias: Close blinds bedroom
+  sequence:
+  - service: cover.close_cover
+    target:
+      device_id: 09367c252cb8e70a1bb9513c1aa3842d
+  - service: switch.turn_on
+    data: {}
+    target:
+      entity_id: switch.bedroom_blinds_user_switch
+tilt_blinds_kids_max:
+  alias: Tilt blinds kids max
+  sequence:
+  - if:
+    - condition: state
+      entity_id: cover.kids_room
+      state: closed
+    then:
+    - service: cover.set_cover_tilt_position
+      data:
+        tilt_position: '{{ states(''sensor.blinds_tilt_determine_max'')}}'
+      target:
+        device_id: f65067b96a0d5e2e0bd44da878de4b82
+    - service: switch.turn_on
+      data: {}
+      target:
+        entity_id: switch.kids_blinds_user_switch
+    else:
+    - service: cover.close_cover
+      target:
+        device_id: f65067b96a0d5e2e0bd44da878de4b82
+    - delay:
+        hours: 0
+        minutes: 0
+        seconds: 37
+        milliseconds: 0
+    - service: cover.set_cover_tilt_position
+      data:
+        tilt_position: '{{ states(''sensor.blinds_tilt_determine_max'')}}'
+      target:
+        device_id: f65067b96a0d5e2e0bd44da878de4b82
+    - service: switch.turn_on
+      data: {}
+      target:
+        entity_id: switch.kids_blinds_user_switch
+tilt_blinds_kids_mid:
+  alias: Tilt blinds kids mid
+  sequence:
+  - if:
+    - condition: state
+      entity_id: cover.kids_room
+      state: closed
+    then:
+    - service: cover.set_cover_tilt_position
+      data:
+        tilt_position: '{{ states(''sensor.blinds_tilt_determine_mid'')}}'
+      target:
+        device_id: f65067b96a0d5e2e0bd44da878de4b82
+    - service: switch.turn_on
+      data: {}
+      target:
+        entity_id: switch.kids_blinds_user_switch
+    else:
+    - service: cover.close_cover
+      target:
+        device_id: f65067b96a0d5e2e0bd44da878de4b82
+    - delay:
+        hours: 0
+        minutes: 0
+        seconds: 37
+        milliseconds: 0
+    - service: cover.set_cover_tilt_position
+      data:
+        tilt_position: '{{ states(''sensor.blinds_tilt_determine_mid'')}}'
+      target:
+        device_id: f65067b96a0d5e2e0bd44da878de4b82
+    - service: switch.turn_on
+      data: {}
+      target:
+        entity_id: switch.kids_blinds_user_switch
+tilt_blinds_kids_min:
+  alias: Tilt blinds kids min
+  sequence:
+  - if:
+    - condition: state
+      entity_id: cover.kids_room
+      state: closed
+    then:
+    - service: cover.set_cover_tilt_position
+      data:
+        tilt_position: '{{ states(''sensor.blinds_tilt_determine_min'')}}'
+      target:
+        device_id: f65067b96a0d5e2e0bd44da878de4b82
+    - service: switch.turn_on
+      data: {}
+      target:
+        entity_id: switch.kids_blinds_user_switch
+    else:
+    - service: cover.close_cover
+      target:
+        device_id: f65067b96a0d5e2e0bd44da878de4b82
+    - delay:
+        hours: 0
+        minutes: 0
+        seconds: 37
+        milliseconds: 0
+    - service: cover.set_cover_tilt_position
+      data:
+        tilt_position: '{{ states(''sensor.blinds_tilt_determine_min'')}}'
+      target:
+        device_id: f65067b96a0d5e2e0bd44da878de4b82
+    - service: switch.turn_on
+      data: {}
+      target:
+        entity_id: switch.kids_blinds_user_switch
+open_blinds_kids:
+  alias: Open blinds kids
+  sequence:
+  - service: cover.open_cover
+    target:
+      device_id: f65067b96a0d5e2e0bd44da878de4b82
+  - service: switch.turn_on
+    data: {}
+    target:
+      entity_id: switch.kids_blinds_user_switch
+close_blinds_kids:
+  alias: Close blinds kids
+  sequence:
+  - service: cover.close_cover
+    target:
+      device_id: f65067b96a0d5e2e0bd44da878de4b82
+  - service: switch.turn_on
+    data: {}
+    target:
+      entity_id: switch.kids_blinds_user_switch
+media_play_evropa_2:
+  alias: 'Media: Play Evropa 2'
+  sequence:
+  - service: media_player.play_media
+    target:
+      entity_id: media_player.tablet
+    data:
+      media_content_id: media-source://radio_browser/229a2972-2d42-4f57-94a9-da84211bd575
+      media_content_type: music
+  mode: single
+  icon: mdi:play
+media_play_country_radio:
+  alias: 'Media: Play Country Radio'
+  sequence:
+  - service: media_player.play_media
+    target:
+      entity_id: media_player.tablet
+    data:
+      media_content_id: media-source://radio_browser/960ece9a-0601-11e8-ae97-52543be04c81
+      media_content_type: music
+  mode: single
+  icon: mdi:play
+media_play_impuls_radio:
+  alias: 'Media: Play Impuls Radio'
+  sequence:
+  - service: media_player.play_media
+    target:
+      entity_id: media_player.tablet
+    data:
+      media_content_id: media-source://radio_browser/c45e34f4-d927-11e9-a861-52543be04c81
+      media_content_type: music
+  mode: single
+  icon: mdi:play
+media_play_rock_radio:
+  alias: 'Media: Play Rock Radio'
+  sequence:
+  - service: media_player.play_media
+    target:
+      entity_id: media_player.tablet
+    data:
+      media_content_id: media-source://radio_browser/c15295f4-561f-47a5-8c4f-9bdb40210582
+      media_content_type: music
+  mode: single
+  icon: mdi:play
+media_play_pigy_cz_pohadky:
+  alias: 'Media: Play Pigy.cz Pohádky'
+  sequence:
+  - service: media_player.play_media
+    data:
+      media_content_id: media-source://radio_browser/3fda342d-d929-11e9-a861-52543be04c81
+      media_content_type: music
+    target:
+      entity_id: media_player.kids
+  mode: single
+  icon: mdi:play
+media_play_pigy_cz_pisnicky:
+  alias: 'Media: Play Pigy.cz Písničky'
+  sequence:
+  - service: media_player.play_media
+    data:
+      media_content_id: media-source://radio_browser/9eb9bcda-d929-11e9-a861-52543be04c81
+      media_content_type: music
+    target:
+      entity_id: media_player.kids
+  mode: single
+  icon: mdi:play
+media_play_pigy_cz_disko:
+  alias: 'Media: Play Pigy.cz Disko'
+  sequence:
+  - service: media_player.play_media
+    data:
+      media_content_id: media-source://radio_browser/72e15a70-d929-11e9-a861-52543be04c81
+      media_content_type: music
+    target:
+      entity_id: media_player.kids
+  mode: single
+  icon: mdi:play
+media_play_cro_radiozurnal:
+  alias: 'Media: Play ČRo RAdiožurnál'
+  sequence:
+  - service: media_player.play_media
+    target:
+      entity_id: media_player.tablet
+    data:
+      media_content_id: media-source://radio_browser/c45e34f4-d927-11e9-a861-52543be04c81
+      media_content_type: music
+  mode: single
+  icon: mdi:play
+media_play_osmdesatka_radio:
+  alias: 'Media: Play Osmdesatka Radio'
+  sequence:
+  - service: media_player.play_media
+    target:
+      entity_id: media_player.tablet
+    data:
+      media_content_id: media-source://radio_browser/961cf04b-0601-11e8-ae97-52543be04c81
+      media_content_type: music
+  mode: single
+  icon: mdi:play
+media_play_frekvence_1:
+  alias: 'Media: Play Frekvence 1'
+  sequence:
+  - service: media_player.play_media
+    target:
+      entity_id: media_player.tablet
+    data:
+      media_content_id: media-source://radio_browser/927edba2-7db7-40f2-96bd-8a9316de90f4
+      media_content_type: music
+  mode: single
+  icon: mdi:play
+text_to_speech_on_sonos:
+  alias: Text-to-Speech on Sonos
+  use_blueprint:
+    path: Talvish/sonos_say.yaml
+    input:
+      tts_service_name: chatgpt
+      tts_language: cz
+  description: ''
