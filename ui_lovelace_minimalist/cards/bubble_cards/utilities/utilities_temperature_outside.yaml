@@ -1,0 +1,77 @@
+view_layout:
+  grid-area: temperature_outside
+  place-self: left stretch end
+type: entities
+show_header_toggle: false
+card_mod:
+  style: |
+    ha-card {
+        background-color: rgba(var(--color-background-black),0.3)
+      }
+entities:
+  - type: custom:apexcharts-card
+    card_mod:
+      style: |
+        ha-card {
+            background-color: transparent;
+            box-shadow: none !important; 
+          }
+    layout: minimal
+    experimental:
+      color_threshold: true
+      brush: false
+    graph_span: 12h
+    update_interval: 1h
+    header:
+      show: true
+      show_states: true
+      colorize_states: false
+      floating: true
+    series:
+      - entity: sensor.e3_vitocal_outside_temperature
+        name: Teplota venku
+        unit: °C
+        type: area
+        curve: smooth
+        stroke_width: 0.1
+        color: grey
+        opacity: 0.8
+        show:
+          in_brush: true
+          legend_value: true
+          name_in_header: true
+        group_by:
+          duration: 30min
+          func: max
+        color_threshold:
+          - value: -5
+            color: blue
+          - value: 0
+            color: rgb(146, 212, 106)
+          - value: 15
+            color: rgb(252, 214, 124)
+          - value: 30
+            color: rgb(255, 130, 130)
+    yaxis:
+      - min: auto
+        max: auto
+        show: false
+        opposite: true
+        decimals: 1
+        apex_config:
+          tickAmount: 2
+    apex_config:
+      chart:
+        type: area
+        height: 185
+      fill:
+        type: gradient
+        gradient:
+          shadeIntensity: 0.1
+          opacityFrom: 0.25
+          opacityTo: 0.8
+          inverseColors: false
+          stops:
+            - 0
+            - 50
+            - 100

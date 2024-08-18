@@ -1,0 +1,34 @@
+view_layout:
+  grid-area: "living_room"     
+  place-self: left end stretch
+type: 'custom:button-card'
+template:
+  - card_room
+  - yellow_on
+  - grey_no_state       
+name: Obývací pokoj
+entity: light.living_room
+icon: mdi:sofa
+variables:
+  label_use_temperature: false
+  label_use_brightness: true
+  tap_action:
+    action: toggle
+  entity_1:
+    entity_id: light.living_room
+    templates:
+      - yellow_on
+    tap_action:
+      action: toggle
+  entity_2:
+    entity_id: media_player.tv2
+    templates:
+      - blue_on
+    tap_action:
+      action: call-service
+      service: script.living_room_tv
+      data: {}
+label: >
+    [[[
+      return "🌡️" + Math.round((states['sensor.livingroom_temperature_1'].state) * 100) / 100 + " °C" + "💧" + states['sensor.livingroom_humidity_1'].state + " %"
+    ]]]

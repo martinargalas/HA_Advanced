@@ -1,0 +1,99 @@
+view_layout:
+  grid-area: "bedroom"
+  place-self: left end stretch
+type: "custom:button-card"
+template:
+  - card_room
+  - yellow_on
+  - grey_no_state
+name: Ložnice
+entity:
+icon: mdi:bed-king
+label: >
+  [[[
+    return "🌡️" + Math.round((states["sensor.bedroom_temperature_1"].state) * 100) / 100  + " °C" + "💧" + states['sensor.bedroom_humidity_1'].state + " %"
+  ]]]
+variables:
+  label_use_temperature: false
+  label_use_brightness: true
+  entity_1:
+    entity_id: media_player.bedroom
+    templates:
+      - yellow_on
+    tap_action:
+      action: toggle
+  entity_2:
+    entity_id: cover.balcony
+    templates:
+      - blue_closed
+    tap_action:
+      action: call-service
+      service: honeycomb   
+      entity: cover.balcony
+      service_data:
+        entity_id: entity
+        animation_speed: 25
+        buttons:
+          - icon: mdi:numeric-1-box
+            active: >
+              [[[
+                return (states['cover.balcony'].attributes.current_tilt_position <= states['sensor.blinds_tilt_determine_min_high'].state 
+                && states['cover.balcony'].attributes.current_tilt_position >= states['sensor.blinds_tilt_determine_min_low'].state) 
+                && states['cover.balcony'].state == "closed"
+                ? "True" : "1" == "1"
+              ]]]
+            tap_action:
+              action: call-service
+              service: script.tilt_blinds_bedroom_min
+          - icon: mdi:numeric-2-box
+            active: >
+              [[[
+                return (states['cover.balcony'].attributes.current_tilt_position <= states['sensor.blinds_tilt_determine_mid_high'].state 
+                && states['cover.balcony'].attributes.current_tilt_position >= states['sensor.blinds_tilt_determine_mid_low'].state) 
+                && states['cover.balcony'].state == "closed"
+                ? "True" : "1" == "1"
+              ]]]
+            tap_action:
+              action: call-service
+              service: script.tilt_blinds_bedroom_mid
+          - icon: mdi:numeric-3-box
+            active: >
+              [[[
+                return (states['cover.balcony'].attributes.current_tilt_position <= states['sensor.blinds_tilt_determine_max_high'].state 
+                && states['cover.balcony'].attributes.current_tilt_position >= states['sensor.blinds_tilt_determine_max_low'].state)
+                && states['cover.balcony'].state == "closed" 
+                ? "True" : "1" == "1"
+              ]]]
+            tap_action:
+              action: call-service
+              service: script.tilt_blinds_bedroom_max
+          - icon: mdi:window-shutter-open
+            active: >
+              [[[
+                return (states['cover.balcony'].state == "open") ? "True" : "1" == "1"
+              ]]]
+            tap_action:
+              action: call-service
+              service: script.open_blinds_bedroom
+          - icon: mdi:window-shutter
+            active: >
+              [[[
+                return (states['cover.balcony'].attributes.current_tilt_position == 0 && states['cover.balcony'].state == "closed") ? "True" : "1" == "1"
+              ]]]
+            tap_action:
+              action: call-service
+              service: script.close_blinds_bedroom
+          - show: false
+card_mod:
+  style: |
+    ha-card {
+      {% if states('cover.balcony')|title == 'Closing' %}
+        animation: blink 1s linear infinite;
+      {%endif%}
+      {% if states('cover.balcony')|title == 'Opening' %}
+        animation: blink 1s linear infinite;
+      {%endif%}
+    }
+      @keyframes blink {
+        50% {opacity: 0;}
+    }

@@ -1,0 +1,65 @@
+view_layout:
+  grid-area: "heat_pump_cons_chart"
+type: conditional
+conditions:
+  - condition: state
+    entity: switch.energy_yearly_view
+    state: "on"
+card:
+  type: custom:apexcharts-card
+  card_mod:
+    style: |
+      ha-card {
+          background-color: rgba(var(--color-background-black),0.3) !important;
+        }
+  experimental:
+    brush: false
+  graph_span: 1year
+  stacked: false
+  update_interval: 1h
+  header:
+    show: true
+    show_states: false
+    colorize_states: true
+  span:
+    start: year
+  series:
+    - entity: sensor.e3_vitocal_energy_consumption_of_hot_water_gas_heating_current_year
+      name: Spotřeba
+      unit: kW
+      type: column
+      color: rgb(255,167,0)
+      statistics:
+        type: state
+        period: month
+        align: end
+      stroke_width: 1
+      show:
+        legend_value: false
+        name_in_header: false
+        in_brush: true
+      group_by:
+        duration: 1month
+        func: diff
+        start_with_last: true
+  apex_config:
+    chart:
+      type: area
+      height: 180
+    fill:
+      type: gradient
+      gradient:
+        shadeIntensity: 0.1
+        opacityFrom: 0.4
+        opacityTo: 0.7
+        inverseColors: true
+        stops:
+          - 0
+          - 50
+          - 100
+  yaxis:
+    - min: auto
+      max: auto
+      decimals: 1
+      apex_config:
+        tickAmount: 4

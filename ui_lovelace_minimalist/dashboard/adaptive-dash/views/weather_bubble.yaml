@@ -1,0 +1,361 @@
+type: custom:layout-card
+layout_type: custom:grid-layout
+
+layout:
+  grid-template-columns: "1fr 0.05fr 0.4fr 0.7fr 0.7fr"
+  grid-template-rows: "min-content"
+  grid-template-areas: >
+    "precipation_title . radar_title radar_title radar_title"
+    "precipation . radar radar radar"
+    "precipation . radar radar radar"
+    "precipation . air_quality_title air_quality_title air_quality_title"
+    "precipation . air_quality air_quality air_quality"
+    ". . air_quality air_quality air_quality"
+
+cards:
+  # PRECIPATION TITLE
+  - !include /config/ui_lovelace_minimalist/cards/bubble_cards/weather/weather_precipation_title.yaml
+
+  # RADAR TITLE
+  - !include /config/ui_lovelace_minimalist/cards/bubble_cards/weather/weather_radar_title.yaml
+
+  # AIR QUALITY TITLE
+  - !include /config/ui_lovelace_minimalist/cards/bubble_cards/weather/weather_precipation_title.yaml
+
+  # PRECIPATION
+  - !include /config/ui_lovelace_minimalist/cards/bubble_cards/weather/weather_precipation.yaml
+
+  # RADAR
+  - view_layout:
+      grid-area: "radar"
+    type: iframe
+    url: >-
+      https://embed.windy.com/embed2.html?lat=49.522&lon=18.430&detailLat=49.446&detailLon=17.899&width=650&height=450&zoom=8&level=surface&overlay=radar&product=radar&menu=&message=&marker=&calendar=24&pressure=&type=map&location=coordinates&detail=&metricWind=km%2Fh&metricTemp=%C2%B0C&radarRange=-1
+    aspect_ratio: 53%
+    card_mod:
+      style: |
+        ha-card {
+            background-color: rgba(var(--color-black),0.0)
+          }
+
+  # AIR QUALITY
+  - view_layout:
+      grid-area: air_quality
+    type: grid
+
+    columns: 2
+    square: false
+    cards:
+      - type: custom:mushroom-template-card
+        entity: sensor.air_quality_index_air_quality_index
+        icon: mdi:leaf
+        badge_icon: ""
+        icon_color: |-
+          {% set aqi = states('sensor.air_quality_index_air_quality_index') |
+          float %}
+
+          {% if aqi <= 50 %} green
+
+          {% elif 51 >= aqi <= 100 %} yellow
+
+          {% elif 101 >= aqi <= 150 %} orange
+
+          {% elif 151 >= aqi <= 200 %} pink
+
+          {% elif 201 >= aqi <= 300 %} purple
+
+          {% elif aqi > 300 %} red
+
+          {% endif %}
+        fill_container: false
+        tap_action:
+          action: none
+        hold_action:
+          action: none
+        double_tap_action:
+          action: none
+        primary: Index kvality ovzduší
+        secondary: >-
+          {% set aqi = states('sensor.air_quality_index_air_quality_index') | float %}
+
+          {% if aqi <= 49 %} {{ states('sensor.air_quality_index_air_quality_index')}} -
+          Dobrý
+
+          {% elif 50 >= aqi <= 99 %} {{
+          states('sensor.air_quality_index_air_quality_index')}} - Průměrný
+
+          {% elif 100 >= aqi <= 149 %} {{
+          states('sensor.air_quality_index_air_quality_index')}} - Nevhodný pro citlivé jedince
+
+          {% elif 150 >= aqi <= 199 %} {{
+          states('sensor.air_quality_index_air_quality_index')}} - Špatný
+
+          {% elif 200 >= aqi <= 299 %} {{
+          states('sensor.air_quality_index_air_quality_index')}} - Škodlivý 
+
+          {% elif aqi > 300 %} {{ states('sensor.air_quality_index_air_quality_index')}}
+          - Nebezpečný
+
+          {% endif %}
+        card_mod:
+          style: |
+            ha-card {
+              background-color: rgba(var(--color-background-black),0.3);
+              width: 95%;
+              right: -10px
+            }
+
+      - type: custom:mushroom-template-card
+        entity: sensor.air_quality_index_pm10
+        icon: mdi:gamepad-circle-outline
+        badge_icon: ""
+        icon_color: |-
+          {% set aqi = states('sensor.air_quality_index_pm10') | float %}
+          {% if aqi <= 9 %} teal
+          {% elif 10 >= aqi <= 19 %} green
+          {% elif 20 >= aqi <= 29 %} yellow
+          {% elif 30 >= aqi <= 39 %} amber
+          {% elif 40 >= aqi <= 49 %} orange
+          {% elif 50 >= aqi <= 74 %} red
+          {% elif 75 >= aqi <= 99 %} orange
+          {% elif 100 >= aqi <= 149 %} brown
+          {% elif aqi > 150 %} purple
+          {% endif %}
+        fill_container: false
+        tap_action:
+          action: none
+        hold_action:
+          action: none
+        double_tap_action:
+          action: none
+        primary: Prachové částice pm10
+        secondary: >-
+          {% set aqi = states('sensor.air_quality_index_pm10') | float %}
+
+          {% if aqi <= 9 %} {{ states('sensor.air_quality_index_pm10')}} - Výborný
+
+          {% elif 10 >= aqi <= 19 %} {{ states('sensor.air_quality_index_pm10')}} -
+          Dobrý
+
+          {% elif 20 >= aqi <= 29 %} {{ states('sensor.air_quality_index_pm10')}} -
+          Průměrný
+
+          {% elif 30 >= aqi <= 39 %} {{ states('sensor.air_quality_index_pm10')}} -
+          Nevhodný pro citlivé jedince  
+
+          {% elif 40 >= aqi <= 49 %} {{ states('sensor.air_quality_index_pm10')}} -
+          Nezdravý  
+
+          {% elif 50 >= aqi <= 74 %} {{ states('sensor.air_quality_index_pm10')}} -
+          Špatný  
+
+          {% elif 75 >= aqi <= 99 %} {{ states('sensor.air_quality_index_pm10')}} -
+          Velmi špatný 
+
+          {% elif 100 >= aqi <= 149 %} {{ states('sensor.air_quality_index_pm10')}} -
+          Nebezpečný  
+
+          {% elif aqi > 125 %} {{ states('sensor.air_quality_index_pm10')}} - Velmi
+          nebezpečný
+
+          {% endif %}
+        card_mod:
+          style: |
+            ha-card {
+              background-color: rgba(var(--color-background-black),0.3);
+              width: 95%;
+            }
+
+      - type: custom:mushroom-template-card
+        entity: sensor.air_quality_index_pm2_5
+        icon: mdi:gamepad-circle-outline
+        badge_icon: ""
+        icon_color: |-
+          {% set aqi = states('sensor.air_quality_index_pm2_5') | float %}
+          {% if aqi <= 11 %} green
+          {% elif 12 >= aqi <= 34 %} yellow
+          {% elif 35 >= aqi <= 54 %} orange
+          {% elif 55 >= aqi <= 149 %} red
+          {% elif 150 >= aqi <= 249 %} purple
+          {% elif 250 >= aqi <= 349 %} brown
+          {% elif 350 >= aqi <= 500 %} black
+          {% endif %}
+        fill_container: false
+        tap_action:
+          action: none
+        hold_action:
+          action: none
+        double_tap_action:
+          action: none
+        primary: Prachové částice pm2.5
+        secondary: >-
+          {% set aqi = states('sensor.air_quality_index_pm2_5') | float %}
+
+          {% if aqi <= 11 %} {{ states('sensor.air_quality_index_pm2_5')}} - Výborný
+
+          {% elif 12 >= aqi <= 34 %} {{ states('sensor.air_quality_index_pm2_5')}} -
+          Dobrý
+
+          {% elif 35 >= aqi <= 54 %} {{ states('sensor.air_quality_index_pm2_5')}} -
+          Průměrný
+
+          {% elif 55 >= aqi <= 149 %} {{ states('sensor.air_quality_index_pm2_5')}} -
+          Nezdravý pro citlivé jedince  
+
+          {% elif 150 >= aqi <= 249 %} {{ states('sensor.air_quality_index_pm2_5')}} -
+          Nezdravý  
+
+          {% elif 250 >= aqi <= 349 %} {{ states('sensor.air_quality_index_pm2_5')}} -
+          Špatný  
+
+          {% elif 350 >= aqi <= 500 %} {{ states('sensor.air_quality_index_pm2_5')}} -
+          Nebezpečný 
+
+          {% endif %}
+        card_mod:
+          style: |
+            ha-card {
+              background-color: rgba(var(--color-background-black),0.3);
+              width: 95%;
+              right: -10px
+            }
+
+      - type: custom:mushroom-template-card
+        entity: sensor.air_quality_index_sulphur_dioxide
+        icon: mdi:gas-cylinder
+        badge_icon: ""
+        icon_color: |-
+          {% set aqi = states('sensor.air_quality_index_sulphur_dioxide') | float %}
+          {% if aqi <= 49 %} light-green
+          {% elif 50 >= aqi <= 74 %} yellow
+          {% elif 75 >= aqi <= 124 %} orange
+          {% elif aqi > 125 %} red
+          {% endif %}
+        fill_container: false
+        tap_action:
+          action: none
+        hold_action:
+          action: none
+        double_tap_action:
+          action: none
+        primary: Oxid siřičitý
+        secondary: >-
+          {% set aqi = states('sensor.air_quality_index_sulphur_dioxide') | float %}
+
+          {% if aqi <= 49 %} {{ states('sensor.air_quality_index_sulphur_dioxide')}} -
+          Dobrý
+
+          {% elif 50 >= aqi <= 74 %} {{
+          states('sensor.air_quality_index_sulphur_dioxide')}} - Průměrný
+
+          {% elif 75 >= aqi <= 124 %} {{
+          states('sensor.air_quality_index_sulphur_dioxide')}} - Špatný
+
+          {% elif aqi > 125 %} {{ states('sensor.air_quality_index_sulphur_dioxide')}} -
+          Nebezpečný
+
+          {% endif %}
+        card_mod:
+          style: |
+            ha-card {
+              background-color: rgba(var(--color-background-black),0.3);
+              width: 95%;
+            }
+
+      - type: custom:mushroom-template-card
+        entity: sensor.air_quality_index_nitrogen_dioxide
+        icon: mdi:gas-cylinder
+        badge_icon: ""
+        icon_color: |-
+          {% set aqi = states('sensor.air_quality_index_nitrogen_dioxide') | float %}
+          {% if aqi <= 12 %} light-green
+          {% elif 13 >= aqi <= 25 %} green
+          {% elif 26 >= aqi <= 31 %} yellow
+          {% elif 32 >= aqi <= 39 %} orange
+          {% elif aqi > 40 %} red
+          {% endif %}
+        fill_container: false
+        tap_action:
+          action: none
+        hold_action:
+          action: none
+        double_tap_action:
+          action: none
+        primary: Oxid dusičitý
+        secondary: >-
+          {% set aqi = states('sensor.air_quality_index_nitrogen_dioxide') | float %}
+
+          {% if aqi <= 12 %} {{ states('sensor.air_quality_index_nitrogen_dioxide')}} -
+          Dobrý
+
+          {% elif 13 >= aqi <= 25 %} {{
+          states('sensor.air_quality_index_nitrogen_dioxide')}} - Průměrný
+
+          {% elif 26 >= aqi <= 31 %} {{
+          states('sensor.air_quality_index_nitrogen_dioxide')}} - Nezdravý
+
+          {% elif 32 >= aqi <= 39 %} {{
+          states('sensor.air_quality_index_nitrogen_dioxide')}} - Špatný
+
+          {% elif aqi > 40 %} {{ states('sensor.air_quality_index_nitrogen_dioxide')}} -
+          Nebezpečný
+
+          {% endif %}
+        card_mod:
+          style: |
+            ha-card {
+              background-color: rgba(var(--color-background-black),0.3);
+              width: 95%;
+              right: -10px
+            }
+
+      - type: custom:mushroom-template-card
+        entity: sensor.air_quality_index_ozone
+        icon: mdi:gas-cylinder
+        badge_icon: ""
+        icon_color: |-
+          {% set aqi = states('sensor.air_quality_index_ozone') | float %}
+          {% if aqi <= 29%} light-green
+          {% elif 30 >= aqi <= 59 %} yellow
+          {% elif 60 >= aqi <= 79 %} orange
+          {% elif 80 >= aqi <= 119 %} red
+          {% elif 120 >= aqi <= 149 %} purple
+          {% elif aqi > 150 %} brown
+          {% endif %}
+        fill_container: false
+        tap_action:
+          action: none
+        hold_action:
+          action: none
+        double_tap_action:
+          action: none
+        primary: Ozón
+        secondary: >-
+          {% set aqi = states('sensor.air_quality_index_ozone') | float %}
+
+          {% if aqi <= 29 %} {{ states('sensor.air_quality_index_ozone')}} - Dobrý
+
+          {% elif 30 >= aqi <= 79 %} {{ states('sensor.air_quality_index_ozone')}} - Průměrný
+
+          {% elif 80 >= aqi <= 119 %} {{ states('sensor.air_quality_index_ozone')}} - Špatný
+
+          {% elif 120 >= aqi <= 149 %} {{ states('sensor.air_quality_index_ozone')}} - Škodlivý  
+
+          {% elif aqi > 125 %} {{ states('sensor.air_quality_index_ozone')}} - Nebezpečný
+
+          {% endif %}
+        card_mod:
+          style: |
+            ha-card {
+              background-color: rgba(var(--color-background-black),0.3);
+              width: 95%;
+            }
+
+      - type: custom:button-card
+        styles:
+          card:
+            - height: 237px
+            - width: 630px
+            - border: none
+            - background: rgba(var(--color-grey),0.1)
+            - top: -233px

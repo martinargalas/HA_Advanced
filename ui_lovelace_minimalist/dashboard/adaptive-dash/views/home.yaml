@@ -1,0 +1,360 @@
+title: "Home"
+path: "home"
+icon: "mdi:home"
+
+type: "custom:grid-layout"
+layout:
+  grid-template-rows: "min-content"
+  grid-template-columns: "0.9fr 0.9fr 0.8fr 0.1fr 1fr 1fr 1fr 1fr 1fr 1fr"
+  grid-template-areas: >
+    "welcome welcome . . weather weather . . person1 person2"
+    "welcome welcome . . weather weather . . person1 person2"
+    "calendar calendar calendar . living_room living_room office office wc wc"
+    "calendar calendar calendar . living_room living_room office office wc wc"
+    "calendar calendar calendar . kitchen kitchen kids kids laundry laundry"
+    "calendar calendar calendar . kitchen kitchen kids kids laundry laundry"
+    "player player player . hallway hallway bedroom bedroom bathroom bathroom"
+    "player player player . hallway hallway bedroom bedroom bathroom bathroom"
+    "player player player . . . . . . ."
+    "voiceOverlay voiceOverlay voiceOverlay voiceOverlay voiceOverlay voiceOverlay voiceOverlay voiceOverlay voiceOverlay voiceOverlay "
+
+cards:
+  #BUBBLE CARD
+  - !include /config/ui_lovelace_minimalist/cards/bubble_cards/bubble_main.yaml
+
+  - type: vertical-stack
+    cards:
+      - type: custom:bubble-card
+        card_type: pop-up
+        hash: "#heating"
+        margin_top_desktop: -7%
+        width_desktop: 1280px
+        bg_blur: 30
+        bg_color: rgba(var(--color-background-black),1)
+        shadow_opacity: 10
+        is_sidebar_hidden: true
+        bg_opacity: 10
+        auto_close: 60000
+        icon: mdi:radiator
+        name: "Vytápění místností"
+        styles: |
+          ha-card > div > div > div { 
+            background: rgba(var(--color-black),0.7) !important; 
+          }
+      - !include utilities_bubble.yaml
+
+  # LIGHTING
+  - type: vertical-stack
+    cards:
+      - type: custom:bubble-card
+        card_type: pop-up
+        margin_top_desktop: -7%
+        hash: "#lights"
+        width_desktop: 1280px
+        bg_blur: 30
+        bg_color: rgba(var(--color-background-black),1)
+        shadow_opacity: 10
+        is_sidebar_hidden: true
+        bg_opacity: 10
+        auto_close: 60000
+        icon: mdi:lightbulb-group
+        name: "Osvětlení"
+        styles: |
+          ha-card > div > div > div { 
+            background: rgba(var(--color-black),0.7) !important; 
+          }
+        hide_backdrop: true
+      - !include lights_bubble.yaml
+
+  # BLINDS
+  - type: vertical-stack
+    cards:
+      - type: custom:bubble-card
+        card_type: pop-up
+        hash: "#blinds"
+        margin_top_desktop: -7%
+        width_desktop: 540px
+        bg_color: rgba(var(--color-background-black),1)
+        bg_blur: 30
+        shadow_opacity: 10
+        is_sidebar_hidden: true
+        bg_opacity: 10
+        auto_close: 60000
+        icon: mdi:blinds-horizontal
+        name: "Ovládání žaluzií"
+        styles: |
+          ha-card > div > div > div { 
+            background: rgba(var(--color-black),0.7) !important; 
+          }
+      - !include /config/ui_lovelace_minimalist/cards/bubble_cards/blinds/blinds.yaml
+
+  # CLEANING
+  - type: vertical-stack
+    cards:
+      - type: custom:bubble-card
+        card_type: pop-up
+        hash: "#cleaning"
+        margin_top_desktop: -7%
+        width_desktop: 540px
+        bg_color: rgba(var(--color-background-black),1)
+        bg_blur: 30
+        shadow_opacity: 10
+        is_sidebar_hidden: true
+        bg_opacity: 10
+        auto_close: 60000
+        icon: mdi:broom
+        name: "Úklid"
+        styles: |
+          ha-card > div > div > div { 
+            background: rgba(var(--color-black),0.7) !important; 
+          }
+      - !include /config/ui_lovelace_minimalist/cards/bubble_cards/cleaning/cleaning.yaml
+
+  # MEDIA
+  - type: vertical-stack
+    cards:
+      - type: custom:bubble-card
+        card_type: pop-up
+        hash: "#media"
+        margin_top_desktop: -7%
+        width_desktop: 1280px
+        bg_color: rgba(var(--color-background-black),1)
+        bg_blur: 30
+        shadow_opacity: 10
+        is_sidebar_hidden: true
+        bg_opacity: 10
+        auto_close: 1200000
+        icon: mdi:multimedia
+        name: "Média"
+        styles: |
+          ha-card > div > div > div { 
+            background: rgba(var(--color-black),0.7) !important; 
+          }
+      - !include media_bubble.yaml
+
+  # WEATHER
+  - type: vertical-stack
+    cards:
+      - type: custom:bubble-card
+        card_type: pop-up
+        hash: "#weather"
+        margin_top_desktop: -7%
+        width_desktop: 1080px
+        bg_color: rgba(var(--color-background-black),1)
+        bg_blur: 30
+        shadow_opacity: 10
+        is_sidebar_hidden: true
+        bg_opacity: 10
+        auto_close: 60000
+        icon: mdi:weather-partly-cloudy
+        name: "Počasí"
+        styles: |
+          ha-card > div > div > div { 
+            background: rgba(var(--color-black),0.7) !important; 
+          }
+      - !include weather_bubble.yaml
+
+  # ENERGY
+  - type: vertical-stack
+    cards:
+      - type: custom:bubble-card
+        card_type: pop-up
+        hash: "#energy"
+        margin_top_desktop: -7%
+        width_desktop: 1280px
+        bg_color: rgba(var(--color-background-black),1)
+        bg_blur: 30
+        shadow_opacity: 10
+        is_sidebar_hidden: true
+        bg_opacity: 10
+        auto_close: 60000
+        icon: mdi:solar-power-variant
+        name: "Energie"
+        styles: |
+          ha-card > div > div > div { 
+            background: rgba(var(--color-black),0.7) !important; 
+          }
+      - !include energy_bubble.yaml
+
+  # SECURITY
+  - type: vertical-stack
+    cards:
+      - type: custom:bubble-card
+        card_type: pop-up
+        hash: "#security"
+        margin_top_desktop: -7%
+        width_desktop: 1280px
+        bg_color: rgba(var(--color-background-black),1)
+        bg_blur: 30
+        shadow_opacity: 10
+        is_sidebar_hidden: true
+        bg_opacity: 10
+        auto_close: 60000
+        icon: mdi:cctv
+        name: "Zabezpečení"
+        styles: |
+          ha-card > div > div > div { 
+            background: rgba(var(--color-black),0.7) !important; 
+          }
+        
+      - !include security_bubble.yaml
+
+  # SECURITY FRONT
+  - type: vertical-stack
+    cards:
+      - type: custom:bubble-card
+        card_type: pop-up
+        hash: "#securityfront"
+        margin_top_desktop: -7%
+        width_desktop: 1280px
+        bg_color: rgba(var(--color-background-black),1)
+        bg_blur: 30
+        shadow_opacity: 10
+        is_sidebar_hidden: true
+        bg_opacity: 10
+        auto_close: 40000
+        icon: mdi:cctv
+        trigger_entity: input_boolean.bubble_stream_front
+        trigger_state: 'on'
+        trigger_close: 'off'
+        name: "Přední kamera"
+        styles: |
+          ha-card > div > div > div { 
+            background: rgba(var(--color-black),0.7) !important; 
+          }
+      - !include securityFront_bubble.yaml
+
+  # SECURITY GARDEN
+  - type: vertical-stack
+    cards:
+      - type: custom:bubble-card
+        card_type: pop-up
+        hash: "#securitygarden"
+        margin_top_desktop: -7%
+        width_desktop: 1280px
+        bg_color: rgba(var(--color-background-black),1)
+        bg_blur: 30
+        shadow_opacity: 10
+        is_sidebar_hidden: true
+        bg_opacity: 10
+        auto_close: 40000 
+        icon: mdi:cctv
+        trigger_entity: input_boolean.bubble_stream_garden
+        trigger_state: 'on'
+        trigger_close: 'off'
+        name: "Kamera zahrada"
+        styles: |
+          ha-card > div > div > div { 
+            background: rgba(var(--color-black),0.7) !important; 
+          }
+      - !include securityGarden_bubble.yaml
+
+  # WELCOME
+  - !include /config/ui_lovelace_minimalist/cards/welcome.yaml
+
+  # PLAYER
+  - !include /config/ui_lovelace_minimalist/cards/player.yaml
+
+  # CALENDAR
+  - !include /config/ui_lovelace_minimalist/cards/calendar.yaml
+
+  # PERSON 1
+  - !include /config/ui_lovelace_minimalist/cards/person1.yaml
+
+  # PERSON 2
+  - !include /config/ui_lovelace_minimalist/cards/person2.yaml
+
+  # WEATHER
+  - view_layout:
+      grid-area: "weather"
+      place-self: left stretch end
+    type: custom:weather-card
+    entity: weather.accuweatherforecast
+    current: true
+    details: false
+    forecast: false
+    number_of_forecasts: 0
+    hourly_forecast: false
+    card_mod:
+      style: |
+        ha-card {
+            background-color: rgba(var(--color-black),0.0)
+            max-height: 80px; important;
+            max-width: 110%; important;
+            box-shadow: none !important; 
+          }
+
+  # LIVING ROOM
+  - !include /config/ui_lovelace_minimalist/cards/living_room.yaml
+
+  # KITCHEN
+  - !include /config/ui_lovelace_minimalist/cards/kitchen.yaml
+
+  # OFFICE
+  - !include /config/ui_lovelace_minimalist/cards/office.yaml
+
+  # KIDS
+  - !include /config/ui_lovelace_minimalist/cards/kids.yaml
+
+  # HALLWAY
+  - !include /config/ui_lovelace_minimalist/cards/hallway.yaml
+
+  # BEDROOM
+  - !include /config/ui_lovelace_minimalist/cards/bedroom.yaml
+
+  # WC
+  - !include /config/ui_lovelace_minimalist/cards/wc.yaml
+
+  # LAUNDRY
+  - !include /config/ui_lovelace_minimalist/cards/laundry.yaml
+
+  # BATHROOM
+  - !include /config/ui_lovelace_minimalist/cards/bathroom.yaml
+
+    #OVERLAY
+  - view_layout:
+      grid-area: "voiceOverlay"
+    type: custom:mushroom-entity-card
+    entity: sensor.streamassist_kitchen_stt
+    primary_info: none
+    secondary_info: none
+    icon_type: none
+    card_mod:
+      style: |
+        ha-card {
+          content: '';
+          left: -10px !important; 
+          top: -640px !important;
+          width: 1282px !important; 
+          max-height: 1px !important; 
+          {% if is_state(config.entity, 'start') %}
+            animation-name: gradient-shadow;
+          {% endif %} !important; 
+          animation-timing-function: ease;
+          animation-duration: 3s;
+          animation-iteration-count: infinite;
+          box-shadow: none;
+          background: transparent;
+        }
+
+        @keyframes gradient-shadow {
+          0% {
+            box-shadow: 0 0 20px 5px red,0 0 80px 10px blue;
+          }
+          20% {
+            box-shadow: 0 0 20px 5px orange,0 0 80px 10px purple;
+          }
+          40% {
+            box-shadow: 0 0 20px 5px yellow,0 0 80px 10px red;
+          }
+          60% {
+            box-shadow: 0 0 20px 5px green,0 0 80px 10px yellow;
+          }
+          80% {
+            box-shadow: 0 0 20px 5px blue,0 0 80px 10px yellow;
+          }
+          100% {
+            box-shadow: 0 0 20px 5px purple,0 0 80px 10px green;
+          }
+        }
+

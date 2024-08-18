@@ -1,0 +1,13 @@
+view_layout:
+  grid-area: "security_stream_garden"
+type: custom:webrtc-camera
+url:
+  - ffmpeg:rtsp://192.168.0.215/live0#video=h264#input=rtsp/udp
+ui: false
+background: false
+poster: http://192.168.68.50:8123/local/community/spotify/camera.jpg
+style: '.header {top: unset; bottom: -150px}'
+# shortcuts:
+# - name: Refresh
+#   icon: mdi:refresh
+#   service: script.camera_garden_stream

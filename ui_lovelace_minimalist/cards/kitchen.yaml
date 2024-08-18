@@ -1,0 +1,73 @@
+view_layout:
+  grid-area: "kitchen"     
+  place-self: left end stretch
+type: custom:swipe-card
+parameters:
+  effect: 'cube'
+  speed: 500
+  slideShadows: false
+  autoplay:
+    delay: 60000
+    disableOnInteraction: false
+  cubeEffect:
+    slideShadows: false
+    shadow: false
+cards:
+  - type: 'custom:button-card'
+    template:
+      - card_room
+      - yellow_on
+      - grey_no_state      
+    name: Kuchyně
+    entity: light.kitchen
+    icon: mdi:countertop
+    tap_action:
+      action: toggle
+    variables:
+      label_use_temperature: false
+      label_use_brightness: true
+      entity_1:
+        entity_id: light.kitchen
+        templates:
+          - yellow_on
+        tap_action:
+          action: toggle
+      entity_2:
+        entity_id: media_player.hub
+        templates:
+          - blue_on
+        tap_action:
+          action: toggle
+    label: >
+        [[[
+          return "🌡️" + Math.round((states['sensor.livingroom_temperature_1'].state) * 100) / 100 + " °C" + "💧" + states['sensor.livingroom_humidity_1'].state + " %"
+        ]]]
+  - type: 'custom:button-card'
+    template:
+      - card_room
+      - yellow_on
+      - grey_no_state      
+    name: Kuchyně
+    entity: light.kitchen
+    icon: mdi:countertop
+    tap_action:
+      action: toggle
+    variables:
+      label_use_temperature: false
+      label_use_brightness: true
+      entity_1:
+        entity_id: light.kitchen
+        templates:
+          - yellow_on
+        tap_action:
+          action: toggle
+      entity_2:
+        entity_id: media_player.hub
+        templates:
+          - blue_on
+        tap_action:
+          action: toggle
+    label: >
+        [[[
+          return "🌡️" + Math.round((states['sensor.livingroom_temperature_1'].state) * 100) / 100 + " °C" + "💧" + states['sensor.livingroom_humidity_1'].state + " %"
+        ]]]

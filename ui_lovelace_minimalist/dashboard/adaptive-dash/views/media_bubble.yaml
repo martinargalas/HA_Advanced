@@ -1,0 +1,49 @@
+type: custom:layout-card
+layout_type: custom:grid-layout
+
+layout:
+  grid-template-columns: "0.5fr 0.5fr 0.5fr 0.1fr 0.5fr 0.5fr 0.5fr"
+  grid-template-rows: "min-content"
+  grid-template-areas: >
+    "media_hub media_hub media_hub . media_playlists media_playlists media_playlists"
+
+cards:
+# # MUSIC HUB title   
+#   - !include /config/ui_lovelace_minimalist/cards/bubble_cards/media/media_hub_title.yaml
+
+# MUSIC HUB    
+  - !include /config/ui_lovelace_minimalist/cards/bubble_cards/media/media_hub.yaml
+
+# MUSIC HUB    
+  - !include /config/ui_lovelace_minimalist/cards/bubble_cards/media/media_playlists.yaml
+
+# # PC TITLE      
+#   - !include /config/ui_lovelace_minimalist/cards/bubble_cards/media/pc/media_pc_title.yaml
+
+# # PC CHART    
+#   - !include /config/ui_lovelace_minimalist/cards/bubble_cards/media/pc/media_pc_chart.yaml
+
+# # PC POWER          
+#   - !include /config/ui_lovelace_minimalist/cards/bubble_cards/media/pc/media_pc_power.yaml
+
+# #PC PREVIOUS              
+#   - !include /config/ui_lovelace_minimalist/cards/bubble_cards/media/pc/media_pc_previous.yaml
+
+# # PC PLAY/PAUSE            
+#   - !include /config/ui_lovelace_minimalist/cards/bubble_cards/media/pc/media_pc_play.yaml
+
+# # PC NEXT            
+#   - !include /config/ui_lovelace_minimalist/cards/bubble_cards/media/pc/media_pc_next.yaml
+
+# # PC VOLUME DOWN            
+#   - !include /config/ui_lovelace_minimalist/cards/bubble_cards/media/pc/media_pc_volume_down.yaml
+
+# # PC VOLUME UP            
+#   - !include /config/ui_lovelace_minimalist/cards/bubble_cards/media/pc/media_pc_volume_up.yaml
+
+# "music_hub_title . pc_title pc_title pc_title pc_title pc_title"
+    # "music_hub . pc_switch pc_chart pc_chart pc_chart pc_chart"
+    # "music_hub . pc_play pc_previous pc_next pc_volume_up pc_volume_down"
+    # "music_hub . . . . . ."
+    # "music_hub . . . . . ."
+    # "music_hub . . . . . ."

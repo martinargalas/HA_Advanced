@@ -1,0 +1,32 @@
+view_layout:
+  grid-area: "onAll"
+  place-self: center right
+type: entities
+show_header_toggle: false
+card_mod:
+  style: |
+    ha-card {
+        background-color: rgba(var(--color-grey),0.1)
+      }
+entities:
+  - type: custom:mushroom-chips-card
+    chips:
+      - type: light
+        card_mod:
+          style: |
+            ha-card {
+                background-color: rgba(var(--color-background-black),0.3) !important;
+              }
+        entity: light.kitchen
+        tap_action:
+          action: call-service
+          service: light.turn_on
+          target:
+            area_id:
+              - hallway
+              - kitchen
+              - living_room
+          data: {}
+        content_info: name
+        name: Zapnout vše
+        use_light_color: false

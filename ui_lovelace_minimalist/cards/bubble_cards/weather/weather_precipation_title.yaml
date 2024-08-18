@@ -1,0 +1,6 @@
+view_layout:
+  grid-area: "precipation_title"
+type: custom:bubble-card
+card_type: separator
+name: Předpověď
+icon: mdi:weather-cloudy-clock

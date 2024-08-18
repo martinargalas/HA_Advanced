@@ -1,0 +1,121 @@
+view_layout:
+  grid-area: "flow_sankey_card"
+type: entities
+show_header_toggle: false
+card_mod:
+  style: |
+    ha-card {
+        background-color: rgba(var(--color-background-black),0.3) !important;
+        max-height: 480px !important;
+      }
+entities:
+  - type: custom:power-flow-card-plus
+    card_mod:
+      style: |
+        ha-card {
+            background-color: transparent !important;
+            box-shadow: none !important;
+            max-height: 230px !important;
+            top: -20px !important;
+          }
+    entities:
+      grid:
+        entity: sensor.active_power
+        name: Distribuční síť
+        invert_state: true
+        color_value: false
+      solar:
+        entity: sensor.pv_power
+        display_zero_state: true
+        name: Fotovoltaika
+        color_value: false
+      home:
+        entity: sensor.house_consumption
+        color_value: false
+    clickable_entities: false
+    display_zero_lines:
+      mode: show
+      transparency: 100
+      grey_color:
+        - 189
+        - 189
+        - 189
+    use_new_flow_rate_model: true
+    w_decimals: 0
+    kw_decimals: 1
+    min_flow_rate: 0.75
+    max_flow_rate: 6
+    max_expected_power: 2000
+    min_expected_power: 0.01
+    watt_threshold: 1000
+    transparency_zero_lines: 100
+  
+  - type: custom:sankey-chart
+    card_mod:
+      style: |
+        ha-card {
+            background-color: transparent !important;
+            box-shadow: none !important;
+            max-height: 235px !important;
+            top: -20px !important;
+          }
+    show_names: true
+    round: 2
+    wide: true
+    layout: horizontal
+    sections:
+      - entities:
+          - type: entity
+            color: orange
+            name: Síť
+            icon: mdi:transmission-tower
+            entity_id: sensor.grid_consumption
+            children:
+              - sensor.house_consumption
+          - entity_id: sensor.pv_power
+            color: mediumseagreen
+            name: Výroba
+            icon: mdi:solar-power-variant-outline
+            children:
+              - sensor.house_consumption
+              - sensor.power_sell
+      - entities:
+          - entity_id: sensor.house_consumption
+            name: Dům
+            color: mediumslateblue
+            icon: mdi:home-outline
+            children:
+              - sensor.house_consumption_1floor
+              - sensor.house_consumption_0floor
+              - sensor.house_consumption_rest
+              - sensor.consumption_inverter
+          - entity_id: sensor.power_sell
+            type: remaining_parent_state
+            color: green 
+            name: Přetok
+      - entities:
+          - entity_id: sensor.house_consumption_1floor
+            name: L1
+            color: steelblue 
+            children:
+              - sensor.smart_plug_office_power
+              - sensor.smart_plug_3_power          
+          - entity_id: sensor.house_consumption_0floor
+            name: L2
+            color: palevioletred
+          - entity_id: sensor.house_consumption_rest
+            name: L3
+            color: mediumorchid
+          - entity_id: sensor.consumption_inverter
+            name: Střídač
+            color: plum
+      - entities:
+          - entity_id: sensor.smart_plug_office_power
+            color: lightseagreen 
+            name: PC
+            icon: mdi:desktop-classic
+          - entity_id: sensor.smart_plug_3_power
+            color: lightseagreen
+            name: TV
+            icon: mdi:television
+          

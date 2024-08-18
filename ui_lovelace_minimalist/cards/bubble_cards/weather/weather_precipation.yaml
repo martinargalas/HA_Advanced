@@ -1,0 +1,73 @@
+view_layout:
+  grid-area: "precipation"  
+type: entities
+show_header_toggle: false
+card_mod:
+  style: |
+    ha-card {
+        background-color: rgba(var(--color-background-black),0.3)
+      }
+entities:
+- type: custom:clock-weather-card
+  entity: weather.accuweatherforecast
+  sun_entity: sun.sun
+  weather_icon_type: fill
+  animated_icon: true
+  hide_today_section: false
+  hide_forecast_section: true
+  hide_clock: true
+  hide_date: true
+  tap_action:
+    action: none
+  card_mod:
+    style: |
+      ha-card {
+          background-color: rgba(var(--color-black),0.0) !important; 
+          box-shadow: none !important; 
+        }
+- type: custom:clock-weather-card
+  entity: weather.accuweatherforecast
+  sun_entity: sun.sun
+  weather_icon_type: fill
+  animated_icon: true
+  forecast_rows: 5
+  hide_today_section: true
+  hide_forecast_section: false
+  hide_clock: true
+  hide_date: true
+  tap_action:
+    action: none
+  hourly_forecast: false
+  card_mod:
+    style: |
+      ha-card {
+          background-color: rgba(var(--color-black),0.0) !important; 
+          box-shadow: none !important; 
+        }
+- type: custom:clock-weather-card
+  entity: weather.forecast_domov
+  forecast_rows: 4
+  hide_today_section: true
+  hide_forecast_section: false
+  hourly_forecast: true
+  tap_action:
+    action: none
+  card_mod:
+    style: |
+      ha-card {
+          background-color: rgba(var(--color-black),0.0) !important; 
+          box-shadow: none !important; 
+        }
+- type: custom:weather-card
+  entity: weather.accuweatherforecast
+  current: false
+  forecast: false
+  hourly_forecast: false
+  tap_action:
+    action: none
+  card_mod:
+    style: |
+      ha-card {
+          background-color: rgba(var(--color-black),0.0) !important; 
+          box-shadow: none !important; 
+        }

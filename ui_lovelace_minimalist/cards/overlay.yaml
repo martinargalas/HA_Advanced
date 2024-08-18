@@ -1,0 +1,38 @@
+view_layout:
+  grid-area: "overlay"
+type: entities
+entities:
+  - sensor.streamassist_kitchen_stt
+card_mod:
+  style: |
+    ha-card {
+      content: '';
+      left: -30px !important; 
+      top: -55px !important;
+      width: 1280px !important; 
+      animation-name: gradient-shadow;
+      animation-timing-function: ease;
+      animation-duration: 3s;
+      animation-iteration-count: infinite;
+    }
+
+    @keyframes gradient-shadow {
+      0% {
+        box-shadow: 0 0 20px 5px red,0 0 80px 10px blue;
+      }
+      20% {
+        box-shadow: 0 0 20px 5px orange,0 0 80px 10px purple;
+      }
+      40% {
+        box-shadow: 0 0 20px 5px yellow,0 0 80px 10px red;
+      }
+      60% {
+        box-shadow: 0 0 20px 5px green,0 0 80px 10px yellow;
+      }
+      80% {
+        box-shadow: 0 0 20px 5px blue,0 0 80px 10px yellow;
+      }
+      100% {
+        box-shadow: 0 0 20px 5px purple,0 0 80px 10px green;
+      }
+    }

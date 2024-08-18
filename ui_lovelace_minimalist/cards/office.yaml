@@ -1,0 +1,102 @@
+view_layout:
+  grid-area: "office"
+  place-self: left end stretch
+type: "custom:button-card"
+template:
+  - card_room
+  - blue_on
+  - grey_off
+  - grey_no_state
+  - blue_closed
+name: Pracovna
+label: >
+  [[[
+    return "🌡️" + Math.round((states['sensor.office_temperature_1'].state) * 100) / 100 + " °C" + "💧" + states['sensor.office_humidity_1'].state + " %"
+  ]]]
+card_mod:
+  style: |
+    ha-card {
+      {% if states('cover.office')|title == 'Closing' %}
+        animation: blink 1s linear infinite;
+      {%endif%}
+      {% if states('cover.office')|title == 'Opening' %}
+        animation: blink 1s linear infinite;
+      {%endif%}
+    }
+      @keyframes blink {
+        50% {opacity: 0;}
+    }
+entity: switch.martin_pc_switch
+icon: mdi:chair-rolling
+variables:
+  label_use_temperature: false
+  label_use_brightness: true
+  entity_1:
+    entity_id: switch.martin_pc_switch
+    templates:
+      - blue_on
+    tap_action:
+      action: toggle
+  entity_2:
+    entity_id: cover.office
+    templates:
+      - blue_closed
+    tap_action:
+      action: call-service
+      service: honeycomb   
+      entity: cover.office
+      service_data:
+        entity_id: entity
+        animation_speed: 25
+        buttons:
+          - icon: mdi:numeric-1-box
+            active: >
+              [[[
+                return (states['cover.office'].attributes.current_tilt_position <= states['sensor.blinds_tilt_determine_min_high'].state 
+                && states['cover.office'].attributes.current_tilt_position >= states['sensor.blinds_tilt_determine_min_low'].state) 
+                && states['cover.office'].state == "closed"
+                ? "True" : "1" == "1"
+              ]]]
+            tap_action:
+              action: call-service
+              service: script.tilt_blinds_office_min
+          - icon: mdi:numeric-2-box
+            active: >
+              [[[
+                return (states['cover.office'].attributes.current_tilt_position <= states['sensor.blinds_tilt_determine_mid_high'].state 
+                && states['cover.office'].attributes.current_tilt_position >= states['sensor.blinds_tilt_determine_mid_low'].state) 
+                && states['cover.office'].state == "closed"
+                ? "True" : "1" == "1"
+              ]]]
+            tap_action:
+              action: call-service
+              service: script.tilt_blinds_office_mid
+          - icon: mdi:numeric-3-box
+            active: >
+              [[[
+                return (states['cover.office'].attributes.current_tilt_position <= states['sensor.blinds_tilt_determine_max_high'].state 
+                && states['cover.office'].attributes.current_tilt_position >= states['sensor.blinds_tilt_determine_max_low'].state)
+                && states['cover.office'].state == "closed" 
+                ? "True" : "1" == "1"
+              ]]]
+            tap_action:
+              action: call-service
+              service: script.tilt_blinds_office_max
+          - icon: mdi:window-shutter-open
+            active: >
+              [[[
+                return (states['cover.office'].state == "open") ? "True" : "1" == "1"
+              ]]]
+            tap_action:
+              action: call-service
+              service: script.open_blinds_office
+                  
+          - icon: mdi:window-shutter
+            active: >
+              [[[
+                return (states['cover.office'].attributes.current_tilt_position == 0 && states['cover.office'].state == "closed") ? "True" : "1" == "1"
+              ]]]
+            tap_action:
+              action: call-service
+              service: script.close_blinds_office
+          - show: false

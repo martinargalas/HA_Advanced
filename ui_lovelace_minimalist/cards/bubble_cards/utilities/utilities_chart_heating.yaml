@@ -1,0 +1,81 @@
+view_layout:
+  grid-area: chart_heating
+type: entities
+show_header_toggle: false
+card_mod:
+  style: |
+    ha-card {
+        background-color: rgba(var(--color-grey),0.1)
+      }
+entities:
+  - type: custom:apexcharts-card
+    card_mod:
+      style: |
+        ha-card {
+            background-color: rgba(var(--color-background-black),0.3) !important;
+          }
+    layout: minimal
+    graph_span: 12h
+    update_interval: 10min
+    header:
+      show: true
+      show_states: false
+      colorize_states: false
+      floating: true
+    series:
+      - entity: sensor.e3_vitocal_supply_temperature
+        name: Teplota soustavy
+        unit: °C
+        type: area
+        curve: straight
+        color: >-
+          {%if states('sun.sun')|title == 'Above_horizon' %}
+            rgb(128, 201, 148)
+          {%endif%}
+          {% if states('sun.sun')|title == 'Below_horizon' %}
+            rgb(252, 214, 124)
+          {%endif%}
+        stroke_width: 1.5
+        fill_raw: last
+        show:
+          legend_value: true
+          name_in_header: false
+        group_by:
+          duration: 30min
+          func: raw
+      - entity: sensor.heating_on
+        name: Zapnutí TČ
+        unit: °C
+        type: area
+        curve: straight
+        stroke_width: 2.5
+        color: rgb(255, 130, 130)
+        show:
+          legend_value: false
+          name_in_header: false
+        group_by:
+          duration: 30min
+          func: raw
+    yaxis:
+      - min: auto
+        max: auto
+        decimals: 0
+        show: false
+        opposite: true
+        apex_config:
+          tickAmount: 4
+    apex_config:
+      chart:
+        type: area
+        height: 190
+      fill:
+        type: gradient
+        gradient:
+          shadeIntensity: 0.01
+          opacityFrom: 0.25
+          opacityTo: 0.4
+          inverseColors: true
+          stops:
+            - 0
+            - 50
+            - 100

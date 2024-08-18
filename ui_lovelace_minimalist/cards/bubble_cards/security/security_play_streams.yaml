@@ -1,0 +1,49 @@
+view_layout:
+  grid-area: "security_play_streams"
+type: entities
+card_mod:
+  style: |
+    ha-card {
+        background-color: rgba(var(--color-grey),0.1)
+      }
+entities:
+  - type: custom:mushroom-template-card
+    entity: sensor.energy_buy_daily
+    icon: mdi:door
+    icon_color: >-
+      {% if is_state('switch.front_door_rtsp_stream', 'on') %}
+        blue
+      {%else%} 
+        grey
+      {% endif %}
+    fill_container: false
+    tap_action:
+      action: call-service
+      service: script.camera_front_stream
+
+    entity_id: switch.ac
+    primary: Vchod
+    card_mod:
+      style: |
+        ha-card {
+          background-color: rgba(var(--color-background-black),0.3);
+        }
+  - type: custom:mushroom-template-card
+    entity: sensor.energy_buy_daily
+    icon: mdi:flower-tulip-outline
+    icon_color: >-
+      {% if is_state('switch.garden_rtsp_stream', 'on') %}
+        blue
+      {%else%} 
+        grey
+      {% endif %}
+    fill_container: false
+    tap_action:
+      action: call-service
+      service: script.camera_garden_stream
+    primary: Zahrada
+    card_mod:
+      style: |
+        ha-card {
+          background-color: rgba(var(--color-background-black),0.3);
+        }

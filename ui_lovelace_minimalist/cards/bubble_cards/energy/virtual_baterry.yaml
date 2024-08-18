@@ -1,0 +1,475 @@
+view_layout:
+  grid-area: "virtual_baterry1"
+type: custom:swipe-card
+parameters:
+  effect: 'cube'
+  speed: 500
+  slideShadows: false
+  autoplay:
+    delay: 10000
+    disableOnInteraction: false
+  cubeEffect:
+    slideShadows: false
+    shadow: false
+cards:
+# BATTERY
+- type: custom:button-card
+  entity: input_boolean.alarmed_toggle
+  show_icon: false
+  show_label: false
+  show_name: false
+  tap_action:
+    action: none    
+  custom_fields:
+    labelyear1:
+      card:
+        type: "custom:button-card"
+        tap_action:
+          action: none   
+        show_name: false
+        show_label: true
+        show_icon: false
+        label: "Celkem"
+        entity: sensor.energy_virtual_batery_year
+        styles:
+          card:
+            - box-shadow: "none"
+            - background-color: "transparent"      
+            - height: "21px"
+            - width: "70px"
+            - padding: "0px"
+          label:
+            - justify-self: "start"
+            - font-size: "14px"
+            - font-weight: 430
+            - text-overflow: "ellipsis"
+            - overflow: "hidden"
+            - margin-top: "5%"
+            - margin-left: "20%"
+    labelyear2:
+      card:
+        type: "custom:button-card"
+        tap_action:
+          action: none   
+        show_name: false
+        show_label: true
+        show_icon: false
+        label: >-
+          [[[
+            return states['sensor.energy_virtual_batery_year'].state + " kWh";
+          ]]]
+        entity: sensor.energy_virtual_batery_year
+        styles:
+          card:
+            - box-shadow: "none"
+            - background-color: "transparent"      
+            - height: "21px"
+            - width: "70px"
+            - padding: "0px"
+            - margin-left: "20%"
+          label:
+            - justify-self: "start"
+            - font-size: "13px"
+            - font-weight: 330
+            - text-overflow: "ellipsis"
+            - overflow: "hidden"
+    labelmonth1:
+      card:
+        type: "custom:button-card"
+        tap_action:
+          action: none   
+        show_name: false
+        show_label: true
+        show_icon: false
+        label: "Měsíc"
+        entity: sensor.energy_virtual_batery_month
+        styles:
+          card:
+            - box-shadow: "none"
+            - background-color: "transparent"      
+            - height: "21px"
+            - width: "70px"
+            - padding: "0px"
+          label:
+            - justify-self: "center"
+            - font-size: "14px"
+            - font-weight: 430
+            - text-overflow: "ellipsis"
+            - overflow: "hidden"
+            - margin-top: "5%"
+            - margin-left: "20%"
+    labelmonth2:
+      card:
+        type: "custom:button-card"
+        tap_action:
+          action: none   
+        show_name: false
+        show_label: true
+        show_icon: false
+        label: >-
+          [[[
+            return states['sensor.energy_virtual_batery_month'].state + " kWh";
+          ]]]
+        entity: sensor.energy_virtual_batery_month
+        styles:
+          card:
+            - box-shadow: "none"
+            - background-color: "transparent"      
+            - height: "21px"
+            - width: "70px"
+            - padding: "0px"
+            - margin-left: "15%"
+          label:
+            - justify-self: "center"
+            - font-size: "13px"
+            - font-weight: 330
+            - text-overflow: "ellipsis"
+            - overflow: "hidden"
+    labelday1:
+      card:
+        type: "custom:button-card"
+        tap_action:
+          action: none   
+        show_name: false
+        show_label: true
+        show_icon: false
+        label: "Dnes"
+        entity: sensor.energy_virtual_batery_day
+        styles:
+          card:
+            - box-shadow: "none"
+            - background-color: "transparent"      
+            - height: "21px"
+            - width: "70px"
+            - padding: "0px"
+          label:
+            - justify-self: "start"
+            - font-size: "14px"
+            - font-weight: 430
+            - text-overflow: "ellipsis"
+            - overflow: "hidden"
+            - margin-top: "5%"
+    labelday2:
+      card:
+        type: "custom:button-card"
+        tap_action:
+          action: none   
+        show_name: false
+        show_label: true
+        show_icon: false
+        label: >-
+          [[[
+            return states['sensor.energy_virtual_batery_day'].state + " kWh";
+          ]]]
+        entity: sensor.energy_virtual_batery_day
+        styles:
+          card:
+            - box-shadow: "none"
+            - background-color: "transparent"      
+            - height: "21px"
+            - width: "70px"
+            - padding: "0px"
+          label:
+            - justify-self: "start"
+            - font-size: "13px"
+            - font-weight: 330
+            - text-overflow: "ellipsis"
+            - overflow: "hidden"
+    graph:
+      card:
+        type: custom:mini-graph-card
+        entities:
+          - sensor.energy_virtual_batery_day
+        line_color: rgba(var(--color-blue), 0.9) 
+        line_width: 3
+        name: "Virtuální Baterie"
+        update_interval: 60
+        cache: true
+        animate: true
+        show:
+          icon: false
+          name: true
+          state: false
+        card_mod:
+          style: |
+            ha-card {
+              background-color: transparent !important;
+              box-shadow: none !important; 
+              border-radius: 0 0 0 0 !important;
+            }
+            .header.flex {
+              margin-left: -4px !important; 
+              color: rgba(var(--primary-text-color), 1) !important; 
+            }
+            .graph__container__svg {
+              margin-top: -58px !important;
+            }
+  styles:
+    card:
+      - padding: 0px
+      - box-shadow: "var(--box-shadow)"
+      - background-color: rgba(var(--color-background-black),0.3);
+      - border-radius: "21px"
+      - height: 96px
+    grid:
+      - grid-template-areas: >
+          "labelyear1 labelmonth1 labelday1"
+          "labelyear2 labelmonth2 labelday2"
+          "graph graph graph"
+      - grid-template-columns: 1fr 1fr 1fr
+      - grid-template-rows: 1fr 1fr 2fr
+
+    custom_fields:
+      labelyear1:
+        - place-self:  center
+        - justify-self: left
+      labelyear2:
+        - place-self:  center
+        - justify-self: left
+      labelmonth1:
+        - place-self:  center
+        - justify-self: left
+      labelmonth2:
+        - place-self:  center
+        - justify-self: left
+      labelday1:
+        - place-self:  center
+        - justify-self: right
+      labelday2:
+        - place-self:  center
+        - justify-self: right
+      graph:
+        - place-self:  center
+        - justify-self: stretch
+
+# PRICE
+- type: custom:button-card
+  entity: input_boolean.alarmed_toggle
+  show_icon: false
+  show_label: false
+  show_name: false
+  tap_action:
+    action: none    
+  custom_fields:
+    labelyear1:
+      card:
+        type: "custom:button-card"
+        tap_action:
+          action: none   
+        show_name: false
+        show_label: true
+        show_icon: false
+        label: "Celkem"
+        entity: sensor.energy_virtual_batery_year
+        styles:
+          card:
+            - box-shadow: "none"
+            - background-color: "transparent"      
+            - height: "21px"
+            - width: "70px"
+            - padding: "0px"
+          label:
+            - justify-self: "start"
+            - font-size: "14px"
+            - font-weight: 430
+            - text-overflow: "ellipsis"
+            - overflow: "hidden"
+            - margin-top: "5%"
+            - margin-left: "20%"
+    labelyear2:
+      card:
+        type: "custom:button-card"
+        tap_action:
+          action: none   
+        show_name: false
+        show_label: true
+        show_icon: false
+        label: >-
+          [[[
+            return states['sensor.elektrina_cena_year'].state + " Kč";
+          ]]]
+        entity: sensor.elektrina_cena_year
+        styles:
+          card:
+            - box-shadow: "none"
+            - background-color: "transparent"      
+            - height: "21px"
+            - width: "70px"
+            - padding: "0px"
+            - margin-left: "20%"
+          label:
+            - justify-self: "start"
+            - font-size: "13px"
+            - font-weight: 330
+            - text-overflow: "ellipsis"
+            - overflow: "hidden"
+    labelmonth1:
+      card:
+        type: "custom:button-card"
+        tap_action:
+          action: none   
+        show_name: false
+        show_label: true
+        show_icon: false
+        label: "Měsíc"
+        entity: sensor.elektrina_cena_month
+        styles:
+          card:
+            - box-shadow: "none"
+            - background-color: "transparent"      
+            - height: "21px"
+            - width: "70px"
+            - padding: "0px"
+          label:
+            - justify-self: "center"
+            - font-size: "14px"
+            - font-weight: 430
+            - text-overflow: "ellipsis"
+            - overflow: "hidden"
+            - margin-top: "5%"
+            - margin-left: "20%"
+    labelmonth2:
+      card:
+        type: "custom:button-card"
+        tap_action:
+          action: none   
+        show_name: false
+        show_label: true
+        show_icon: false
+        label: >-
+          [[[
+            return states['sensor.elektrina_cena_month'].state + " Kč";
+          ]]]
+        entity: sensor.elektrina_cena_month
+        styles:
+          card:
+            - box-shadow: "none"
+            - background-color: "transparent"      
+            - height: "21px"
+            - width: "70px"
+            - padding: "0px"
+            - margin-left: "15%"
+          label:
+            - justify-self: "center"
+            - font-size: "13px"
+            - font-weight: 330
+            - text-overflow: "ellipsis"
+            - overflow: "hidden"
+    labelday1:
+      card:
+        type: "custom:button-card"
+        tap_action:
+          action: none   
+        show_name: false
+        show_label: true
+        show_icon: false
+        label: "Dnes"
+        entity: sensor.elektrina_cena_day
+        styles:
+          card:
+            - box-shadow: "none"
+            - background-color: "transparent"      
+            - height: "21px"
+            - width: "70px"
+            - padding: "0px"
+          label:
+            - justify-self: "start"
+            - font-size: "14px"
+            - font-weight: 430
+            - text-overflow: "ellipsis"
+            - overflow: "hidden"
+            - margin-top: "5%"
+    labelday2:
+      card:
+        type: "custom:button-card"
+        tap_action:
+          action: none   
+        show_name: false
+        show_label: true
+        show_icon: false
+        label: >-
+          [[[
+            return states['sensor.elektrina_cena_day'].state + " Kč";
+          ]]]
+        entity: sensor.elektrina_cena_day
+        styles:
+          card:
+            - box-shadow: "none"
+            - background-color: "transparent"      
+            - height: "21px"
+            - width: "70px"
+            - padding: "0px"
+          label:
+            - justify-self: "start"
+            - font-size: "13px"
+            - font-weight: 330
+            - text-overflow: "ellipsis"
+            - overflow: "hidden"
+    graph:
+      card:
+        type: custom:mini-graph-card
+        entities:
+          - sensor.elektrina_cena_day
+        line_color: rgba(var(--color-blue), 0.9) 
+        line_width: 3
+        name: "Odhad Platby za Energie"
+        update_interval: 60
+        cache: true
+        animate: true
+        tap_action:
+          action: none
+        show:
+          icon: false
+          name: true
+          state: false
+        card_mod:
+          style: |
+            ha-card {
+              background-color: transparent !important;
+              box-shadow: none !important; 
+              border-radius: 0 0 0 0 !important;
+            }
+            .header.flex {
+              margin-left: -4px !important; 
+              color: rgba(var(--primary-text-color), 1) !important; 
+            }
+            .graph__container__svg {
+              margin-top: -58px !important;
+            }
+  styles:
+    card:
+      - padding: 0px
+      - box-shadow: "var(--box-shadow)"
+      - background-color: rgba(var(--color-background-black),0.3);
+      - border-radius: "21px"
+      - height: 96px
+    grid:
+      - grid-template-areas: >
+          "labelyear1 labelmonth1 labelday1"
+          "labelyear2 labelmonth2 labelday2"
+          "graph graph graph"
+      - grid-template-columns: 1fr 1fr 1fr
+      - grid-template-rows: 1fr 1fr 2fr
+
+    custom_fields:
+      labelyear1:
+        - place-self:  center
+        - justify-self: left
+      labelyear2:
+        - place-self:  center
+        - justify-self: left
+      labelmonth1:
+        - place-self:  center
+        - justify-self: left
+      labelmonth2:
+        - place-self:  center
+        - justify-self: left
+      labelday1:
+        - place-self:  center
+        - justify-self: right
+      labelday2:
+        - place-self:  center
+        - justify-self: right
+      graph:
+        - place-self:  center
+        - justify-self: stretch

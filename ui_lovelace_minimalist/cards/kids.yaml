@@ -1,0 +1,302 @@
+view_layout:
+  grid-area: "kids"
+  place-self: left end stretch
+card_mod:
+  style: |
+    ha-card {
+      {% if states('cover.kids_room')|title == 'Closing' %}
+        animation: blink 1s linear infinite;
+      {%endif%}
+      {% if states('cover.kids_room')|title == 'Opening' %}
+        animation: blink 1s linear infinite;
+      {%endif%}
+      background-color: rgba(var(--color-background-grey),var(--opacity-bg))
+    }
+      @keyframes blink {
+        50% {opacity: 0;}
+    }
+type: custom:swipe-card
+parameters:
+  effect: 'cube'
+  speed: 500
+  slideShadows: false
+  cubeEffect:
+    slideShadows: false
+    shadow: false
+cards:
+- type: "custom:button-card"
+  template:
+    - card_room
+    - blue_playing
+    - grey_no_state
+  name: Dětský pokoj
+  entity: cover.kids_room
+  icon: mdi:teddy-bear
+  label: >
+    [[[
+      return "🌡️" + Math.round((states['sensor.kids_temperature_1'].state) * 100) / 100 + " °C" + "💧" + states['sensor.kids_humidity_1'].state + " %"
+    ]]]
+  variables:
+    label_use_temperature: false
+    label_use_brightness: true
+    entity_1:
+      entity_id: media_player.kids
+      templates:
+        - blue_playing
+      tap_action:
+        action: toggle
+    entity_2:
+      entity_id: cover.kids_room
+      templates:
+        - blue_closed
+      tap_action:
+        action: call-service
+        service: honeycomb   
+        entity: cover.kids_room
+        service_data:
+          entity_id: entity
+          animation_speed: 25
+          buttons:
+            - icon: mdi:numeric-1-box
+              active: >
+                [[[
+                  return (states['cover.kids_room'].attributes.current_tilt_position <= states['sensor.blinds_tilt_determine_min_high'].state 
+                  && states['cover.kids_room'].attributes.current_tilt_position >= states['sensor.blinds_tilt_determine_min_low'].state) 
+                  && states['cover.kids_room'].state == "closed"
+                  ? "True" : "1" == "1"
+                ]]]
+              tap_action:
+                action: call-service
+                service: script.tilt_blinds_kids_min
+            - icon: mdi:numeric-2-box
+              active: >
+                [[[
+                  return (states['cover.kids_room'].attributes.current_tilt_position <= states['sensor.blinds_tilt_determine_mid_high'].state 
+                  && states['cover.kids_room'].attributes.current_tilt_position >= states['sensor.blinds_tilt_determine_mid_low'].state) 
+                  && states['cover.kids_room'].state == "closed"
+                  ? "True" : "1" == "1"
+                ]]]
+              tap_action:
+                action: call-service
+                service: script.tilt_blinds_kids_mid
+            - icon: mdi:numeric-3-box
+              active: >
+                [[[
+                  return (states['cover.kids_room'].attributes.current_tilt_position <= states['sensor.blinds_tilt_determine_max_high'].state 
+                  && states['cover.kids_room'].attributes.current_tilt_position >= states['sensor.blinds_tilt_determine_max_low'].state)
+                  && states['cover.kids_room'].state == "closed" 
+                  ? "True" : "1" == "1"
+                ]]]
+              tap_action:
+                action: call-service
+                service: script.tilt_blinds_kids_max
+            - icon: mdi:window-shutter-open
+              active: >
+                [[[
+                  return (states['cover.kids_room'].state == "open") ? "True" : "1" == "1"
+                ]]]
+              tap_action:
+                action: call-service
+                service: script.open_blinds_kids
+            - icon: mdi:window-shutter
+              active: >
+                [[[
+                  return (states['cover.kids_room'].attributes.current_tilt_position == 0 && states['cover.kids_room'].state == "closed") ? "True" : "1" == "1"
+                ]]]
+              tap_action:
+                action: call-service
+                service: script.close_blinds_kids
+            - show: false
+
+- type: custom:button-card
+  icon: mdi:alarm
+  name: Dětský pokoj
+  entity: input_boolean.alarmed_toggle
+  label: 'Budík'
+  show_icon: true
+  show_label: true
+  show_name: true
+  size: "45%"
+  aspect_ratio: "2/1"
+  tap_action:
+    action: toggle
+  state:
+    - value: 'on'
+      styles:
+        card:
+          - background: >-
+              linear-gradient(145deg, rgba(var(--color-blue), 0.7) -50%, rgba(var(--color-background-grey),var(--opacity-bg)) 50%)
+    - value: 'off'
+      icon: mdi:alarm-note-off
+      styles:
+        card:
+          - background: >-
+              rgba(var(--color-theme),0.05)
+            
+  custom_fields:
+    state:
+      card:
+        type: custom:lightalarm-card
+        time_entity: input_datetime.lightalarm_time
+        mode_entity: input_select.lightalarm_mode
+        duration_entity: input_number.lightalarm_duration
+        card_mod:
+          style: |
+            ha-card {
+              box-shadow: none;
+              background: transparent;
+            }
+            .alarm-properties-wrap, .alarm-duration, .alarm-mode, .alarm-time-decorator {
+              display: none;
+            }
+            .alarm-time-wrap {
+              font-size: 40px !important;
+              font-weight: 300 !important;
+              margin-left: 13% !important;
+              margin-top: -35% !important;
+            }
+    setting:
+      card:
+        type: custom:lightalarm-card
+        time_entity: input_datetime.lightalarm_time
+        mode_entity: input_select.lightalarm_mode
+        duration_entity: input_number.lightalarm_duration
+        card_mod:
+          style: 
+            ha-select $: |
+              mwc-menu {             
+                --mdc-theme-surface: rgba(var(--color-grey), 1);
+                --mdc-theme-primary: rgba(var(--color-black), 0.8);
+              }
+              .mdc-line-ripple::before, .mdc-line-ripple::after {
+                border-bottom-style: none !important;
+              }
+            .: |
+              ha-card {
+                border-radius: 14px;
+                box-shadow: none;
+                background: transparent;
+              }
+              .alarm-properties-wrap, .alarm-duration, .alarm-time-and-decorator-wrap, .alarm-time-decorator {
+                display: none;
+              }
+              .alarm-mode{
+                background-color: "rgba(var(--color-theme),0.05)" !important;
+                border-radius: 50px important;
+                box-shadow: none important;
+                background: transparent !important;
+              }
+              .alarm-properties-wrap {
+                background: transparent !important;
+                max-width: 80% !important;
+                margin-left: 33% !important;
+                margin-top: -55% !important;
+                
+              }
+              .lightalarm-wrapper {
+                box-shadow: none !important;
+                background-color: transparent !important;
+              }
+              :host {
+                --mdc-select-fill-color: transparent;
+                --mdc-menu-item-height: 25px;
+              } 
+              .mwc-list-item {
+                color: rgba(var(--color-black), 1);
+              } 
+              .mdc-line-ripple::before, .mdc-line-ripple::after {
+                border-bottom-style: none !important;
+              } 
+          
+            
+    # icon: |
+    #   [[[
+    #     var state = entity.state;
+    #     if(state == "on")
+    #       return '<ha-icon icon="mdi:toggle-switch" style="color: rgba(var(--color-blue), 0.6); width:100px; height: 60px"; justify-self: center>'
+    #     else
+    #       return '<ha-icon icon="mdi:toggle-switch-off" style="color: rgba(var(--color-theme),0.2); width:100px; height: 60px"; justify-self: center>'
+    #   ]]]
+    # state: |
+    #   [[[
+    #     return helpers.formatTime(states['input_datetime.alarmed'].state)
+    #   ]]]
+  styles:
+    card:
+      - border-radius: "20px"
+      - padding: 5px
+      - background-color: "rgba(var(--color-theme),0.05)"   
+    grid:
+      - grid-template-areas: 
+          '"n n n"
+          "n n n"
+          "l l setting"
+          "i i state"'
+      - grid-template-columns: 1fr 1fr 1fr
+      - grid-template-rows: 1fr 1fr 1fr 1fr 
+      - justify-items: "center"
+    state:
+      - justify-self: "start"
+      - font-weight: "bold"
+      - font-size: "12px"
+      - filter: "opacity(40%)"
+      - margin-left: "6px"
+    name:
+      - justify-self: "start"
+      - align-self: "end"
+      - font-weight: "bold"
+      - font-size: "18px"
+      - margin-left: "12px"
+      - margin-bottom: "15%"
+      - max-width: "40%"
+      - text-overflow: "ellipsis"
+      - overflow: "hidden"
+    label:
+      - justify-self: "start"
+      - align-self: "start"
+      - font-weight: "bold"
+      - font-size: "14px"
+      - filter: "opacity(40%)"
+      - margin-left: "12px"
+      - max-width: "80%"
+      - text-overflow: "ellipsis"
+      - overflow: "hidden"
+      - margin-top: "-72%"
+      - color: |
+          [[[
+            var state = entity.state;
+            if(state == "on")
+              return  'rgba(var(--color-blue-text),1)'
+            else
+              return 'rgba(var(--color-grey-text),1)'
+          ]]]
+    img_cell:
+      - border-radius: "50%"
+      - width: "75%"
+      - height: "150%"
+      - max-width: "none"
+      - max-height: "none"
+      - position: "absolute"
+      - left: "50%"
+      - top: "50%"
+      - transform: "translate(-50%,-50%)"
+      - margin-top: "5%"
+      - margin-left: "-24%"
+      - background-color: |
+          [[[
+            var state = entity.state;
+            if(state == "on")
+              return  'rgba(var(--color-blue), 0.2)'
+            else
+              return 'rgba(var(--color-theme),0.2)'
+          ]]]
+    icon: 
+      - line-height: "0"
+      - color: |
+          [[[
+            var state = entity.state;
+            if(state == "on")
+              return  'rgba(var(--color-blue), 1)'
+            else
+              return 'rgba(var(--color-theme),0.2)'
+          ]]]

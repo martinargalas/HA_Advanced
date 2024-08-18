@@ -1,0 +1,64 @@
+view_layout:
+  grid-area: "status_bar_mobile"
+type: custom:button-card
+name: >
+  [[[
+    return "Soběstačnost " + states['sensor.energy_effectivity'].state + " %"
+  ]]]
+color: "var(--google-grey-500)"
+entity: sensor.energy_effectivity
+show_name: true
+show_icon: false
+custom_fields:
+  bar: |
+    [[[
+      var color = "linear-gradient(to right, rgba(var(--color-background-black),0.04), rgba(var(--color-background-blue2),0.1), rgba(var(--color-background-blue2),0.15),rgba(var(--color-background-blue2),0.25) ,rgba(var(--color-background-blue2),0.35))";
+      var state = entity.state;
+      return `
+      <div>
+      <div style="background:${color}; height: 42px; width:${state}%">
+      </div>
+      </div>
+      `
+    ]]]
+styles:
+  custom_fields:
+    bar:
+      - justify-self: start
+      - width: 100%
+      - height: 42px
+      - margin-top: '0px'
+  grid:
+    - grid-template-areas: '"i i i" "n n n" "bar bar bar"'
+    - grid-template-columns: 1fr 1fr 1fr
+    - justify-items: "center"
+  card:
+    - padding: 0px
+    - height: "95%"
+    - box-shadow: "var(--box-shadow)"
+    - background-color: rgba(var(--color-background-black),0.1);
+    - left: 65%
+    - max-width: 35%
+  img_cell:
+    - background-color: "rgba(var(--color-background-blue),0.3)"
+    - border-radius: "85%"
+    - width: "43px"
+    - height: "43px"
+    - max-width: "none"
+    - max-height: "none"
+    - position: "absolute"
+    - left: "47%"
+    - top: "46%"
+    - transform: "translate(-50%,-50%)"
+    - margin-top: "2%"
+    - margin-left: "-24%"
+  name:
+    - justify-self: "start"
+    - align-self: "end"
+    - font-weight: "bold"
+    - font-size: "12px"
+    - margin-left: "15px"
+    - margin-bottom: "-27px"
+    - max-width: "[[[ return `calc(100% - (12px + ${!variables?.entity_2 ? 5 : 0}px))`; ]]]"
+    - text-overflow: "ellipsis"
+    - overflow: "hidden"

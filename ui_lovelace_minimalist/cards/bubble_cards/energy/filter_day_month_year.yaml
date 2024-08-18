@@ -1,0 +1,121 @@
+view_layout:
+  grid-area: "filter_day_month_year"
+type: grid
+columns: 3
+square: false
+card_mod:
+  style: |
+    ha-card {     
+      background-color: rgba(var(--color-background-black),0.3);
+      z-index: 10 !important;
+    }
+cards:
+  - type: custom:mushroom-template-card
+    entity: switch.energy_daily_view
+    icon: mdi:alpha-d-box-outline
+    badge_icon: ""
+    icon_color: >-
+      {%if is_state('switch.energy_daily_view', 'on') %}
+        blue
+      {%else%} 
+        transparent
+      {%endif%}
+    fill_container: false
+    tap_action:
+      action: call-service
+      service: script.convert_to_action
+      service_data:
+        service1: switch.turn_off
+        entity_id1: switch.energy_yearly_view
+        service2: switch.turn_off
+        entity_id2: switch.energy_monthly_view
+        service3: switch.turn_on
+        entity_id3: switch.energy_daily_view
+    hold_action:
+      action: none
+    double_tap_action:
+      action: none
+    primary: Dnes
+    card_mod:
+      style: |
+        ha-card {
+          top: -693px !important;
+          left: -12px !important;
+          max-width: 120px !important;
+          max-height: 50px !important;
+          background-color: transparent !important;
+          box-shadow: none;
+        }
+  - type: custom:mushroom-template-card
+    entity: switch.energy_monthly_view
+    icon: mdi:alpha-m-box-outline
+    badge_icon: ""
+    icon_color: >-
+      {%if is_state('switch.energy_monthly_view', 'on') %}
+        blue
+      {%else%} 
+        transparent
+      {%endif%}
+    fill_container: false
+    tap_action:
+      action: call-service
+      service: script.convert_to_action
+      service_data:
+        service1: switch.turn_off
+        entity_id1: switch.energy_yearly_view
+        service2: switch.turn_off
+        entity_id2: switch.energy_daily_view
+        service3: switch.turn_on
+        entity_id3: switch.energy_monthly_view
+    hold_action:
+      action: none
+    double_tap_action:
+      action: none
+    primary: Měsíc
+    card_mod:
+      style: |
+        ha-card {
+          top: -693px !important;
+          left: -77px !important;
+          max-width: 120px !important;
+          max-height: 50px !important;
+          background-color: transparent !important;
+          box-shadow: none;
+        }
+
+  - type: custom:mushroom-template-card
+    entity: switch.energy_yearly_view
+    icon: mdi:alpha-r-box-outline
+    badge_icon: ""
+    icon_color: >-
+      {%if is_state('switch.energy_yearly_view', 'on') %}
+        blue
+      {%else%} 
+        transparent
+      {%endif%}
+    fill_container: false
+    tap_action:
+      action: call-service
+      service: script.convert_to_action
+      service_data:
+        service1: switch.turn_off
+        entity_id1: switch.energy_monthly_view
+        service2: switch.turn_off
+        entity_id2: switch.energy_daily_view
+        service3: switch.turn_on
+        entity_id3: switch.energy_yearly_view
+    hold_action:
+      action: none
+    double_tap_action:
+      action: none
+    primary: Rok
+    card_mod:
+      style: |
+        ha-card {
+          top: -693px !important;
+          left: -140px !important;
+          max-width: 120px !important;
+          max-height: 50px !important;
+          background-color: transparent !important;
+          box-shadow: none;
+        }

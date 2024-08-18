@@ -1,0 +1,393 @@
+title: "Home"
+path: "home"
+icon: "mdi:home"
+
+type: "custom:grid-layout"
+layout:
+  grid-template-rows: "min-content"
+  grid-template-columns: "1fr 1fr 1fr 1fr"
+  grid-template-areas: >
+    "welcome welcome weather weather"
+
+    "living_room living_room office office"
+    "kitchen kitchen kids kids"
+    "hallway hallway bedroom bedroom"
+    "wc wc laundry laundry"
+    "player player player player"
+
+view_layout:
+  grid-area: "home"
+cards:
+  #BUBBLE CARDS
+  - !include /config/ui_lovelace_minimalist/cards/bubble_cards/bubble_main.yaml
+
+  - type: vertical-stack
+    cards:
+# HEATING
+      - type: custom:bubble-card
+        card_type: pop-up
+        hash: "#heating"
+        width_desktop: 340px
+        margin: 8px
+        margin_top_mobile: -56px
+        bg_blur: 30
+        shadow_opacity: 10
+        is_sidebar_hidden: true
+        bg_opacity: 20
+        auto_close: 60000
+        icon: mdi:radiator
+        name: "Vytápění místností"
+        styles: |
+          ha-card > div > div > div { 
+            background: rgba(var(--color-black),0.7) !important; 
+          }
+      - !include utilities_bubble.yaml
+
+# LIGHTS
+  - type: vertical-stack
+    cards:
+      - type: custom:bubble-card
+        card_type: pop-up
+        hash: "#lights"
+        width_desktop: 340px
+        margin: 8px
+        margin_top_mobile: -56px
+        bg_color: rgba(var(--color-background-black),1)
+        bg_blur: 30
+        shadow_opacity: 10
+        is_sidebar_hidden: true
+        bg_opacity: 20
+        auto_close: 60000
+        icon: mdi:lightbulb-group
+        margin_top_desktop: "-35px"
+        name: "Osvětlení"
+        styles: |
+          ha-card > div > div > div { 
+            background: rgba(var(--color-black),0.7) !important; 
+          }
+        hide_backdrop: true
+      - !include lights_bubble.yaml
+
+# BLINDS
+  - type: vertical-stack
+    cards:
+      - type: custom:bubble-card
+        card_type: pop-up
+        hash: "#blinds"
+        width_desktop: 340px
+        margin: 8px
+        margin_top_mobile: -56px
+        bg_color: rgba(var(--color-background-black),1)
+        bg_blur: 30
+        shadow_opacity: 10
+        is_sidebar_hidden: true
+        bg_opacity: 20
+        auto_close: 60000
+        icon: mdi:blinds-horizontal
+        margin_top_desktop: "-35px"
+        name: "Ovládání žaluzií"
+        styles: |
+          ha-card > div > div > div { 
+            background: rgba(var(--color-black),0.7) !important; 
+          }
+      - !include /config/ui_lovelace_minimalist/cards/bubble_cards/blinds/blinds.yaml
+
+# CLEANING
+  - type: vertical-stack
+    cards:
+      - type: custom:bubble-card
+        card_type: pop-up
+        hash: "#cleaning"
+        width_desktop: 340px
+        margin_top_mobile: -56px
+        bg_color: rgba(var(--color-background-black),1)
+        bg_blur: 30
+        shadow_opacity: 10
+        is_sidebar_hidden: true
+        bg_opacity: 20
+        auto_close: 60000
+        icon: mdi:broom
+        margin_top_desktop: "-35px"
+        name: "Úklid"
+        styles: |
+          ha-card > div > div > div { 
+            background: rgba(var(--color-black),0.7) !important; 
+          }
+      - !include /config/ui_lovelace_minimalist/cards/bubble_cards/cleaning/cleaning.yaml
+
+# MEDIA
+  - type: vertical-stack
+    cards:
+      - type: custom:bubble-card
+        card_type: pop-up
+        hash: "#media"
+        width_desktop: 340px
+        margin: 8px
+        margin_top_mobile: -56px
+        bg_blur: 30
+        shadow_opacity: 10
+        is_sidebar_hidden: true
+        bg_opacity: 20
+        auto_close: 60000
+        icon: mdi:multimedia
+        margin_top_desktop: "-35px"
+        name: "Média"
+        styles: |
+          ha-card > div > div > div { 
+            background: rgba(var(--color-black),0.7) !important; 
+          }
+      - !include media_bubble.yaml
+
+# WEATHER
+  - type: vertical-stack
+    cards:
+      - type: custom:bubble-card
+        card_type: pop-up
+        hash: "#weather"
+        margin: 8px
+        width_desktop: 340px
+        margin_top_mobile: -56px
+        bg_color: rgba(var(--color-background-black),1)
+        bg_blur: 30
+        shadow_opacity: 10
+        is_sidebar_hidden: true
+        bg_opacity: 20
+        auto_close: 60000
+        icon: mdi:weather-partly-cloudy
+        margin_top_desktop: "-35px"
+        name: "Počasí"
+        styles: |
+          ha-card > div > div > div { 
+            background: rgba(var(--color-black),0.7) !important; 
+          }
+      - !include weather_bubble.yaml
+
+# ENERGY
+  - type: vertical-stack
+    cards:
+      - type: custom:bubble-card
+        card_type: pop-up
+        hash: "#energy"
+        margin: 8px
+        width_desktop: 340px
+        margin_top_mobile: -56px
+        bg_color: rgba(var(--color-background-black),1)
+        bg_blur: 30
+        shadow_opacity: 10
+        is_sidebar_hidden: true
+        bg_opacity: 20
+        auto_close: 60000
+        icon: mdi:solar-power-variant
+        margin_top_desktop: "-35px"
+        name: "Energie"
+        styles: |
+          ha-card > div > div > div { 
+            background: rgba(var(--color-black),0.7) !important; 
+          }
+      - !include energy_bubble.yaml
+
+# SECURITY
+  - type: vertical-stack
+    cards:
+      - type: custom:bubble-card
+        card_type: pop-up
+        hash: "#security"
+        width_desktop: 340px
+        margin_top_mobile: -56px
+        bg_color: rgba(var(--color-background-black),1)
+        bg_blur: 30
+        shadow_opacity: 10
+        is_sidebar_hidden: true
+        bg_opacity: 10
+        auto_close: 60000
+        icon: mdi:cctv
+        margin_top_desktop: "-35px"
+        name: "Zabezpečení"
+        styles: |
+          ha-card > div > div > div { 
+            background: rgba(var(--color-black),0.7) !important; 
+          }
+        
+      - !include security_bubble.yaml      
+
+# WELCOME
+  - view_layout:
+      grid-area: "welcome"
+      place-self: start
+    type: custom:mushroom-title-card
+    style:
+      font-family: Roboto
+      font-weight: 99
+    title: >
+      {{ states['sensor.day_in_week_name'].state  }}, {{ states['sensor.day_in_week'].state  }}.{{ states['sensor.month_number'].state  }}.
+      {{- '\n' -}}
+      {{states["sensor.nameday"].state}}
+    card_mod:
+      style: |
+        ha-card {
+          font-variant: Roboto;
+          background: transparent;
+          top: -15px !important;
+          max-height: 70px !important;
+          card-primary-font-size: 1px !important;
+          card-secondary-font-size: 1px !important;
+        }
+
+# WEATHER
+  - view_layout:
+      grid-area: "weather"
+    type: custom:swipe-card
+    parameters:
+      effect: 'cube'
+      speed: 500
+      slideShadows: false
+      cubeEffect:
+        slideShadows: false
+        shadow: false
+    cards:
+      - type: custom:simple-weather-card
+        entity: weather.accuweatherforecast
+        name: " "
+        tap_action: none
+        backdrop: false
+        primary_info: null
+        secondary_info: null
+        card_mod:
+          style: |
+            ha-card {
+                background-color: rgba(var(--color-black),0.0) !important;
+                max-height: 70px !important;
+                box-shadow: none !important; 
+              }
+      - !include /config/ui_lovelace_minimalist/cards/alarmClock_mobile.yaml
+      - !include /config/ui_lovelace_minimalist/cards/person1_mobile.yaml
+      - !include /config/ui_lovelace_minimalist/cards/person2_mobile.yaml
+
+# PLAYER
+  - view_layout:
+      grid-area: "player"
+      place-self: left stretch end
+    type: "custom:config-template-card"
+    variables:
+      - states['sun.sun'].state
+    entities:
+      - media_player.hub
+    card:
+      type: custom:mini-media-player
+      entity: media_player.hub
+      background: "${vars[0] === 'above_horizon' ? '/local/community/spotify/music8.jpg' : '/local/community/spotify/Music.jpg'}"
+      name: Music hub 
+      icon: mdi:music
+      group: false
+      source: icon
+      artwork: cover  
+      sound_mode: full
+      info: short
+      tap_action:
+        action: none
+      volume_stateless: true
+      shortcuts:
+        hide_when_off: true
+        columns: 4
+        buttons:
+          - cover: /local/community/spotify/classic_road.png
+            name: roadtrip
+            type: service
+            id: spotcast.start
+            data:
+              device_name: Hub
+              uri: spotify:playlist:37i9dQZF1DX9wC1KY45plY
+              random_song: true
+              shuffle: true
+            styles: 
+              card:
+                - background-color: "rgba(var(--color-grey),var(--opacity-bg))"
+                - font-color: black
+          - cover: /local/community/spotify/folk.png
+            name: Folk
+            type: service
+            id: spotcast.start
+            data:
+              device_name: Hub
+              uri: spotify:playlist:37i9dQZF1EQp62d3Dl7ECY
+              random_song: true
+              shuffle: true
+          - cover: /local/community/spotify/chill_mix2.png
+            name: Chill
+            type: service
+            id: spotcast.start
+            data:
+              device_name: Hub
+              uri: spotify:playlist:37i9dQZF1EVHGWrwldPRtj
+              random_song: true
+              shuffle: true
+          - cover: /local/community/spotify/rock2.png
+            name: Rock
+            type: service
+            id: spotcast.start
+            data:
+              device_name: Hub
+              uri: spotify:playlist:37i9dQZF1EQpj7X7UK8OOF
+              random_song: true
+              shuffle: true
+          - cover: /local/community/spotify/discover.png
+            name: Weekly
+            type: service
+            id: spotcast.start
+            data:
+              device_name: Hub
+              uri: spotify:playlist:37i9dQZEVXcV2IpyptTja0
+              random_song: true
+              shuffle: true
+          - cover: /local/community/spotify/russian.png
+            name: Russia
+            type: service
+            id: spotcast.start
+            data:
+              device_name: Hub
+              uri: spotify:playlist:37i9dQZF1E34WPiU0RyiiP
+              random_song: true
+              shuffle: true
+          - cover: /local/community/spotify/ludovico.png
+            name: Ludovico
+            type: service
+            id: spotcast.start
+            data:
+              device_name: Hub
+              uri: spotify:playlist:37i9dQZF1DWUofLlXqRWZz
+              random_song: true
+              shuffle: true
+          - cover: /local/community/spotify/sunny.png
+            name: Sunny
+            type: service
+            id: spotcast.start
+            data:
+              device_name: Hub
+              uri: spotify:playlist:37i9dQZF1DX1BzILRveYHb
+              random_song: true
+              shuffle: true
+
+# LIVING ROOM
+  - !include /config/ui_lovelace_minimalist/cards/living_room.yaml
+
+# KITCHEN
+  - !include /config/ui_lovelace_minimalist/cards/kitchen.yaml
+
+# OFFICE
+  - !include /config/ui_lovelace_minimalist/cards/office.yaml
+
+# KIDS
+  - !include /config/ui_lovelace_minimalist/cards/kids.yaml
+
+# HALLWAY
+  - !include /config/ui_lovelace_minimalist/cards/hallway.yaml
+
+# BEDROOM
+  - !include /config/ui_lovelace_minimalist/cards/bedroom.yaml
+
+# WC
+  - !include /config/ui_lovelace_minimalist/cards/wc.yaml
+
+# LAUNDRY
+  - !include /config/ui_lovelace_minimalist/cards/laundry.yaml
+

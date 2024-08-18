@@ -1,0 +1,29 @@
+view_layout:
+  grid-area: "bathroom"     
+  place-self: left end stretch
+type: 'custom:button-card'
+template:
+  - card_room
+  - blue_on
+  - grey_no_state       
+name: Koupelna
+entity: 
+icon: mdi:shower-head
+tap_action:
+  action: navigate
+  navigation_path: "bathroom"
+variables:
+  label_use_temperature: false
+  label_use_brightness: true
+  entity_1:
+    entity_id: media_player.bathroom
+    templates:
+      - blue_on
+    tap_action:
+      action: toggle
+  entity_2:
+    entity_id: 
+    templates:
+      - blue_on
+    tap_action:
+      action: toggle

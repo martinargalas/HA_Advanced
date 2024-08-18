@@ -1,0 +1,193 @@
+type: vertical-stack
+cards:
+  # OFFICE
+  - view_layout:
+      grid-area: "blinds_1_title"
+    type: custom:bubble-card
+    card_type: separator
+    name: Pracovna
+    icon: mdi:chair-rolling
+
+  - view_layout:
+      grid-area: "blinds_1"
+      place-self: center left
+    type: entities
+    show_header_toggle: false
+    card_mod:
+      style: |
+        ha-card {
+            background-color: rgba(var(--color-grey),0.1)
+          }
+    entities:
+      - type: custom:mushroom-cover-card
+        card_mod:
+          style: |
+            ha-card {
+                background-color: rgba(var(--color-background-black),0.3)
+              }
+        entity: cover.office
+        primary_info: state
+        fill_container: true
+        show_position_control: false
+        show_tilt_position_control: false
+        layout: horizontal
+        secondary_info: none
+        show_buttons_control: true
+        name: Pozice
+        icon_type: none
+        tap_action:
+          action: call-service
+          service: switch.turn_on
+          data: {}
+          target:
+            entity_id: switch.office_blinds_user_switch
+      - type: custom:mushroom-cover-card
+        card_mod:
+          style: |
+            ha-card {
+                background-color: rgba(var(--color-background-black),0.3)
+              }
+        entity: cover.office
+        primary_info: name
+        fill_container: true
+        show_position_control: false
+        show_tilt_position_control: true
+        layout: horizontal
+        secondary_info: none
+        show_buttons_control: false
+        name: Náklon
+        icon_type: none
+        tap_action:
+          action: call-service
+          service: switch.turn_on
+          data: {}
+          target:
+            entity_id: switch.office_blinds_user_switch
+
+  # KIDS
+  - view_layout:
+      grid-area: "blinds_2_title"
+    type: custom:bubble-card
+    card_type: separator
+    name: Dětský pokoj
+    icon: mdi:teddy-bear
+
+  - view_layout:
+      grid-area: "blinds_2"
+      place-self: center left
+    type: entities
+    show_header_toggle: false
+    card_mod:
+      style: |
+        ha-card {
+            background-color: rgba(var(--color-grey),0.1)
+          }
+    entities:
+      - type: custom:mushroom-cover-card
+        card_mod:
+          style: |
+            ha-card {
+                background-color: rgba(var(--color-background-black),0.3)
+              }
+        entity: cover.kids_room
+        primary_info: state
+        fill_container: true
+        show_position_control: false
+        show_tilt_position_control: false
+        layout: horizontal
+        secondary_info: none
+        show_buttons_control: true
+        name: Pozice
+        icon_type: none
+        tap_action:
+          action: call-service
+          service: switch.turn_on
+          data: {}
+          target:
+            entity_id: switch.kids_blinds_user_switch
+      - type: custom:mushroom-cover-card
+        card_mod:
+          style: |
+            ha-card {
+                background-color: rgba(var(--color-background-black),0.3)
+              }
+        entity: cover.kids_room
+        primary_info: name
+        fill_container: true
+        show_position_control: false
+        show_tilt_position_control: true
+        layout: horizontal
+        secondary_info: none
+        show_buttons_control: false
+        name: Náklon
+        icon_type: none
+        tap_action:
+          action: call-service
+          service: switch.turn_on
+          data: {}
+          target:
+            entity_id: switch.kids_blinds_user_switch
+
+  # BEDROOM
+  - view_layout:
+      grid-area: "blinds_3_title"
+    type: custom:bubble-card
+    card_type: separator
+    name: Ložnice
+    icon: mdi:bed-king
+
+  - view_layout:
+      grid-area: "blinds_3"
+      place-self: center left
+    type: entities
+    show_header_toggle: false
+    card_mod:
+      style: |
+        ha-card {
+            background-color: rgba(var(--color-grey),0.1)
+          }
+    entities:
+      - type: custom:mushroom-cover-card
+        card_mod:
+          style: |
+            ha-card {
+                background-color: rgba(var(--color-background-black),0.3)
+              }
+        entity: cover.balcony
+        primary_info: state
+        fill_container: true
+        show_position_control: false
+        show_tilt_position_control: false
+        layout: horizontal
+        secondary_info: none
+        show_buttons_control: true
+        name: Pozice
+        icon_type: none
+        tap_action:
+          action: call-service
+          service: switch.turn_on
+          data: {}
+          target:
+            entity_id: switch.bedroom_blinds_user_switch
+      - type: custom:mushroom-cover-card
+        card_mod:
+          style: |
+            ha-card {
+                background-color: rgba(var(--color-background-black),0.3)
+              }
+        entity: cover.balcony
+        primary_info: name
+        fill_container: true
+        show_position_control: false
+        show_tilt_position_control: true
+        layout: horizontal
+        secondary_info: none
+        show_buttons_control: false
+        name: Náklon
+        icon_type: none
+        tap_action:
+          action: call-service
+          service: switch.turn_on
+          data: {}
+          target:
+            entity_id: switch.bedroom_blinds_user_switch

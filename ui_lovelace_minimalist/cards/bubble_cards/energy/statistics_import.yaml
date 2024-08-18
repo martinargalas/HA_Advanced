@@ -1,0 +1,128 @@
+view_layout:
+  grid-area: "statistics_import"
+type: custom:button-card
+entity: input_boolean.alarmed_toggle
+show_icon: false
+show_label: false
+show_name: false
+tap_action:
+  action: none    
+custom_fields:
+  icon:
+    card:
+      type: "custom:button-card"
+      tap_action:
+        action: none   
+      show_name: false
+      show_label: false
+      show_icon: true
+      entity: input_number.counter_graph
+      icon: mdi:transmission-tower-export
+      card_mod:
+        style: |
+          ha-card {
+            border-radius: 42px !important;
+          }
+      styles:
+        card:
+          - box-shadow: "none"
+          - border-radius: "42px"
+          - background-color: rgba(var(--color-blue), 0.2)          
+          - height: "38px"
+          - width: "38px"
+          - padding: "0px"
+          - margin-left: "2px"
+          - z-index: 5
+        icon:
+          - justify-self: "start"
+          - line-height: "0"
+          - height: "70%"
+          - width: "70%"
+          - color: rgba(var(--color-blue), 1) 
+  name:
+    card:
+      type: "custom:button-card"
+      tap_action:
+        action: none   
+      show_name: false
+      show_label: true
+      show_icon: false
+      label: "Nákup"
+      entity: input_number.counter_graph
+      styles:
+        card:
+          - box-shadow: "none"
+          - background-color: "transparent"      
+          - height: "21px"
+          - width: "60px"
+          - padding: "0px"
+        label:
+          - justify-self: "start"
+          - font-size: "14px"
+          - font-weight: 430
+          - margin-top: "5%"
+          - text-overflow: "ellipsis"
+          - overflow: "hidden"
+
+  label:
+    card:
+      type: "custom:button-card"
+      tap_action:
+        action: none   
+      show_name: false
+      show_label: true
+      show_icon: false
+      label: >- 
+        [[[
+          if (states['switch.energy_daily_view'].state === "on") 
+          {
+            return states['sensor.energy_sell_daily'].state + " kWh";
+          }
+          if (states['switch.energy_monthly_view'].state === "on") 
+          {
+            return states['sensor.energy_sell_monthly'].state + " kWh";
+          }
+          if (states['switch.energy_yearly_view'].state === "on") 
+          {
+            return states['sensor.energy_sell_yearly'].state + " kWh";
+          }
+        ]]]
+      entity: input_number.counter_graph
+      styles:
+        card:
+          - box-shadow: "none"
+          - background-color: "transparent"      
+          - height: "21px"
+          - width: "75px"
+          - padding: "0px"
+        label:
+          - justify-self: "start"
+          - font-size: "12px"
+          - margin-top: "-5%"
+          - text-overflow: "ellipsis"
+          - overflow: "hidden"
+
+styles:
+  card:
+    - padding: 0px
+    - height: "42px"
+    - box-shadow: "var(--box-shadow)"
+    - background-color: rgba(var(--color-background-black),0.3);
+    - border-radius: "42px"
+  grid:
+    - grid-template-areas: >
+        "icon . name name"
+        "icon . label label"
+    - grid-template-columns: 1.3fr 0.1fr 1fr 1fr
+    - grid-template-rows: 1fr 1fr
+
+  custom_fields:
+    icon:
+      - place-self:  center
+      - justify-self: left
+    name:
+      - place-self:  stretch end
+      - justify-self: left
+    label:
+      - place-self:  stretch end
+      - justify-self: left

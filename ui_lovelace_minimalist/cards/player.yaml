@@ -1,0 +1,135 @@
+view_layout:
+  grid-area: "player"
+  place-self: left stretch end
+type: "custom:config-template-card"
+variables:
+  - states['sun.sun'].state
+entities:
+  - media_player.ytube_music_player
+card:
+  type: custom:mini-media-player
+  entity: media_player.ytube_music_player
+  
+  name: 'Hudba'
+  icon: mdi:music
+  group: false
+  source: icon
+ 
+  sound_mode: full
+  info: short
+  volume_stateless: true
+  hide:
+    volume: true
+    source: false
+    power: false
+    controls: false
+  # tap_action:
+  #   action: call-service
+  #   service: script.turn_on
+  #   service_data:
+  #     entity_id: script.spotify_app
+  card_mod:
+    style: |
+      ha-card {
+        max-height: 143px !important;
+  # shortcuts:
+  #   hide_when_off: true
+  #   columns: 4
+  #   buttons:
+  #     - cover: /local/community/spotify/classic_road.png
+  #       name: roadtrip
+  #       type: service
+  #       id: spotcast.start
+  #       data:
+  #         device_name: Hub
+  #         uri: spotify:playlist:37i9dQZF1DX9wC1KY45plY
+  #         random_song: true
+  #         shuffle: true
+  #       styles: 
+  #         card:
+  #           - background-color: "rgba(var(--color-grey),var(--opacity-bg))"
+  #           - font-color: black
+  #     - cover: /local/community/spotify/folk.png
+  #       name: Folk
+  #       type: service
+  #       id: spotcast.start
+  #       data:
+  #         device_name: Hub
+  #         uri: spotify:playlist:37i9dQZF1EQp62d3Dl7ECY
+  #         random_song: true
+  #         shuffle: true
+  #     - cover: /local/community/spotify/chill_mix2.png
+  #       name: Chill
+  #       type: service
+  #       id: spotcast.start
+  #       data:
+  #         device_name: Hub
+  #         uri: spotify:playlist:37i9dQZF1EVHGWrwldPRtj
+  #         random_song: true
+  #         shuffle: true
+  #     - cover: /local/community/spotify/rock2.png
+  #       name: Rock
+  #       type: service
+  #       id: spotcast.start
+  #       data:
+  #         device_name: Hub
+  #         uri: spotify:playlist:37i9dQZF1EQpj7X7UK8OOF
+  #         random_song: true
+  #         shuffle: true
+  #     - cover: /local/community/spotify/discover.png
+  #       name: Weekly
+  #       type: service
+  #       id: spotcast.start
+  #       data:
+  #         device_name: Hub
+  #         uri: spotify:playlist:37i9dQZEVXcV2IpyptTja0
+  #         random_song: true
+  #         shuffle: true
+  #     - cover: /local/community/spotify/russian.png
+  #       name: Russia
+  #       type: service
+  #       id: spotcast.start
+  #       data:
+  #         device_name: Hub
+  #         uri: spotify:playlist:37i9dQZF1E34WPiU0RyiiP
+  #         random_song: true
+  #         shuffle: true
+  #     - cover: /local/community/spotify/ludovico.png
+  #       name: Ludovico
+  #       type: service
+  #       id: spotcast.start
+  #       data:
+  #         device_name: Hub
+  #         uri: spotify:playlist:37i9dQZF1DWUofLlXqRWZz
+  #         random_song: true
+  #         shuffle: true
+  #     - cover: /local/community/spotify/sunny.png
+  #       name: Sunny
+  #       type: service
+  #       id: spotcast.start
+  #       data:
+  #         device_name: Hub
+  #         uri: spotify:playlist:37i9dQZF1DX1BzILRveYHb
+  #         random_song: true
+  #         shuffle: true
+  #     - cover: /local/community/spotify/Country.png
+  #       type: script
+  #       id: script.media_play_country_radio
+  #     - cover: /local/community/spotify/radiozurnal.jpg
+  #       type: script
+  #       id: script.media_play_cro_radiozurnal
+  #     - cover: /local/community/spotify/evropa2.jpg
+  #       type: script
+  #       id: script.media_play_evropa_2
+  #     - cover: /local/community/spotify/impuls.jpg
+  #       type: script
+  #       id: script.media_play_impuls_radio
+  #     - cover: /local/community/spotify/rock.png
+  #       type: script
+  #       id: script.media_play_rock_radio
+  #     - cover: /local/community/spotify/osmdesatka.png
+  #       type: script
+  #       id: script.media_play_osmdesatka_radio
+  #     - cover: /local/community/spotify/frekvence1.jpg
+  #       type: script
+  #       id: script.media_play_frekvence_1

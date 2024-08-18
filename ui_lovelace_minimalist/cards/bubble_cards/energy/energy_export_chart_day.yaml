@@ -1,0 +1,70 @@
+view_layout:
+  grid-area: "energy_export_chart"
+type: conditional
+conditions:
+  - condition: state
+    entity: switch.energy_daily_view
+    state: "on"
+card:
+  type: custom:config-template-card
+  entities:
+    - input_number.counter_graph
+  card:
+    type: custom:apexcharts-card
+    card_mod:
+      style: |
+        ha-card {
+            background-color: rgba(var(--color-background-black),0.3) !important;
+          }
+    experimental:
+      brush: false
+    graph_span: >
+      [[[
+        if (states['input_boolean.switch_current'].state == 'on' )
+          return "12h";
+      ]]]
+    span:
+      offset: ${'-' + states['input_number.counter_graph'].state +'d'}
+    stacked: false
+    update_interval: 15m
+    header:
+      show: true
+      show_states: false
+      colorize_states: true
+    series:
+      - entity: sensor.active_power
+        name: Maximum
+        transform: return x/1000
+        unit: kW
+        type: column
+        color: rgb(255,167,0)
+        stroke_width: 1
+        show:
+          legend_value: false
+          name_in_header: false
+          in_brush: true
+        group_by:
+          duration: 15m
+          func: max
+          
+    apex_config:
+      chart:
+        type: area
+        height: 180
+      fill:
+        type: gradient
+        gradient:
+          shadeIntensity: 0.1
+          opacityFrom: 0.4
+          opacityTo: 0.7
+          inverseColors: true
+          stops:
+            - 0
+            - 50
+            - 100
+    yaxis:
+      - min: auto
+        max: auto
+        decimals: 1
+        apex_config:
+          tickAmount: 4

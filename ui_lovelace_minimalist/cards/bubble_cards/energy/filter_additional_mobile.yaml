@@ -1,0 +1,620 @@
+view_layout:
+  grid-area: "filter_additional_mobile"
+type: entities
+show_header_toggle: false
+card_mod:
+  style: |
+    ha-card {
+        background-color: rgba(var(--color-grey),0.1)
+      }
+entities:
+- type: custom:button-card
+  entity: input_boolean.alarmed_toggle
+  show_icon: false
+  show_label: false
+  show_name: false
+  tap_action:
+    action: none    
+  custom_fields:
+    item1:
+      card:
+        type: "custom:button-card"
+        show_name: false
+        show_label: true
+        show_icon: true
+        label: "Výroba"
+        entity: input_boolean.switch_chart_1
+        icon: mdi:chart-bar
+        tap_action:
+          action: call-service
+          service: script.convert_to_action
+          service_data:
+            service1: input_boolean.turn_on
+            entity_id1: input_boolean.switch_chart_1
+            service2: input_boolean.turn_off
+            entity_id2: input_boolean.switch_chart_2
+            service3: input_boolean.turn_off
+            entity_id3: input_boolean.switch_chart_3
+        hold_action:
+          action: none
+        double_tap_action:
+          action: none
+        styles:
+          card:
+            - border-radius: "20px"
+            - background-color: "rgba(var(--color-background-black),0.3)"            
+            - height: "42px"
+            - width: "100px"
+            - padding: "0px"
+          icon:
+            - justify-self: "start"
+            - left: -10%
+            - line-height: "0"
+            - height: "70%"
+            - width: "70%"
+            - color: >-
+                [[[
+                  if (states['input_boolean.switch_chart_1'].state == 'on' )
+                    return "rgba(var(--color-blue), 1)";
+                ]]]
+          label:
+            - justify-self: "start"
+            - font-size: "14px"
+            - font-weight: 430
+            - margin-left: "44%"
+            - text-overflow: "ellipsis"
+            - overflow: "hidden"
+            - margin-top: "-40%"       
+    item2:
+      card:
+        type: "custom:button-card"
+        show_name: false
+        show_label: true
+        show_icon: true
+        label: "TČ"
+        entity: input_boolean.switch_chart_2
+        icon: mdi:chart-bar
+        tap_action:
+          action: call-service
+          service: script.convert_to_action
+          service_data:
+            service1: input_boolean.turn_off
+            entity_id1: input_boolean.switch_chart_1
+            service2: input_boolean.turn_on
+            entity_id2: input_boolean.switch_chart_2
+            service3: input_boolean.turn_off
+            entity_id3: input_boolean.switch_chart_3
+        hold_action:
+          action: none
+        double_tap_action:
+          action: none
+        styles:
+          card:
+            - border-radius: "20px"
+            - background-color: "rgba(var(--color-background-black),0.3)"            
+            - height: "42px"
+            - width: "100px"
+            - padding: "0px"
+          icon:
+            - justify-self: "start"
+            - left: -10%
+            - line-height: "0"
+            - height: "70%"
+            - width: "70%"
+            - color: >-
+                [[[
+                  if (states['input_boolean.switch_chart_2'].state == 'on' )
+                    return "rgba(var(--color-blue), 1)";
+                ]]]
+          label:
+            - justify-self: "start"
+            - font-size: "14px"
+            - font-weight: 430
+            - margin-left: "56%"
+            - text-overflow: "ellipsis"
+            - overflow: "hidden"
+            - margin-top: "-40%"    
+
+    item3:
+      card:
+        type: "custom:button-card"
+        show_name: false
+        show_label: true
+        show_icon: true
+        label: "Přetoky"
+        entity: input_boolean.switch_chart_3
+        icon: mdi:chart-bar
+        tap_action:
+          action: call-service
+          service: script.convert_to_action
+          service_data:
+            service1: input_boolean.turn_off
+            entity_id1: input_boolean.switch_chart_1
+            service2: input_boolean.turn_off
+            entity_id2: input_boolean.switch_chart_2
+            service3: input_boolean.turn_on
+            entity_id3: input_boolean.switch_chart_3
+        hold_action:
+          action: none
+        double_tap_action:
+          action: none
+        styles:
+          card:
+            - border-radius: "20px"
+            - background-color: "rgba(var(--color-background-black),0.3)"            
+            - height: "42px"
+            - width: "100px"
+            - padding: "0px"
+          icon:
+            - justify-self: "start"
+            - left: -4%
+            - line-height: "0"
+            - height: "60%"
+            - width: "60%"
+            - color: >-
+                [[[
+                  if (states['input_boolean.switch_chart_3'].state == 'on' )
+                    return "rgba(var(--color-blue), 1)";
+                ]]]
+          label:
+            - justify-self: "start"
+            - font-size: "14px"
+            - font-weight: 430
+            - margin-left: "42%"
+            - text-overflow: "ellipsis"
+            - overflow: "hidden"
+            - margin-top: "-40%"  
+  
+  styles:
+    card:
+      - padding: 0px
+      - height: "48px"
+      - box-shadow: none
+      - background-color: transparent;
+      - border-radius: "10px"
+    grid:
+      - grid-template-areas: 
+          '"item1 item2 item3"'
+      - grid-template-columns: 1fr 1fr 1fr
+      - grid-template-rows: 1fr
+
+    custom_fields:
+      item1:
+        - place-self:  stretch end
+        - justify-self: left
+      item2:
+        - place-self:  stretch end
+        - justify-self: center
+      item3:
+        - place-self:  stretch end
+        - justify-self: right
+
+- type: custom:button-card
+  entity: input_boolean.alarmed_toggle
+  show_icon: false
+  show_label: false
+  show_name: false
+  tap_action:
+    action: none    
+  custom_fields:
+    item1:
+      card:
+        type: "custom:button-card"
+        show_name: false
+        show_label: true
+        show_icon: true
+        label: "Dnes"
+        entity: input_number.counter_graph
+        icon: mdi:alpha-d-box-outline
+        tap_action:
+          action: call-service
+          service: script.convert_to_action
+          service_data:
+            service1: switch.turn_off
+            entity_id1: switch.energy_yearly_view
+            service2: switch.turn_off
+            entity_id2: switch.energy_monthly_view
+            service3: switch.turn_on
+            entity_id3: switch.energy_daily_view
+        hold_action:
+          action: none
+        double_tap_action:
+          action: none
+        styles:
+          card:
+            - box-shadow: "none"
+            - border-radius: "42px"
+            - background-color: "transparent"            
+            - height: "42px"
+            - width: "106px"
+            - padding: "0px"
+          icon:
+            - justify-self: "start"
+            - left: -13%
+            - line-height: "0"
+            - height: "70%"
+            - width: "70%"
+            - color: >-
+                [[[
+                  if (states['switch.energy_daily_view'].state == 'on' )
+                    return "rgba(var(--color-blue), 1)";
+                ]]]
+          label:
+            - justify-self: "start"
+            - font-size: "14px"
+            - font-weight: 430
+            - margin-left: "40%"
+            - text-overflow: "ellipsis"
+            - overflow: "hidden"
+            - margin-top: "-38%"       
+    item2:
+      card:
+        type: "custom:button-card"
+        show_name: false
+        show_label: true
+        show_icon: true
+        label: "Měsíc"
+        entity: input_number.counter_graph
+        icon: mdi:alpha-m-box-outline
+        tap_action:
+          action: call-service
+          service: script.convert_to_action
+          service_data:
+            service1: switch.turn_off
+            entity_id1: switch.energy_yearly_view
+            service2: switch.turn_off
+            entity_id2: switch.energy_daily_view
+            service3: switch.turn_on
+            entity_id3: switch.energy_monthly_view
+        hold_action:
+          action: none
+        double_tap_action:
+          action: none
+        styles:
+          card:
+            - box-shadow: "none"
+            - border-radius: "42px"
+            - background-color: "transparent"      
+            - height: "42px"
+            - width: "106px"
+            - padding: "0px"
+          icon:
+            - justify-self: "start"
+            - left: -13%
+            - line-height: "0"
+            - height: "70%"
+            - width: "70%"
+            - color: >-
+                [[[
+                  if (states['switch.energy_monthly_view'].state == 'on' )
+                    return "rgba(var(--color-blue), 1)";
+                ]]]
+          label:
+            - justify-self: "start"
+            - font-size: "14px"
+            - font-weight: 430
+            - margin-left: "40%"
+            - text-overflow: "ellipsis"
+            - overflow: "hidden"
+            - margin-top: "-38%" 
+
+    item3:
+      card:
+        type: "custom:button-card"
+        show_name: false
+        show_label: true
+        show_icon: true
+        label: "Rok"
+        entity: input_number.counter_graph
+        icon: mdi:alpha-r-box-outline
+        tap_action:
+          action: call-service
+          service: script.convert_to_action
+          service_data:
+            service1: switch.turn_off
+            entity_id1: switch.energy_monthly_view
+            service2: switch.turn_off
+            entity_id2: switch.energy_daily_view
+            service3: switch.turn_on
+            entity_id3: switch.energy_yearly_view
+        hold_action:
+          action: none
+        double_tap_action:
+          action: none
+        styles:
+          card:
+            - box-shadow: "none"
+            - border-radius: "42px"
+            - background-color: "transparent"        
+            - height: "42px"
+            - width: "106px"
+            - padding: "0px"
+          icon:
+            - justify-self: "start"
+            - left: -13%
+            - line-height: "0"
+            - height: "70%"
+            - width: "70%"
+            - color: >-
+                [[[
+                  if (states['switch.energy_yearly_view'].state == 'on' )
+                    return "rgba(var(--color-blue), 1)";
+                ]]]
+          label:
+            - justify-self: "start"
+            - font-size: "14px"
+            - font-weight: 430
+            - margin-left: "45%"
+            - text-overflow: "ellipsis"
+            - overflow: "hidden"
+            - margin-top: "-38%"    
+    # item4:
+    #   card:
+    #     type: custom:button-card
+    #     name: >
+    #       [[[
+    #         return "Soběstačnost " + states['sensor.energy_effectivity'].state + " %"
+    #       ]]]
+    #     color: "var(--google-grey-500)"
+    #     entity: sensor.energy_effectivity
+    #     show_name: true
+    #     show_icon: false
+    #     custom_fields:
+    #       bar: |
+    #         [[[
+    #           var color = "linear-gradient(to right, rgba(var(--color-background-black),0.0), rgba(var(--color-background-blue2),0.1), rgba(var(--color-background-blue2),0.15),rgba(var(--color-background-blue2),0.25) ,rgba(var(--color-background-blue2),0.35))";
+    #           var state = states['sensor.energy_effectivity'].state;
+    #           return `
+    #           <div>
+    #           <div style="background:${color}; height: 66px; width:${state}%">
+    #           </div>
+    #           </div>
+    #           `
+    #         ]]]
+    #     styles:
+    #       custom_fields:
+    #         bar:
+    #           - justify-self: start         
+    #           - width: 100%
+    #           - height: 66px
+    #           - margin-top: '-55px'
+    #       grid:
+    #         - grid-template-areas: '"i i i" "n n n" "bar bar bar"'
+    #         - grid-template-columns: 1fr 1fr 1fr
+    #         - justify-items: "center"
+    #       card:
+    #         - padding: 0px
+    #         - height: "95%"
+    #         - box-shadow: "var(--box-shadow)"
+    #         - background-color: rgba(var(--color-background-black),0.3);
+            
+    #         - max-width: 100%
+    #       img_cell:
+    #         - background-color: "rgba(var(--color-background-blue),0.3)"
+    #         - border-radius: "85%"
+    #         - width: "43px"
+    #         - height: "43px"
+    #         - max-width: "none"
+    #         - max-height: "none"
+    #         - position: "absolute"
+    #         - left: "47%"
+    #         - top: "46%"
+    #         - transform: "translate(-50%,-50%)"
+    #         - margin-top: "2%"
+    #         - margin-left: "-24%"
+    #       name:
+    #         - justify-self: "start"
+    #         - align-self: "end"
+    #         - font-size: "14px"
+    #         - font-weight: 430
+    #         - margin-left: "52px"
+    #         - margin-top: "14px"
+    #         - max-width: "[[[ return `calc(100% - (12px + ${!variables?.entity_2 ? 5 : 0}px))`; ]]]"
+    #         - text-overflow: "ellipsis"
+    #         - overflow: "hidden"
+        
+  styles:
+    card:
+      - padding: 0px
+      - height: "42px"
+      - box-shadow: "var(--box-shadow)"
+      - background-color: rgba(var(--color-background-black),0.3);
+      - border-radius: "42px"
+    grid:
+      - grid-template-areas: 
+          '"item1 item2 item3"'
+      - grid-template-columns: 1fr 1fr 1fr 
+      - grid-template-rows: 1fr
+
+    custom_fields:
+      item1:
+        - place-self:  stretch end
+        - justify-self: left
+      item2:
+        - place-self:  stretch end
+        - justify-self: center
+      item3:
+        - place-self:  stretch end
+        - justify-self: right
+
+- type: custom:button-card
+  name: Livingroom
+  entity: input_boolean.alarmed_toggle
+  show_icon: false
+  show_label: false
+  show_name: false
+  tap_action:
+    action: none    
+  custom_fields:
+    item1:
+      card:
+        type: "custom:button-card"
+        show_name: false
+        show_label: true
+        show_icon: true
+        label: "Předchozí"
+        entity: input_number.counter_graph
+        icon: mdi:arrow-left-bold-box-outline
+        tap_action:
+          action: call-service
+          service: script.convert_to_action
+          service_data:
+            service1: input_number.decrement
+            entity_id1: input_number.counter_graph
+            service2: input_boolean.turn_off
+            entity_id2: input_boolean.switch_current
+        styles:
+          card:
+            - box-shadow: "none"
+            - border-radius: "42px"
+            - background-color: "transparent"                 
+            - height: "42px"
+            - width: "106px"
+            - padding: "0px"
+          icon:
+            - justify-self: "start"
+            - left: -13%
+            - line-height: "0"
+            - height: "70%"
+            - width: "70%"
+            - color: >-
+                [[[
+                  if (states['input_number.counter_graph'].state == -5.0 )
+                    return "rgba(var(--color-grey), 1)";
+                ]]]
+
+          label:
+            - justify-self: "start"
+            - font-size: "14px"
+            - font-weight: 430
+            - margin-left: "38%"
+            - text-overflow: "ellipsis"
+            - overflow: "hidden"
+            - margin-top: "-40%"       
+            - color: >-
+                [[[
+                  if (states['input_number.counter_graph'].state == -5.0 )
+                    return "rgba(var(--color-grey), 1)"; 
+                ]]]  
+    item2:
+      card:
+        type: "custom:button-card"
+        show_name: false
+        show_label: true
+        show_icon: true
+        label: "Aktuální"
+        entity: input_number.counter_graph
+        icon: mdi:bullseye
+        styles:
+          card:
+            - box-shadow: "none"
+            - border-radius: "42px"
+            - background-color: "transparent"      
+            - height: "42px"
+            - width: "106px"
+            - padding: "0px"
+          icon:
+            - justify-self: "start"
+            - left: -13%
+            - line-height: "0"
+            - height: "70%"
+            - width: "70%"
+            - color: >-
+                [[[
+                  if (states['input_boolean.switch_current'].state == "on" )
+                    return "rgba(var(--color-blue), 1)";
+                ]]]
+          label:
+            - justify-self: "start"
+            - font-size: "14px"
+            - font-weight: 430
+            - margin-left: "45%"
+            - text-overflow: "ellipsis"
+            - overflow: "hidden"
+            - margin-top: "-40%"   
+        tap_action:
+          action: call-service
+          service: script.multi_tap_action
+          data:
+            actions:
+              - service: input_number.set_value
+                entity_id: input_number.counter_graph
+                data:
+                  value: 0
+              - service: input_boolean.turn_on
+                entity_id: input_boolean.switch_current
+
+    item3:
+      card:
+        type: "custom:button-card"
+        show_name: false
+        show_label: true
+        show_icon: true
+        label: "Další"
+        entity: input_number.counter_graph
+        icon: mdi:arrow-right-bold-box-outline
+        tap_action:
+          action: call-service
+          service: script.convert_to_action
+          service_data:
+            service1: input_number.increment
+            entity_id1: input_number.counter_graph
+            service2: input_boolean.turn_off
+            entity_id2: input_boolean.switch_current
+        styles:
+          card:
+            - box-shadow: "none"
+            - border-radius: "42px"
+            - background-color: "transparent"      
+            - height: "42px"
+            - width: "106px"
+            - padding: "0px"
+          icon:
+            - justify-self: "start"
+            - left: 40%
+            - line-height: "0"
+            - height: "70%"
+            - width: "70%"
+            - color: >-
+                [[[
+                  if (states['input_number.counter_graph'].state == 0.0 )
+                    return "rgba(var(--color-grey), 1)";
+                ]]]
+          label:
+            - justify-self: "start"
+            - font-size: "14px"
+            - font-weight: 430
+            - margin-left: "26%"
+            - text-overflow: "ellipsis"
+            - overflow: "hidden"
+            - margin-top: "-40%"   
+            - color: >-
+                [[[
+                  if (states['input_number.counter_graph'].state == 0.0 )
+                    return "rgba(var(--color-grey), 1)"; 
+                ]]]   
+        
+  styles:
+    card:
+      - padding: 0px
+      - height: "42px"
+      - box-shadow: "var(--box-shadow)"
+      - background-color: rgba(var(--color-background-black),0.3);
+      - border-radius: "42px"
+    grid:
+      - grid-template-areas: 
+          '"item1 item2 item3"'
+      - grid-template-columns: 1fr 1fr 1fr
+      - grid-template-rows: 1fr
+
+    custom_fields:
+      item1:
+        - place-self:  stretch end
+        - justify-self: left
+      item2:
+        - place-self:  stretch end
+        - justify-self: center
+      item3:
+        - place-self:  stretch end
+        - justify-self: right
+

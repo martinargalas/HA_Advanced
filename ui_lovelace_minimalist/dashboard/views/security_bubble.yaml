@@ -1,0 +1,39 @@
+type: custom:layout-card
+layout_type: custom:grid-layout
+
+layout:
+  grid-template-columns: "1fr 1fr"
+  grid-template-rows: "min-content"
+  grid-template-areas: >
+    "security_arm_title security_play_streams_title"
+    "security_arm security_play_streams"
+    "security_stream_front_title security_stream_front_title"
+    "security_stream_front security_stream_front"
+    "security_stream_garden_title security_stream_garden_title"
+    "security_stream_garden security_stream_garden"
+
+cards:
+
+# ARM TITLE
+  - !include /config/ui_lovelace_minimalist/cards/bubble_cards/security/security_arm_title.yaml
+
+# ARM
+  - !include /config/ui_lovelace_minimalist/cards/bubble_cards/security/security_arm.yaml
+
+# FRONT TITLE
+  - !include /config/ui_lovelace_minimalist/cards/bubble_cards/security/security_stream_front_title.yaml
+
+# GARDEN TITLE
+  - !include /config/ui_lovelace_minimalist/cards/bubble_cards/security/security_stream_garden_title.yaml
+
+# PLAY STREAMS TITLE
+  - !include /config/ui_lovelace_minimalist/cards/bubble_cards/security/security_play_streams_title.yaml
+
+# PLAY STREAMS
+  - !include /config/ui_lovelace_minimalist/cards/bubble_cards/security/security_play_streams.yaml
+
+# STREAM FRONT
+  - !include /config/ui_lovelace_minimalist/cards/bubble_cards/security/security_stream_front.yaml
+
+# STREAM GARDEN
+  - !include /config/ui_lovelace_minimalist/cards/bubble_cards/security/security_stream_garden.yaml

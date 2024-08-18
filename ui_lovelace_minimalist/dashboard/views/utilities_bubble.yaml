@@ -1,0 +1,64 @@
+type: custom:layout-card
+layout_type: custom:grid-layout
+
+layout:
+  grid-template-columns: 0.5fr 0.5fr 0.5fr 0.5fr
+  grid-template-rows: min-content
+  grid-template-areas: >
+    "temperature_setting_title temperature_setting_title temperature_setting_title temperature_setting_title"
+    "thermostat_living_room thermostat_living_room thermostat_office thermostat_office"
+    "thermostat_kids thermostat_kids thermostat_bedroom thermostat_bedroom"
+    "thermostat_hallway thermostat_hallway temperature_outside temperature_outside"
+    "heatpump_title heatpump_title heatpump_title heatpump_title"
+    "circulation_pump circulation_pump compressor compressor"
+    "frost_protection frost_protection water_heating water_heating"
+    "thermostat_small thermostat_small thermostat_small thermostat_small"
+    "chart_heating chart_heating chart_heating chart_heating"
+    "chart_heating_water chart_heating_water chart_heating_water chart_heating_water"
+
+cards:
+
+# ROOM TEMPERATURE SETTING TITLE  
+  - !include /config/ui_lovelace_minimalist/cards/bubble_cards/utilities/utilities_room_temperature_title.yaml
+
+# HEAT PUMP TITLE  
+  - !include /config/ui_lovelace_minimalist/cards/bubble_cards/utilities/utilities_heat_pump_title.yaml
+
+# THERMOSTAT LIVING ROOM  
+  - !include /config/ui_lovelace_minimalist/cards/bubble_cards/utilities/utilities_thermostat_living_room.yaml
+
+# THERMOSTAT OFFICE                
+  - !include /config/ui_lovelace_minimalist/cards/bubble_cards/utilities/utilities_thermostat_office.yaml
+
+# THERMOSTAT KIDS               
+  - !include /config/ui_lovelace_minimalist/cards/bubble_cards/utilities/utilities_thermostat_kids.yaml
+
+# THERMOSTAT BEDROOM                
+  - !include /config/ui_lovelace_minimalist/cards/bubble_cards/utilities/utilities_thermostat_bedroom.yaml
+  
+# THERMOSTAT HALLWAY                
+  - !include /config/ui_lovelace_minimalist/cards/bubble_cards/utilities/utilities_thermostat_hallway.yaml
+
+# CIRCULATION PUMP                
+  - !include /config/ui_lovelace_minimalist/cards/bubble_cards/utilities/utilities_circulation_pump.yaml
+
+# COMPRESSOR          
+  - !include /config/ui_lovelace_minimalist/cards/bubble_cards/utilities/utilities_compressor.yaml
+
+# FROST PROTECTION          
+  - !include /config/ui_lovelace_minimalist/cards/bubble_cards/utilities/utilities_frost_protection.yaml
+
+# WATER HEATING
+  - !include /config/ui_lovelace_minimalist/cards/bubble_cards/utilities/utilities_water_heating.yaml
+
+# THERMOSTAT
+  - !include /config/ui_lovelace_minimalist/cards/bubble_cards/utilities/utilities_thermostat_small.yaml
+
+# TEMPERATURE OUTSIDE         
+  - !include /config/ui_lovelace_minimalist/cards/bubble_cards/utilities/utilities_temperature_outside.yaml
+
+# CHART HEATING
+  - !include /config/ui_lovelace_minimalist/cards/bubble_cards/utilities/utilities_chart_heating.yaml
+
+# CHART HEATING WATER
+  - !include /config/ui_lovelace_minimalist/cards/bubble_cards/utilities/utilities_chart_heating_water.yaml

@@ -1,0 +1,32 @@
+view_layout:
+  grid-area: "wc"     
+  place-self: left end stretch
+type: 'custom:button-card'
+template:
+  - card_room
+  - yellow_on
+  - grey_no_state      
+name: WC
+entity: switch.lightwc_2
+icon: mdi:toilet
+label: >
+  [[[
+    return "🌡️" + Math.round((states['sensor.wc_temperature_1'].state) * 100) / 100 + " °C"
+  ]]]
+tap_action:
+  action: toggle
+variables:
+  label_use_temperature: false
+  label_use_brightness: true
+  entity_1:
+    entity_id: switch.lightwc_2
+    templates:
+      - yellow_on
+    tap_action:
+      action: toggle
+  entity_2:
+    entity_id: binary_sensor.wc_motion_sensor
+    templates:
+      - blue_on
+    tap_action:
+      action:

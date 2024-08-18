@@ -1,0 +1,6 @@
+view_layout:
+  grid-area: "garden_title"
+type: custom:bubble-card
+card_type: separator
+name: Zahrada
+icon: mdi:flower-tulip

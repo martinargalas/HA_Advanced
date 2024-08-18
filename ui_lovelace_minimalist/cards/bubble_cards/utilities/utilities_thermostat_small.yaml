@@ -1,0 +1,6 @@
+view_layout:
+  grid-area: thermostat_small        
+type: custom:mushroom-climate-card
+entity: climate.e3_vitocal_heating
+name: Stav
+icon: mdi:heat-pump

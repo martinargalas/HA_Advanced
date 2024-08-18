@@ -1,0 +1,12 @@
+type: custom:layout-card
+layout_type: custom:grid-layout
+
+layout:
+  grid-template-columns: "1fr"
+  grid-template-rows: "min-content"
+  grid-template-areas: >
+    "security_stream_front"
+
+cards:
+# STREAM FRONT
+  - !include /config/ui_lovelace_minimalist/cards/bubble_cards/security/security_stream_front.yaml

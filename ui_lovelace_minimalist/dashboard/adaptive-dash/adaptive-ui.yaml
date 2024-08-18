@@ -1,0 +1,332 @@
+resources:
+  - url: https://unpkg.com/moment@2.22.2/min/moment.min.js
+    type: js
+  - url: https://cdn.jsdelivr.net/npm/flatpickr
+    type: js
+  - url: https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css
+    type: css
+  - url: /local/custom_ui/alarm-clock-card/alarm-clock-card.js?v=0.5.0
+    type: module
+
+wallpanel:
+  enabled: true
+  hide_toolbar: true
+  hide_sidebar: true
+  fullscreen: false
+  image_animation_ken_burns: true
+  image_animation_ken_burns_zoom: 1.3
+  image_animation_ken_burns_delay: 15
+  stop_screensaver_on_mouse_move: false
+  idle_time: 60
+  display_time: 120
+  show_progress_bar: true
+  card_interaction: false
+  
+  type: "custom:grid-layout"
+  layout:
+    grid-template-rows: "min-content"
+    grid-template-columns: "0.1fr"
+    grid-template-areas: >
+      "clock"
+      "weather"
+      "fill"
+      "calendar"
+      "news"
+      "test"
+      "player"
+
+  cards:   
+  - view_layout:
+      grid-area: "fill"
+      place-self: left stretch end
+    type: custom:button-card
+    styles:
+      card:
+        - height: 200px
+        - top: -48px
+        - left: -30px
+        - width: 1280px
+        - border: none
+        - background: linear-gradient(to bottom, rgba(var(--color-background-blue2),0.5), rgba(var(--color-background-blue2),0.3),rgba(var(--color-background-blue2),0.2), transparent)
+        - backdrop-filter: blur(1.5px)
+        - border-radius: 10px 10px 1px 1px
+        - box-shadow: none
+
+  - view_layout:
+      grid-area: "calendar"
+    type: custom:swipe-card
+    parameters:
+      effect: 'cube'
+      speed: 500
+      slideShadows: false
+      autoplay:
+        delay: 60000
+        disableOnInteraction: false
+      cubeEffect:
+        slideShadows: false
+        shadow: false
+    cards:
+      - type: custom:atomic-calendar-revive
+        name: 
+        showLoader: true
+        enableModeChange: true
+        card_mod:
+          style: |       
+            ha-card {
+                background: transparent !important;
+                border: none !important;
+                color: white !important;
+                box-shadow: none !important;
+                left: 270px !important;
+                top: -240px !important;
+                width: 550px !important;
+                
+            }
+            .current-day{
+                color: white !important;
+                font-size: 24px !important;
+            }
+            .event-left
+            {
+                color: white !important;
+                font-size: 24px !important;
+            }
+            .relative-time.time-remaining
+            {
+                color: white !important;
+                font-size: 18px !important;
+            }
+            .hours
+            {
+                color: white !important;
+                font-size: 18px !important;
+            }
+            .event-title.Event
+            {
+                color: white !important;
+                font-size: 24px !important;
+            }
+            .event-title.running.event
+            {
+                color: white !important;
+                font-size: 24px !important;
+            }
+            .hr.event
+            {
+              color: white !important;
+            }
+        entities:
+          - entity: calendar.family
+            name: Family
+            maxDaysToShow: 4
+          - entity: calendar.utilities
+            name: Utilities
+            maxDaysToShow: 4
+          - entity: calendar.ceske_statni_svatky
+            name: České státní svátky
+            maxDaysToShow: 4
+            
+        eventTitleColor: white    
+        defaultMode: Event
+        showHiddenText: false
+        showEventIcon: false
+        calShowDescription: false
+        disableCalEventLink: false
+        showLastCalendarWeek: false
+        disableCalLink: false
+        dimFinishedEvents: true
+        showDate: false
+        showCurrentEventLine: false
+        showMonth: true
+        showWeekDay: true
+        showDescription: false
+        disableLocationLink: true
+        showNoEventsForToday: true
+        showFullDayProgress: false
+        showCalendarName: false
+        showWeekNumber: false
+        showEventDate: true
+        showDatePerEvent: false
+        showAllDayHours: false
+        hoursOnSameLine: false
+        maxDaysToShow: 10
+        showTimeRemaining: false
+        disableEventLink: false       
+
+      - type: custom:logbook-card
+        entity: input_text.newsitem_title
+        max_items: 2
+        show:
+          state: true
+          duration: true
+          start_date: false
+          end_date: false
+          icon: false
+          separator: true
+          entity_name: true
+        custom_logs: false
+        separator_style:
+          color: white
+        desc: true
+        title: ''
+        card_mod:
+          style: |
+            ha-card {
+                background: transparent !important;
+                border: none !important;
+                box-shadow: none !important;
+                font-size: 20px !important;
+                font-weight: normal !important;
+                color: white !important;
+                left: 270px !important;
+                top: -240px !important;
+                width: 550px !important;
+            }
+
+  - view_layout:
+      grid-area: "clock"
+      place-self: left stretch end
+    type: picture-elements
+    elements:
+      - type: state-label
+        entity: sensor.time
+        style:
+          font-family: Roboto
+          font-size: 600%
+          color: white
+          left: 28%
+          top: 20%
+          pointer-events: none
+          font-weight: 500
+        card:
+          - width: 100px
+
+    image: "/local/community/spotify/1.png"
+    card_mod:
+      style: |
+        ha-card {
+          background: transparent !important; 
+          box-shadow: none !important;
+          top: -370px !important;
+          left: -10px !important;
+        }
+
+  - view_layout:
+      grid-area: "weather"
+      place-self: left stretch end
+    type: custom:clock-weather-card
+    entity: weather.accuweatherforecast
+    sun_entity: sun.sun
+    temperature_sensor: sensor.outdoor_temp
+    weather_icon_type: fill
+    animated_icon: true
+    forecast_rows: 5
+    time_pattern: HH:mm
+    time_format: 24
+    date_pattern: ccc, d.MM.yyyy
+    hide_today_section: false
+    hide_forecast_section: true
+    hide_clock: true
+    hide_date: true
+    hourly_forecast: false
+    use_browser_time: false
+    time_zone: null
+    card_mod:
+      style: |
+        ha-card {
+            top: -610px !important; 
+            left: 810px !important; 
+            background: transparent !important; 
+            box-shadow: none !important;
+            color: white !important; 
+            font-weight: 500 !important;                      
+          }
+  - view_layout:
+      grid-area: "test"
+    type: custom:button-card
+    entity: sensor.streamassist_kitchen_stt
+    primary_info: none
+    secondary_info: none
+    icon_type: none
+    card_mod:
+      style: |
+        ha-card {
+          content: '';
+          left: -30px !important; 
+          top: -880px !important;
+          width: 1280px !important; 
+          max-height: 1px !important; 
+          {% if is_state(config.entity, 'start') %}
+            animation-name: gradient-shadow; !important; 
+          {% endif %} 
+          animation-timing-function: ease;
+          animation-duration: 3s;
+          animation-iteration-count: infinite;
+          box-shadow: none;
+          background: transparent;
+        }
+
+        @keyframes gradient-shadow {
+          0% {
+            box-shadow: 0 0 20px 5px red,0 0 80px 10px blue;
+          }
+          20% {
+            box-shadow: 0 0 20px 5px orange,0 0 80px 10px purple;
+          }
+          40% {
+            box-shadow: 0 0 20px 5px yellow,0 0 80px 10px red;
+          }
+          60% {
+            box-shadow: 0 0 20px 5px green,0 0 80px 10px yellow;
+          }
+          80% {
+            box-shadow: 0 0 20px 5px blue,0 0 80px 10px yellow;
+          }
+          100% {
+            box-shadow: 0 0 20px 5px purple,0 0 80px 10px green;
+          }
+        }
+  - view_layout:
+      grid-area: "player"
+      place-self: left stretch end
+    type: conditional
+    conditions:
+      - condition: state
+        entity: media_player.tablet
+        state: "playing"
+    card:
+      type: entities
+      entities:
+      - type: custom:mini-media-player
+        entity: media_player.ytube_music_player
+        name: 'Hudba'
+        icon: mdi:music
+        group: false
+        source: icon
+        artwork: full-cover 
+        sound_mode: full
+        info: short
+        volume_stateless: true
+        hide:
+          volume: true
+          source: true
+          power: true
+          controls: true
+        card_mod:
+          style: |
+            ha-card {
+                top: -680px !important; 
+                left: 350px !important; 
+                background: transparent !important; 
+                box-shadow: none !important;
+                color: white !important; 
+                font-weight: 500 !important;                      
+              }
+
+    
+button_card_templates: !include_dir_merge_named "../../../custom_components/ui_lovelace_minimalist/__ui_minimalist__/ulm_templates/"
+cards: !include_dir_merge_named "../../../ui_lovelace_minimalist/cards/"
+title: "Tablet"
+views:
+  - !include views/home.yaml
+

@@ -1,0 +1,27 @@
+wallpanel:
+  enabled: true
+  hide_toolbar: true
+  hide_sidebar: true
+  fullscreen: false
+  image_animation_ken_burns: true
+  image_animation_ken_burns_zoom: 1.3
+  image_animation_ken_burns_delay: 15
+  idle_time: 30000
+  display_time: 100
+  show_progress_bar: true
+
+  type: "custom:grid-layout"
+  layout:
+    grid-template-rows: "min-content"
+    grid-template-columns: "0.1fr"
+    grid-template-areas: >
+      "clock"
+      "weather"
+      "fill"
+
+button_card_templates: !include_dir_merge_named "../../../custom_components/ui_lovelace_minimalist/__ui_minimalist__/ulm_templates/"
+cards: !include_dir_merge_named "../../../ui_lovelace_minimalist/cards/"
+title: "Tablet"
+views:
+  - !include views/home.yaml
+

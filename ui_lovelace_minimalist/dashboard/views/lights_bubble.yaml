@@ -1,0 +1,57 @@
+type: custom:layout-card
+layout_type: custom:grid-layout
+
+layout:
+  grid-template-columns: "1fr 1fr"
+  grid-template-rows: "min-content"
+  grid-template-areas: >
+    "living_room_title living_room_title" 
+    "living_room_1 living_room_1"
+    "kitchen_title kitchen_title" 
+    "kitchen_1 kitchen_1"
+    "hallway_title hallway_title"
+    "hallway_1 hallway_1" 
+    "garden_title garden_title" 
+    "garden_1 garden_1"
+    "wc_title wc_title"        
+    "wc_1 wc_1"
+    "laundry_title laundry_title"
+    "laundry_1 laundry_1"
+
+cards:
+# LIVING ROOM TITLE          
+  - !include /config/ui_lovelace_minimalist/cards/bubble_cards/lights/lights_living_room_title.yaml
+
+# KITCHEN TITLE    
+  - !include /config/ui_lovelace_minimalist/cards/bubble_cards/lights/lights_kitchen_title.yaml
+
+#HALLWAY TITLE    
+  - !include /config/ui_lovelace_minimalist/cards/bubble_cards/lights/lights_hallway_title.yaml
+
+# WC TITLE    
+  - !include /config/ui_lovelace_minimalist/cards/bubble_cards/lights/lights_wc_title.yaml
+
+# LAUNDRY TITLE    
+  - !include /config/ui_lovelace_minimalist/cards/bubble_cards/lights/lights_laundry_title.yaml
+
+# GARDEN TITLE    
+  - !include /config/ui_lovelace_minimalist/cards/bubble_cards/lights/lights_garden_title.yaml 
+
+# LIVING ROOM
+  - !include /config/ui_lovelace_minimalist/cards/bubble_cards/lights/lights_living_room.yaml
+
+# KITCHEN
+  - !include /config/ui_lovelace_minimalist/cards/bubble_cards/lights/lights_kitchen.yaml
+
+# HALLWAY
+  - !include /config/ui_lovelace_minimalist/cards/bubble_cards/lights/lights_hallway.yaml
+
+# WC
+  - !include /config/ui_lovelace_minimalist/cards/bubble_cards/lights/lights_wc.yaml
+
+# LAUNDRY
+  - !include /config/ui_lovelace_minimalist/cards/bubble_cards/lights/lights_laundry.yaml
+
+# GARDEN
+  - !include /config/ui_lovelace_minimalist/cards/bubble_cards/lights/lights_garden.yaml 
+

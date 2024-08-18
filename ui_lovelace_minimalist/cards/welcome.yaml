@@ -1,0 +1,17 @@
+view_layout:
+  grid-area: "welcome"
+  place-self: left end stretch
+type: custom:mushroom-title-card    
+style:
+  font-family: Roboto
+  font-weight: 99
+title: >
+    {{ states['sensor.day_in_week_name'].state  }}, {{ states['sensor.day_in_week'].state  }}. {{ states['sensor.month_name'].state  }}
+    {{- '\n' -}}
+    Svátek má {{states["sensor.nameday"].state}}  
+card_mod:
+  style: |
+    ha-card {
+      font-variant: Roboto
+      background: transparent;
+      max-height: 80px

@@ -1,0 +1,6 @@
+view_layout:
+  grid-area: "radar_title"
+type: custom:bubble-card
+card_type: separator
+name: Radar
+icon: mdi:radar

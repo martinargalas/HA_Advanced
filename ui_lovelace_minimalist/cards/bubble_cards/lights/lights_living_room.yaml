@@ -1,0 +1,60 @@
+view_layout:
+  grid-area: "living_room_1"
+type: entities
+show_header_toggle: false
+card_mod:
+  style: |
+    ha-card {
+        background-color: rgba(var(--color-grey),0.1)
+      }
+entities:
+  - type: "custom:button-card"
+    template:
+      - card_light_slider_collapse_color
+      - yellow_on
+      - grey_no_state
+    entity: light.living_room
+    variables:
+      ulm_card_light_enable_slider: true
+      ulm_card_light_enable_color: true
+      ulm_card_light_enable_popup_tap: false
+      ulm_card_light_enable_buttons: true
+      ulm_card_light_name: "Pohovka"
+      ulm_card_light_slider_horizontal_colors_name: Ceiling light
+      ulm_card_light_slider_horizontal_colors_transition: 1
+      ulm_card_light_enable_collapse: false
+      ulm_card_light_force_background_color: false
+    card_mod:
+      style: |
+        ha-card {
+            background-color: rgba(var(--color-background-black),0.3)
+          }
+  - type: custom:rgb-light-card
+    entity: light.living_room
+    justify: center
+    colors:
+      - type: call-service
+        service: scene.turn_on
+        service_data:
+          entity_id: scene.living_room_relax
+        icon_color: center/140% url('http://192.168.68.50:8123/local/community/spotify/Relax.png')
+      - type: call-service
+        service: scene.turn_on
+        service_data:
+          entity_id: scene.kuchyne_concentrate
+        icon_color: center/120% url('http://192.168.68.50:8123/local/community/spotify/Concentrate.png')
+      - type: call-service
+        service: scene.turn_on
+        service_data:
+          entity_id: scene.kuchyne_read
+        icon_color: center/120% url('http://192.168.68.50:8123/local/community/spotify/Read.png')
+      - type: call-service
+        service: scene.turn_on
+        service_data:
+          entity_id: scene.kuchyne_nightlight
+        icon_color: center/120% url('http://192.168.68.50:8123/local/community/spotify/Night.png')
+      - type: call-service
+        service: scene.turn_on
+        service_data:
+          entity_id: scene.kuchyne_natural_light
+        icon_color: center/120% url('http://192.168.68.50:8123/local/community/spotify/Natural.png')

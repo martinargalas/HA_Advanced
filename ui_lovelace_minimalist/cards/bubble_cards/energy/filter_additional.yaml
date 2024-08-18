@@ -1,0 +1,255 @@
+view_layout:
+  grid-area: "filter_additional"
+type: custom:button-card
+entity: input_boolean.alarmed_toggle
+show_icon: false
+show_label: false
+show_name: false
+tap_action:
+  action: none    
+custom_fields:
+  item1:
+    card:
+      type: "custom:button-card"
+      show_name: false
+      show_label: false
+      show_icon: true
+      label: "Předchozí"
+      entity: input_number.counter_graph
+      icon: mdi:chevron-left
+      card_mod:
+        style: |
+          ha-card {
+            border-radius: 42px 0px 0px 42px !important;
+          }
+      tap_action:
+        action: call-service
+        service: script.convert_to_action
+        service_data:
+          service1: input_number.decrement
+          entity_id1: input_number.counter_graph
+          service2: input_boolean.turn_off
+          entity_id2: input_boolean.switch_current
+      styles:
+        card:
+          - box-shadow: "none"
+          - border-radius: "42px"
+          - background-color: "transparent"                 
+          - height: "42px"
+          - width: "40px"
+          - padding: "0px"
+        icon:
+          - justify-self: "start"
+          - line-height: "0"
+          - height: "85%"
+          - width: "85%"
+          - color: >-
+              [[[
+                if (states['input_number.counter_graph'].state == -5.0 )
+                  return "rgba(var(--color-grey), 1)";
+              ]]]
+
+        label:
+          - justify-self: "start"
+          - font-size: "14px"
+          - font-weight: 430
+          - margin-left: "35%"
+          - text-overflow: "ellipsis"
+          - overflow: "hidden"
+          - margin-top: "-33%"     
+          - color: >-
+              [[[
+                if (states['input_number.counter_graph'].state == -5.0 )
+                  return "rgba(var(--color-grey), 1)"; 
+              ]]]  
+  item2:
+    card:
+      type: "custom:button-card"
+      show_name: false
+      show_label: false
+      show_icon: true
+      label: " "
+      entity: input_number.counter_graph
+      icon: mdi:chevron-right
+      card_mod:
+        style: |
+          ha-card {
+            border-radius: 0px 42px 42px 0px  !important;
+          }
+      tap_action:
+        action: call-service
+        service: script.convert_to_action
+        service_data:
+          service1: input_number.increment
+          entity_id1: input_number.counter_graph
+          service2: input_boolean.turn_off
+          entity_id2: input_boolean.switch_current
+      styles:
+        card:
+          - box-shadow: "none"
+          - border-radius: "42px"
+          - background-color: "transparent"      
+          - height: "42px"
+          - width: "40px"
+          - padding: "0px"
+        icon:
+          - justify-self: "start"
+          - line-height: "0"
+          - height: "85%"
+          - width: "85%"
+          - color: >-
+              [[[
+                if (states['input_number.counter_graph'].state == 0.0 )
+                  return "rgba(var(--color-grey), 1)";
+              ]]]
+        label:
+          - justify-self: "start"
+          - font-size: "14px"
+          - font-weight: 430
+          - margin-left: "14%"
+          - text-overflow: "ellipsis"
+          - overflow: "hidden"
+          - margin-top: "-33%"   
+          - color: >-
+              [[[
+                if (states['input_number.counter_graph'].state == 0.0 )
+                  return "rgba(var(--color-grey), 1)"; 
+              ]]]
+  item3:
+    card:
+      type: "custom:button-card"
+      show_name: false
+      show_label: true
+      show_icon: false
+      label: "Nyní"
+      entity: input_number.counter_graph
+      icon: mdi:alpha-d-box-outline
+      tap_action:
+        action: call-service
+        service: script.multi_tap_action
+        data:
+          actions:
+            - service: input_number.set_value
+              entity_id: input_number.counter_graph
+              data:
+                value: 0
+            - service: input_boolean.turn_on
+              entity_id: input_boolean.switch_current
+      hold_action:
+        action: none
+      double_tap_action:
+        action: none
+      styles:
+        card:
+          - box-shadow: "none"
+          - border-radius: "42px"
+          - background-color: "transparent"            
+          - height: "42px"
+          - width: "80px"
+          - padding: "0px"
+        icon:
+          - justify-self: "start"
+          - left: -13%
+          - line-height: "0"
+          - height: "70%"
+          - width: "70%"
+          - color: >-
+              [[[
+                if (states['switch.energy_daily_view'].state == 'on' )
+                  return "rgba(var(--color-blue), 1)";
+              ]]]
+        label:
+          - justify-self: "center"
+          - font-size: "14px"
+          - font-weight: 430
+          - text-overflow: "ellipsis"
+          - overflow: "hidden"
+
+  # item4:
+  #   card:
+  #     type: custom:button-card
+  #     name: >
+  #       [[[
+  #         return "Soběstačnost " + states['sensor.energy_effectivity'].state + " %"
+  #       ]]]
+  #     color: "var(--google-grey-500)"
+  #     entity: sensor.energy_effectivity
+  #     show_name: true
+  #     show_icon: false
+  #     custom_fields:
+  #       bar: |
+  #         [[[
+  #           var color = "linear-gradient(to right, rgba(var(--color-background-black),0.0), rgba(var(--color-background-blue2),0.1), rgba(var(--color-background-blue2),0.15),rgba(var(--color-background-blue2),0.25) ,rgba(var(--color-background-blue2),0.35))";
+  #           var state = states['sensor.energy_effectivity'].state;
+  #           return `
+  #           <div>
+  #           <div style="background:${color}; height: 66px; width:${state}%">
+  #           </div>
+  #           </div>
+  #           `
+  #         ]]]
+  #     styles:
+  #       custom_fields:
+  #         bar:
+  #           - justify-self: start         
+  #           - width: 100%
+  #           - height: 66px
+  #           - margin-top: '-55px'
+  #       grid:
+  #         - grid-template-areas: '"i i i" "n n n" "bar bar bar"'
+  #         - grid-template-columns: 1fr 1fr 1fr
+  #         - justify-items: "center"
+  #       card:
+  #         - padding: 0px
+  #         - height: "95%"
+  #         - box-shadow: "var(--box-shadow)"
+  #         - background-color: rgba(var(--color-background-black),0.3);
+          
+  #         - max-width: 100%
+  #       img_cell:
+  #         - background-color: "rgba(var(--color-background-blue),0.3)"
+  #         - border-radius: "85%"
+  #         - width: "43px"
+  #         - height: "43px"
+  #         - max-width: "none"
+  #         - max-height: "none"
+  #         - position: "absolute"
+  #         - left: "47%"
+  #         - top: "46%"
+  #         - transform: "translate(-50%,-50%)"
+  #         - margin-top: "2%"
+  #         - margin-left: "-24%"
+  #       name:
+  #         - justify-self: "start"
+  #         - align-self: "end"
+  #         - font-size: "14px"
+  #         - font-weight: 430
+  #         - margin-left: "52px"
+  #         - margin-top: "14px"
+  #         - max-width: "[[[ return `calc(100% - (12px + ${!variables?.entity_2 ? 5 : 0}px))`; ]]]"
+  #         - text-overflow: "ellipsis"
+  #         - overflow: "hidden"
+      
+styles:
+  card:
+    - padding: 0px
+    - height: "42px"
+    - box-shadow: "var(--box-shadow)"
+    - background-color: rgba(var(--color-background-black),0.3);
+    - border-radius: "42px"
+  grid:
+    - grid-template-areas: 
+        '"item1 item2 item3 ."'
+    - grid-template-columns: 0.1fr 0.1fr 0.1fr 1fr
+    - grid-template-rows: 1fr
+
+  custom_fields:
+    item1:
+      - place-self:  stretch end
+      - justify-self: left
+    item2:
+      - place-self:  stretch end
+      - justify-self: center
+    item3:
+      - place-self:  stretch end
+      - justify-self: right

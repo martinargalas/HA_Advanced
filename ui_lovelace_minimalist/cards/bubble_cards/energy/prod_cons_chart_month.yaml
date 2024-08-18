@@ -1,0 +1,108 @@
+view_layout:
+  grid-area: "prod_cons_chart"
+type: conditional
+conditions:
+  - condition: state
+    entity: switch.energy_monthly_view
+    state: "on"
+card:
+  type: custom:config-template-card
+  entities:
+    - input_number.counter_graph
+  card:
+    type: custom:apexcharts-card
+    card_mod:
+      style: |
+        ha-card {
+            background-color: rgba(var(--color-background-black),0.3) !important;
+            max-height: 95% !important;
+          }
+    graph_span: >
+      [[[
+        if (states['input_boolean.switch_current'].state == 'on' )
+          return "1month";
+      ]]]
+    span:
+      offset: ${'-' + states['input_number.counter_graph'].state +'month'}
+    stacked: true
+    update_interval: 1h
+    header:
+      show: true
+      show_states: false
+      colorize_states: true
+    series:
+      - entity: sensor.energy_consumption
+        name: Spotřeba
+        unit: kW
+        transform: return -x
+        type: column
+        color: rgb(255,167,0)
+        statistics:
+          type: state
+          period: day
+          align: end
+        stroke_width: 1
+        show:
+          legend_value: false
+          name_in_header: false
+        group_by:
+          duration: 1d
+          func: diff
+          start_with_last: true
+      - entity: sensor.energy_generation
+        name: Výroba
+        unit: kW
+        type: column
+        color: rgb(0,135,68)
+        statistics:
+          type: state
+          period: day
+          align: end
+        stroke_width: 1
+        show:
+          legend_value: false
+          name_in_header: false
+        group_by:
+          duration: 1d
+          func: diff
+          start_with_last: true
+      - entity: sensor.total_energy_sell
+        name: -nákup +prodej
+        unit: kW
+        transform: return -x
+        color: rgb(0,87,231)
+        statistics:
+          type: state
+          period: day
+          align: end
+        type: area
+        curve: smooth 
+        stroke_width: 0.5
+        group_by:
+          duration: 1d
+          func: diff
+          start_with_last: true
+        show:
+          legend_value: false
+          name_in_header: false
+    apex_config:
+      chart:
+        type: area
+        height: 252
+      fill:
+        type: gradient
+        gradient:
+          shadeIntensity: 0.1
+          opacityFrom: 0.4
+          opacityTo: 0.7
+          inverseColors: true
+          stops:
+            - 0
+            - 50
+            - 100
+    yaxis:
+      - min: auto
+        max: auto
+        decimals: 0
+        apex_config:
+          tickAmount: 5

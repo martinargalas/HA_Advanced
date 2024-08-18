@@ -1,0 +1,69 @@
+type: custom:bubble-card
+card_type: horizontal-buttons-stack
+width_desktop: 575px
+auto_order: false
+is_sidebar_hidden: true
+highlight_current_view: true
+hide_gradient: true
+1_link: '#lights'
+1_name: ''
+1_icon: mdi:lightbulb-group    
+2_link: '#blinds'
+2_name: ''
+2_icon: mdi:blinds-horizontal
+3_link: '#media'
+3_name: ''
+3_icon: mdi:music
+4_link: '#weather'
+4_name: ''
+4_icon: mdi:weather-partly-cloudy
+5_link: '#energy'
+5_name: ''
+5_icon: mdi:solar-power-variant
+6_link: '#heating'
+6_name: ''
+6_icon: mdi:radiator
+7_link: '#security'
+7_name: ''
+7_icon: mdi:cctv
+8_link: '#cleaning'
+8_name: ''
+8_icon: mdi:broom
+
+styles: >
+  .heating > .bubble-background-color {
+    background: rgba(var(--color-grey),var(--opacity-bg)) !important;
+    border-color: rgba(var(--color-grey),0.3) !important;
+  }
+  .lights > .bubble-background-color  {
+    background: rgba(var(--color-grey),var(--opacity-bg)) !important;
+    border-color: rgba(var(--color-grey),0.3) !important;
+  }
+  .blinds > .bubble-background-color  {
+    background: rgba(var(--color-grey),var(--opacity-bg)) !important;
+    border-color: rgba(var(--color-grey),0.3) !important;
+  }
+  .weather > .bubble-background-color  {
+    background: rgba(var(--color-grey),var(--opacity-bg)) !important;
+    border-color: rgba(var(--color-grey),0.3) !important;
+  }
+  .energy > .bubble-background-color  {
+    background: rgba(var(--color-grey),var(--opacity-bg)) !important;
+    border-color: rgba(var(--color-grey),0.3) !important;
+  }
+  .media > .bubble-background-color  {
+    background: rgba(var(--color-grey),var(--opacity-bg)) !important;
+    border-color: rgba(var(--color-grey),0.3) !important;
+  }
+  .cleaning > .bubble-background-color  {
+    background: rgba(var(--color-grey),var(--opacity-bg)) !important;
+    border-color: rgba(var(--color-grey),0.3) !important;
+  }
+  .weather > .bubble-background-color  {
+    background: rgba(var(--color-grey),var(--opacity-bg)) !important;
+    border-color: rgba(var(--color-grey),0.3) !important;
+  }
+  .security > .bubble-background-color  {
+    background: rgba(var(--color-grey),var(--opacity-bg)) !important;
+    border-color: rgba(var(--color-grey),0.3) !important;
+  }

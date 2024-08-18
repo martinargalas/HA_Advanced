@@ -1,0 +1,80 @@
+view_layout:
+  grid-area: chart_heating_water
+type: entities
+show_header_toggle: false
+card_mod:
+  style: |
+    ha-card {
+        background-color: rgba(var(--color-grey),0.1)
+      }
+entities:
+  - type: custom:apexcharts-card
+    card_mod:
+      style: |
+        ha-card {
+            background-color: rgba(var(--color-background-black),0.3) !important;
+          }
+    layout: minimal
+    graph_span: 12h
+    update_interval: 10min
+    header:
+      show: true
+      show_states: false
+      colorize_states: true
+      floating: true
+    series:
+      - entity: sensor.water_temperature_2
+        name: Požadovaná teplota TUV
+        unit: °C
+        type: area
+        curve: smooth
+        color: rgb(255, 130, 130)
+        stroke_width: 1
+        show:
+          legend_value: true
+          name_in_header: false
+        group_by:
+          duration: 2h
+          func: raw
+      - entity: sensor.current_water_temperature
+        name: Aktuální teplota TUV
+        unit: °C
+        type: area
+        curve: smooth
+        stroke_width: 1.5
+        color: >-
+          {%if states('sun.sun')|title == 'Above_horizon' %}
+            rgb(128, 201, 148)
+          {%endif%}
+          {% if states('sun.sun')|title == 'Below_horizon' %}
+            rgb(252, 214, 124)
+          {%endif%}
+        show:
+          legend_value: true
+          name_in_header: false
+        group_by:
+          duration: 15min
+          func: avg
+    yaxis:
+      - min: auto
+        max: auto
+        decimals: 0
+        show: false
+        opposite: true
+        apex_config:
+          tickAmount: 3
+    apex_config:
+      chart:
+        type: area
+        height: 190
+      fill:
+        type: gradient
+        gradient:
+          shadeIntensity: 0.01
+          opacityFrom: 0.25
+          opacityTo: 0.4
+          inverseColors: true
+          stops:
+            - 0
+            - 50
+            - 100

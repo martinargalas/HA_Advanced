@@ -1,0 +1,25 @@
+view_layout:
+  grid-area: "pc_volume_down"
+type: conditional
+conditions:
+  - entity: sensor.desktopargi
+    state: "on"
+    state_not: "off"
+card:
+  show_name: false
+  show_icon: true
+  type: button
+  tap_action:
+    action: call-service
+    service: button.press
+    target:
+      entity_id: button.martin_pc_mediavolumedown
+  icon_height: 30px
+  icon: "mdi:volume-medium"
+  show_state: false
+  card_mod:
+    style: |
+      ha-card {
+          background-color: rgba(var(--color-background-black),0.3);
+          max-height: 40px !important;
+        }

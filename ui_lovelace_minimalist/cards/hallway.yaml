@@ -1,0 +1,32 @@
+view_layout:
+  grid-area: "hallway"     
+  place-self: left end stretch
+type: 'custom:button-card'
+template:
+  - card_room
+  - yellow_on
+  - grey_no_state       
+name: Chodba
+entity: light.hallway
+icon: mdi:coat-rack
+label: >
+  [[[
+    return "🌡️" + Math.round((states['sensor.hallway_temperature_1'].state) * 100) / 100 + " °C" + "💧" + states['sensor.hallway_humidity_1'].state + " %"
+  ]]]
+tap_action:
+  action: toggle
+variables:
+  label_use_temperature: false
+  label_use_brightness: true
+  entity_1:
+    entity_id: light.hallway
+    templates:
+      - yellow_on
+    tap_action:
+      action: toggle
+  entity_2:
+    entity_id: 
+    templates:
+      - blue_on
+    tap_action:
+      action: toggle

@@ -1,0 +1,82 @@
+view_layout:
+  grid-area: thermostat_office
+type: entities
+show_header_toggle: false
+card_mod:
+  style: |
+    ha-card {
+        background-color: rgba(var(--color-background-black),0.3)
+      }
+entities:
+  - type: custom:mushroom-climate-card
+    entity: climate.thermostat_office
+    show_temperature_control: true
+    collapsible_controls: false
+    secondary_info: none
+    name: Pracovna
+    layout: horizontal
+    fill_container: true
+    icon: mdi:chair-rolling
+    card_mod:
+      style: |
+        ha-card {
+            background-color: rgba(var(--color-background-black),0.3)
+          }
+  - type: custom:apexcharts-card
+    card_mod:
+      style: |
+        ha-card {
+            background-color: transparent;
+            box-shadow: none !important; 
+          }
+    layout: minimal
+    graph_span: 12h
+    update_interval: 10min
+    header:
+      show: true
+      show_states: true
+      colorize_states: false
+      floating: true
+    series:
+      - entity: sensor.office_temperature_1
+        name: Teplota soustavy
+        unit: °C
+        type: area
+        curve: smooth
+        color: >-
+          {%if states('sun.sun')|title == 'Above_horizon' %}
+            rgb(128, 201, 148)
+          {%endif%}
+          {% if states('sun.sun')|title == 'Below_horizon' %}
+            rgb(252, 214, 124)
+          {%endif%}
+        stroke_width: 1.5
+        fill_raw: last
+        show:
+          legend_value: false
+          name_in_header: false
+        group_by:
+          duration: 10min
+          func: raw
+    yaxis:
+      - min: auto
+        max: auto
+        show: false
+        decimals: 1
+        apex_config:
+          tickAmount: 2
+    apex_config:
+      chart:
+        type: area
+        height: 110
+      fill:
+        type: gradient
+        gradient:
+          shadeIntensity: 0.01
+          opacityFrom: 0.25
+          opacityTo: 0.4
+          inverseColors: true
+          stops:
+            - 0
+            - 50
+            - 100

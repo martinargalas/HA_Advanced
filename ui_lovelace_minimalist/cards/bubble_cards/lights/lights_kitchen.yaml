@@ -1,0 +1,124 @@
+view_layout:
+  grid-area: "kitchen_1"
+type: custom:swipe-card
+parameters:
+  roundLengths: true
+  effect: cube
+  speed: 650
+  cubeEffect:
+    rotate: 80
+    depth: 300
+    slideShadows: false
+    shadow: false
+cards: 
+  - type: entities
+    show_header_toggle: false
+    card_mod:
+      style: |
+        ha-card {
+            background-color: rgba(var(--color-grey),0.1)
+          }
+    entities:
+      - type: "custom:button-card"
+        template:
+          - card_light_slider_collapse_color
+          - yellow_on
+          - grey_no_state
+        entity: light.kitchen
+        variables:
+          ulm_card_light_enable_slider: true
+          ulm_card_light_enable_color: true
+          ulm_card_light_enable_popup_tap: false
+          ulm_card_light_enable_buttons: true
+          ulm_card_light_name: "Bar"
+          ulm_card_light_slider_horizontal_colors_name: Ceiling light
+          ulm_card_light_slider_horizontal_colors_transition: 1
+          ulm_card_light_enable_collapse: false
+          ulm_card_light_force_background_color: false
+        card_mod:
+          style: |
+            ha-card {
+                background-color: rgba(var(--color-background-black),0.3)
+              }  
+      - type: custom:rgb-light-card
+        entity: light.hue_color_lamp_1
+        justify: center
+        colors:
+          - type: call-service
+            service: scene.turn_on
+            service_data:
+              entity_id: scene.kitchen_relax
+            icon_color: center/120% url('http://192.168.68.50:8123/local/community/spotify/Relax.png')
+          - type: call-service
+            service: scene.turn_on
+            service_data:
+              entity_id: scene.kitchen_concentrate
+            icon_color: center/120% url('http://192.168.68.50:8123/local/community/spotify/Concentrate.png')
+          - type: call-service
+            service: scene.turn_on
+            service_data:
+              entity_id: scene.kitchen_read
+            icon_color: center/120% url('http://192.168.68.50:8123/local/community/spotify/Read.png')
+          - type: call-service
+            service: scene.turn_on
+            service_data:
+              entity_id: scene.kitchen_nightlight
+            icon_color: center/120% url('http://192.168.68.50:8123/local/community/spotify/Night.png')
+          - type: call-service
+            service: scene.turn_on
+            service_data:
+              entity_id: scene.kitchen_natural_light
+            icon_color: center/120% url('http://192.168.68.50:8123/local/community/spotify/Natural.png')
+  
+  - type: entities
+    show_header_toggle: false
+    card_mod:
+      style: |
+        ha-card {
+            background-color: rgba(var(--color-grey),0.1)
+          }
+    entities:
+      - type: "custom:button-card"
+        template:
+          - card_light_slider_collapse_color
+          - yellow_on
+          - grey_no_state
+        entity: light.wled_main
+        variables:
+          ulm_card_light_enable_slider: true
+          ulm_card_light_enable_color: true
+          ulm_card_light_enable_popup_tap: false
+          ulm_card_light_enable_buttons: true
+          ulm_card_light_name: "Linka LED"
+          ulm_card_light_slider_horizontal_colors_name: Linka
+          ulm_card_light_slider_horizontal_colors_transition: 1
+          ulm_card_light_enable_collapse: true
+          ulm_card_light_enable_horizontal_wide: true
+          ulm_card_light_force_background_color: false
+        card_mod:
+          style: |
+            ha-card {
+                background-color: rgba(var(--color-background-black),0.3)
+              }  
+      - type: custom:rgb-light-card
+        entity: light.wled
+        justify: center
+        colors:
+          - type: call-service
+            service: select.select_option
+            service_data:
+              entity_id: select.wled_preset
+              option: KitchenTopAurora
+            icon_color: 'center/120% no-repeat url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20id%3D%22mdi-light-flood-up%22%20viewBox%3D%220%200%2024%2024%22%3E%3Cpath%20fill%3D%22%23FFFFFF%22%20d%3D%22M8%2015H2V13H8C8.55%2013%209%2013.45%209%2014C9%2014.55%208.55%2015%208%2015M16.72%2018.9L10.69%204.08L8.83%204.84L9.21%205.76L4.41%209.88L5.27%2012H8C9.1%2012%2010%2012.9%2010%2014S9.1%2016%208%2016H6.9L8.18%2019.14L14.5%2018.73L14.87%2019.65L16.72%2018.9M20.81%2017.71L18.5%2016.75L19.26%2014.9L21.57%2015.86L20.81%2017.71M18.78%2010.43L18%208.58L20.79%207.43L21.55%209.28L18.78%2010.43M15.19%205.07L13.34%204.31L14.3%202L16.15%202.77L15.19%205.07Z%22%20%2F%3E%3C%2Fsvg%3E"), #FEBF6B'        
+          - type: call-service
+            service: select.select_option
+            service_data:
+              entity_id: select.wled_preset
+              option: KitchenDeskWarm
+            icon_color: 'center/120% no-repeat url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20id%3D%22mdi-light-flood-down%22%20viewBox%3D%220%200%2024%2024%22%3E%3Cpath%20fill%3D%22%23FFFFFF%22%20d%3D%22M8%2011H2V9H8C8.55%209%209%209.45%209%2010C9%2010.55%208.55%2011%208%2011M14.87%204.35L14.5%205.27L8.18%204.86L6.9%208H8C9.1%208%2010%208.9%2010%2010S9.1%2012%208%2012H5.27L4.41%2014.12L9.21%2018.24L8.83%2019.16L10.69%2019.92L16.72%205.1L14.87%204.35M20.81%206.29L21.57%208.14L19.26%209.1L18.5%207.25L20.81%206.29M18.78%2013.57L21.55%2014.72L20.79%2016.57L18%2015.42L18.78%2013.57M16.15%2021.23L14.3%2022L13.34%2019.69L15.19%2018.93L16.15%2021.23Z%22%20%2F%3E%3C%2Fsvg%3E"), #FEBF6B'
+          - type: call-service
+            service: select.select_option
+            service_data:
+              entity_id: select.wled_preset
+              option: KitchenAllAurora
+            icon_color: 'center/120% no-repeat url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20id%3D%22mdi-led-strip-variant%22%20viewBox%3D%220%200%2024%2024%22%3E%3Cpath%20fill%3D%22%23FFFFFF%22%20d%3D%22M2.95%203L2%206.91L19.34%2011.25L20.29%207.34L2.95%203M6.09%206.89L4.16%206.41L4.64%204.46L6.57%204.94L6.09%206.89M9.94%207.86L8%207.38L8.5%205.42L10.42%205.91L9.94%207.86M13.8%208.82L11.87%208.34L12.35%206.39L14.27%206.87L13.8%208.82M17.65%209.79L15.72%209.31L16.2%207.35L18.13%207.84L17.65%209.79M4.66%2012.75L3.71%2016.66L21.05%2021L22%2017.1L4.66%2012.75M7.8%2016.65L5.88%2016.16L6.35%2014.21L8.28%2014.69L7.8%2016.65M11.65%2017.61L9.73%2017.13L10.2%2015.18L12.13%2015.66L11.65%2017.61M15.5%2018.58L13.58%2018.09L14.06%2016.14L16%2016.62L15.5%2018.58M19.36%2019.54L17.43%2019.06L17.91%2017.11L19.84%2017.59L19.36%2019.54M6.25%2012.11L11%2010.2L17.75%2011.89L13%2013.8L6.25%2012.11Z%22%20%2F%3E%3C%2Fsvg%3E"), #FEBF6B'      

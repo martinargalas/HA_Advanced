@@ -1,0 +1,10 @@
+view_layout:
+  grid-area: thermostat_big
+type: thermostat
+entity: climate.e3_vitocal_heating
+name: ' '
+card_mod:
+  style: |
+    ha-card {
+        background-color: rgba(var(--color-grey),0.2)
+      }

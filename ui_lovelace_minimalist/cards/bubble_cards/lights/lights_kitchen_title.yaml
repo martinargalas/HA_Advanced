@@ -1,0 +1,6 @@
+view_layout:
+  grid-area: "kitchen_title"
+type: custom:bubble-card
+card_type: separator
+name: Kuchyně
+icon: mdi:countertop

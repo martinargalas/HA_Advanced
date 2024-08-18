@@ -1,0 +1,18 @@
+view_layout:
+  grid-area: "person1"
+  place-self: left stretch end
+type: "custom:button-card"
+template: card_person_info
+variables:
+  ulm_card_person_entity: person.martin_argalas
+  ulm_card_person_use_entity_picture: true
+  ulm_card_person_zone1: zone.Práce
+  ulm_multiline: true
+  ulm_card_person_battery_entity: sensor.sm_s918b_battery_level
+  ulm_card_person_battery_state_entity: sensor.sm_s918b_battery_state
+card_mod:
+  style: |       
+    ha-card {
+    {% if states('sun.sun')|title == 'Above_horizon' %}
+      backdrop-filter: blur(0.5px) !important;
+    {%endif%}

@@ -1,0 +1,25 @@
+view_layout:
+  grid-area: "wc_1"
+type: entities
+show_header_toggle: false
+card_mod:
+  style: |
+    ha-card {
+        background-color: rgba(var(--color-grey),0.1)
+      }
+entities:
+  - type: "custom:button-card"
+    template:
+      - card_light_slider_collapse_color
+      - yellow_on
+      - grey_no_state
+    entity: switch.lightwc_2
+    variables:
+      ulm_card_light_name: "Strop"
+      ulm_card_light_enable_slider: false
+      ulm_card_light_force_background_color: true
+    card_mod:
+      style: |
+        ha-card {
+            background-color: rgba(var(--color-background-black),0.3)
+          }

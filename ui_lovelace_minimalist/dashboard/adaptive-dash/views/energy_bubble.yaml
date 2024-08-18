@@ -1,0 +1,123 @@
+type: custom:layout-card
+layout_type: custom:grid-layout
+
+layout:
+  grid-template-columns: "0.45fr 0.45fr 0.45fr 0.45fr 0.05fr 1fr 1fr"
+  grid-template-rows: "min-content"
+  grid-template-areas: >
+    "flow_sankey_card_title flow_sankey_card_title flow_sankey_card_title flow_sankey_card_title. prod_cons_chart_title prod_cons_chart_title "
+    "statistics_export statistics_consumption virtual_baterry1 virtual_baterry1 . filter_additional filter_additional "
+    "statistics_import statistics_production virtual_baterry1 virtual_baterry1 . prod_cons_chart prod_cons_chart"
+    "flow_sankey_card flow_sankey_card flow_sankey_card flow_sankey_card . prod_cons_chart prod_cons_chart"
+    "flow_sankey_card flow_sankey_card flow_sankey_card flow_sankey_card . prod_cons_chart prod_cons_chart"
+    "flow_sankey_card flow_sankey_card flow_sankey_card flow_sankey_card . prod_cons_chart prod_cons_chart"
+    "flow_sankey_card flow_sankey_card flow_sankey_card flow_sankey_card . prod_cons_chart prod_cons_chart"
+    "flow_sankey_card flow_sankey_card flow_sankey_card flow_sankey_card . heat_pump_cons_chart_title energy_export_chart_title"
+    "flow_sankey_card flow_sankey_card flow_sankey_card flow_sankey_card. heat_pump_cons_chart energy_export_chart"
+    "flow_sankey_card flow_sankey_card flow_sankey_card flow_sankey_card. heat_pump_cons_chart energy_export_chart"
+    ". . . . . . day_month_year_filter "
+
+cards:
+# STATUS BAR
+  # - !include /config/ui_lovelace_minimalist/cards/bubble_cards/energy/status_bar.yaml
+  # - !include /config/ui_lovelace_minimalist/cards/bubble_cards/energy/status_bar2.yaml
+  # - !include /config/ui_lovelace_minimalist/cards/bubble_cards/energy/effectivity_bar.yaml
+
+# FILTERS
+  - !include /config/ui_lovelace_minimalist/cards/bubble_cards/energy/filter_additional.yaml
+
+# VIRTUAL BATTERY\
+  - !include /config/ui_lovelace_minimalist/cards/bubble_cards/energy/virtual_baterry.yaml
+
+# DAY MONTH YEAR FILTER
+  - view_layout:
+      grid-area: day_month_year_filter
+    type: custom:bubble-card
+    card_type: select
+    name: ' '
+    entity: input_select.graph_day_month_year
+    icon: mdi:calendar-filter-outline
+    show_state: true
+    tap_action:
+      action: none
+    styles: | 
+      .bubble-select-background {
+        opacity: 100 !important;
+        background-color: rgba(var(--color-grey),0.1)  !important;
+        opacity: 5 !important;
+      }
+      .bubble-select-card-container {
+        background: none !important;
+        opacity: 10 !important;
+        height: 42px !important;
+        top: -600px !important;
+        left: -150px !important;
+        z-index: 5;
+      }
+      .card-content {
+        width: 49%;
+        margin: 0 !important;
+      }
+      .bubble-icon-container {
+        background: transparent !important;
+      }
+      .bubble-dropdown-container {
+        background-color: transparent !important;
+      }
+      .bubble-dropdown-arrow {
+        --mdc-icon-size: 30px !important;
+        background-color: transparent !important;
+      }
+      * { 
+        font-size: 14px !important;
+        font-weight: 600 !important;
+        color: var(--rgb-primary-text-color) !important;
+      }
+      .bubble-name-container {
+        color: rgba(var(--rgb-primary-text-color),1) !important;
+        z-index: 1;
+      }
+      .bubble-icon-container 
+      {
+        color: rgb(var(--color-theme) !important;
+        z-index: 1;
+      }
+
+# STATISTICS
+  - !include /config/ui_lovelace_minimalist/cards/bubble_cards/energy/statistics_export.yaml
+  - !include /config/ui_lovelace_minimalist/cards/bubble_cards/energy/statistics_import.yaml
+  - !include /config/ui_lovelace_minimalist/cards/bubble_cards/energy/statistics_production.yaml
+  - !include /config/ui_lovelace_minimalist/cards/bubble_cards/energy/statistics_consumption.yaml
+
+# FLOW SANKEY CARD TITLE
+  - !include /config/ui_lovelace_minimalist/cards/bubble_cards/energy/flow_sankey_card_title.yaml
+
+# FLOW SANKEY CARD
+  - !include /config/ui_lovelace_minimalist/cards/bubble_cards/energy/flow_sankey_card.yaml
+
+# PRODUCTION CONSUMPTION CHART TITLE
+  - !include /config/ui_lovelace_minimalist/cards/bubble_cards/energy/prod_cons_chart_title.yaml
+
+# PRODUCTION CONSUMPTION CHART
+  - !include /config/ui_lovelace_minimalist/cards/bubble_cards/energy/prod_cons_chart_day.yaml
+  - !include /config/ui_lovelace_minimalist/cards/bubble_cards/energy/prod_cons_chart_month.yaml
+  - !include /config/ui_lovelace_minimalist/cards/bubble_cards/energy/prod_cons_chart_year.yaml
+
+# ENERGY EXPORT GRAPH TITLE
+  - !include /config/ui_lovelace_minimalist/cards/bubble_cards/energy/energy_export_chart_title.yaml
+
+# HEAT PUMP PRODUCTION CONSUMPTION CHART TITLE
+  - !include /config/ui_lovelace_minimalist/cards/bubble_cards/energy/heat_pump_cons_chart_title.yaml
+
+# HEAT PUMP PRODUCTION CONSUMPTION CHART
+  - !include /config/ui_lovelace_minimalist/cards/bubble_cards/energy/heat_pump_cons_chart_day.yaml
+  - !include /config/ui_lovelace_minimalist/cards/bubble_cards/energy/heat_pump_cons_chart_month.yaml
+  - !include /config/ui_lovelace_minimalist/cards/bubble_cards/energy/heat_pump_cons_chart_year.yaml
+
+
+# ENERGY EXPORT GRAPH
+  - !include /config/ui_lovelace_minimalist/cards/bubble_cards/energy/energy_export_chart_day.yaml
+  - !include /config/ui_lovelace_minimalist/cards/bubble_cards/energy/energy_export_chart_month.yaml
+  - !include /config/ui_lovelace_minimalist/cards/bubble_cards/energy/energy_export_chart_year.yaml
+
+
