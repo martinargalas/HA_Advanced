@@ -1,0 +1,34 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Yeelight Bluetooth",
+        "description": "Control a Yeelight bluetooth bedside lamp. Select to scan for devices or enter the mac Address manually.",
+        "data": {
+          "entry_method": "Method to be used:"
+        }
+      },
+      "scan": {
+        "title": "Yeelight Bluetooth",
+        "description": "Make sure the lamp is not connected to other devices or it may not be discoverable (A reset may also help).  Are you ready to start scanning?"
+      },
+      "device": {
+        "title": "Yeelight Bluetooth",
+        "description": "Enter a name for the device and the MAC address for the lamp. To finish the pairing step, you may need to push the small button on the lamp if it `pulses`.",
+        "data": {
+          "name": "Lamp Name",
+          "mac": "MAC address"
+        }
+      }
+    },
+    "error": {
+      "general_error": "There was an unknown error.",
+      "BTLEDisconnectError": "Bluetooth connection error while trying to scan. Make sure nothing else is using bluetooth.",
+      "BTLEManagementError": "Could not start a bluetooth scan. It is very likely some permission errors. Follow directions from github repo."
+    },
+    "abort": {
+      "already_configured": "This mac address is already registered.",
+      "no_devices_found": "No devices found during this scan. Ensure the lamp is not connected to another app. Resetting the lamp may help."
+    }
+  }
+}

@@ -1,0 +1,11 @@
+{
+    "domain": "hass_agent_mediaplayer",
+    "name": "HASS.Agent MediaPlayer",
+    "documentation": "https://github.com/LAB02-Research/HASS.Agent-MediaPlayer",
+    "issue_tracker": "https://github.com/LAB02-Research/HASS.Agent-MediaPlayer/issues",
+    "dependencies": [],
+    "codeowners": ["@LAB02-Admin"],
+    "version": "2022.5.6",
+    "requirements": [],
+    "iot_class": "local_polling"
+}
