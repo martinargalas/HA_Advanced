@@ -4,8 +4,10 @@
 !*.sh
 !*.js*
 
-!.ssh/
-!id_rsa*
+.ssh/
+id_rsa*
+id_rsa
+id_rsa.pub
 
 !node-red/
 

@@ -14,23 +14,12 @@
   api_key: !secret google_geocode_kistyna
   language: czech
 
-# - platform: time_date
-#   display_options:
-#     - time
-#     - date
-#     - date_time
-#     - date_time_utc
-#     - date_time_iso
-#     - time_date
-#     - time_utc
-#     - beat
-
 - platform: derivative
   source: sensor.e3_vitocal_energy_consumption_of_hot_water_gas_heating_current_year
   name: Heat_pump_consumption_per_seconds
   round: 0
-  unit_time: s # the resulting "unit_of_measurement" will be °C/h if the sensor.temperate has set °C as its unit
-  time_window: "00:00:05"  # we look at the change over the last half hour
+  unit_time: s 
+  time_window: "00:00:05"  
 
 - platform: template
   sensors:

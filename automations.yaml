@@ -81,10 +81,10 @@
     metadata: {}
   - service: rest_command.pipup_image_on_tv
     data:
-      ip: 192.168.68.51
+      ip: !secret washer_ip 
       title: Home Assistant
       message: Pračka doprala prádlo
-      url: http://192.168.68.50:8123/local/community/spotify/washer2.jpg
+      url: !secret washer_url
   - delay:
       hours: 0
       minutes: 0
@@ -1540,7 +1540,7 @@
           title: Home Assistant
           message: Záznam z kamery
           duration: 25
-          url: http://192.168.68.50:8123/webrtc/embed?url=aaa
+          url: !secret tv_url 
         response_variable: link_id
         enabled: false
     - if:
@@ -2139,7 +2139,7 @@
           title: Home Assistant
           message: Záznam z kamery
           duration: 25
-          url: http://192.168.68.50:8123/webrtc/embed?url=aaa
+          url: !secret tv_url
         response_variable: link_id
         enabled: false
     - if:

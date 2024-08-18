@@ -68,13 +68,6 @@ cards:
         color: var(--rgb-primary-text-color) !important;
       }
 
-# STATUS BAR
-  # - !include /config/ui_lovelace_minimalist/cards/bubble_cards/energy/status_bar_mobile.yaml
-  # - !include /config/ui_lovelace_minimalist/cards/bubble_cards/energy/effectivity_bar_mobile.yaml
-
-# FILTER DAY MONTH YEAR
-  # - !include /config/ui_lovelace_minimalist/cards/bubble_cards/energy/filter_day_month_year_mobile.yaml
-
 # FILTERS
   - !include /config/ui_lovelace_minimalist/cards/bubble_cards/energy/filter_additional.yaml
 

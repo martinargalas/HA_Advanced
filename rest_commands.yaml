@@ -1,10 +1,10 @@
 
 launch_spotify_on_android_tab:
-  url: http://192.168.68.64:2323/?cmd=startApplication&package=com.spotify.music&password=12345
+  url: !secret launch_spotify_url
   method: POST
 
 launch_ho_on_android_tab:
-  url: http://192.168.68.64:2323/?cmd=toForeground&password=12345
+  url: !secret launch_ho_url
   method: POST
 
 pipup_text_on_tv:
