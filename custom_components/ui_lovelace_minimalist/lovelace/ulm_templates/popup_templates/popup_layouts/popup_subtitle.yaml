@@ -1,9 +1,0 @@
----
-popup_subtitle:
-  template: "title"
-  styles:
-    card:
-      - margin-left: "20px"
-    name:
-      - font-weight: 500
-      - font-size: "1.2rem"

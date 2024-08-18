@@ -1,4 +1,0 @@
----
-popup_button_radar:
-  template: "ulm_language_variables"
-  name: "[[[ return variables.ulm_radar ]]]"
