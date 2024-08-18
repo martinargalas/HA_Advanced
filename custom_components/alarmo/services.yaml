@@ -1,0 +1,68 @@
+
+arm:
+  fields:
+    entity_id:
+      example: "alarm_control_panel.alarm"
+      required: true
+      selector:
+        entity:
+          integration: alarmo
+          domain: alarm_control_panel
+    code:
+      example: "1234"
+      required: false
+      selector:
+        text:
+    mode:
+      example: "away"
+      required: false
+      default: away
+      selector:
+        select:
+          translation_key: "arm_mode"
+          options:
+            - away
+            - night
+            - home
+            - vacation
+            - custom
+    skip_delay:
+      example: false
+      required: false
+      default: false
+      selector:
+        boolean:
+    force:
+      example: false
+      required: false
+      default: false
+      selector:
+        boolean:
+disarm:
+  fields:
+    entity_id:
+      example: "alarm_control_panel.alarm"
+      required: true
+      selector:
+        entity:
+          integration: alarmo
+          domain: alarm_control_panel
+    code:
+      example: "1234"
+      required: false
+      selector:
+        text:
+enable_user:
+  fields:
+    name:
+      example: "Frank"
+      required: true
+      selector:
+        text:
+disable_user:
+  fields:
+    name:
+      example: "Frank"
+      required: true
+      selector:
+        text:
