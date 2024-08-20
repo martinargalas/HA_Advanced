@@ -1,7 +1,7 @@
 view_layout:
   grid-area: thermostat_big
 type: thermostat
-entity: climate.e3_vitocal_heating
+entity: climate.e3_tcu10_x07_heating
 name: ' '
 card_mod:
   style: |

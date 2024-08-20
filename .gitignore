@@ -26,3 +26,6 @@ home-assistant_v2.db.corrupt.2024-03-12T03:13:13.641999+00:00
 zigbee.db-wal
 zigbee.db-shm
 zigbee.db
+zigbee.db
+zigbee.db-shm
+zigbee.db-wal

@@ -13,8 +13,12 @@ from .coordinator import MammotionDataUpdateCoordinator
 PLATFORMS: list[Platform] = [
     Platform.BINARY_SENSOR,
     Platform.LAWN_MOWER,
+    Platform.DEVICE_TRACKER,
     Platform.SENSOR,
     Platform.BUTTON,
+    Platform.SWITCH,
+    Platform.NUMBER,
+    # Platform.SELECT
 ]
 
 type MammotionConfigEntry = ConfigEntry[MammotionDataUpdateCoordinator]

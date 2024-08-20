@@ -696,15 +696,15 @@
     
     heating_on:
       value_template: >-
-        {% set current = states.sensor.e3_vitocal_supply_temperature.state %}
-        {% set heating = states.climate.e3_vitocal_heating.attributes.hvac_action%}
+        {% set current = states.sensor.e3_tcu10_x07_supply_temperature.state %}
+        {% set heating = states.climate.e3_tcu10_x07_heating.attributes.hvac_action%}
         {%if heating == 'heating'%} {{current}}
         {% else %} ' '
         {%endif%}
 
     water_heating_on:
       value_template: >-
-        {% set current = states.sensor.e3_vitocal_supply_temperature.state | int %}
+        {% set current = states.sensor.e3_tcu10_x07_temperature.state | int %}
         {%if current > 45%} on
         {% else %} off
         {%endif%}
@@ -727,12 +727,12 @@
 
     current_water_temperature:
       value_template: >-
-        {% set current = states.water_heater.e3_vitocal_water.attributes.current_temperature %}
+        {% set current = states.water_heater.e3_tcu10_x07_water.attributes.current_temperature %}
         {{current }}
     
     water_temperature:
       value_template: >-
-        {% set current = states.water_heater.e3_vitocal_water.attributes.temperature %}
+        {% set current = states.water_heater.e3_tcu10_x07_water.attributes.temperature %}
         {{current }}
 
     nameday:

@@ -107,7 +107,7 @@ class ScreenWakeLock {
 	}
 }
 
-const version = "4.25.5";
+const version = "4.26.0";
 const defaultConfig = {
 	enabled: false,
 	enabled_on_tabs: [],
@@ -670,7 +670,7 @@ class WallpanelView extends HuiView {
 		this.lastEnergyCollectionUpdate = 0;
 		this.screensaverStopNavigationPathTimeout = null;
 
-		this.lovelace = getHaPanelLovelace().lovelace;
+		this.lovelace = null;
 		this.__hass = elHass.__hass;
 		this.__cards = [];
 		this.__badges = [];
@@ -1108,6 +1108,7 @@ class WallpanelView extends HuiView {
 
 	createInfoBoxContent() {
 		logger.debug("Creating info box content");
+		this.lovelace = getHaPanelLovelace().__lovelace;
 		this.infoBoxContentCreatedDate = new Date();
 		this.infoBoxContent.innerHTML = '';
 		this.__badges = [];
@@ -1120,13 +1121,31 @@ class WallpanelView extends HuiView {
 
 		if (config.badges) {
 			const div = document.createElement('div');
+			div.classList.add("badges");
 			div.style.padding = 'var(--wp-card-padding)';
 			div.style.margin = 'var(--wp-card-margin)';
 			div.style.textAlign = 'center';
-			config.badges.forEach(badgeConfig => {
+			div.style.display = 'flex';
+			div.style.alignItems = 'flex-start';
+			div.style.flexWrap = 'wrap';
+			div.style.justifyContent = 'center';
+			div.style.gap = '8px';
+			div.style.margin = '0px';
+			div.style.minWidth = '200px'
+			config.badges.forEach(badge => {
+				let badgeConfig = JSON.parse(JSON.stringify(badge));
 				logger.debug("Creating badge:", badgeConfig);
-				const badgeElement = this.createBadgeElement(badgeConfig);
+				let style = {};
+				if (badgeConfig.wp_style) {
+					style = badgeConfig.wp_style;
+					delete badgeConfig.wp_style;
+				}
+				const createBadgeElement = this._createBadgeElement ? this._createBadgeElement : this.createBadgeElement;
+				const badgeElement = createBadgeElement.bind(this)(badgeConfig);
 				badgeElement.hass = this.hass;
+				for (const attr in style) {
+					badgeElement.style.setProperty(attr, style[attr]);
+				}
 				this.__badges.push(badgeElement);
 				div.append(badgeElement);
 			});
@@ -2424,7 +2443,7 @@ function reconfigure() {
 
 
 function locationChanged() {
-	if (wallpanel.screensaverRunning()) {
+	if (wallpanel && wallpanel.screensaverRunning()) {
 		if (!config.stop_screensaver_on_location_change || skipDisableScreensaverOnLocationChanged) {
 			return;
 		}

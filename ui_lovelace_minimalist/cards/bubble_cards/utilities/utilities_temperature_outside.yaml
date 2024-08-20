@@ -28,7 +28,7 @@ entities:
       colorize_states: false
       floating: true
     series:
-      - entity: sensor.e3_vitocal_outside_temperature
+      - entity: sensor.e3_tcu10_x07_outside_temperature
         name: Teplota venku
         unit: °C
         type: area

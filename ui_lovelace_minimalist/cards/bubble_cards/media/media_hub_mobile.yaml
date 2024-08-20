@@ -6,12 +6,16 @@ cards:
 - type: custom:polr-ytube-playing-card
   coverNavigation: true
   entity_id: media_player.ytube_music_player
-  header: YouTube Music   
-  media_content_id: RDATfobWVsb2RpYyBtZXRhbA
-  media_content_type: playlist
+  header: Přehrávání 
+  initialAction:
+    media_content_id: RDTMAK5uy_kset8DisdE7LSD4TNjEVvrKRTmG7a56sY
+    media_content_type: playlist
   background: transparent
   card_mod:
     style: |
+      ha-card {
+        max-height: 590px !important;
+      }
       ha-card > div {
         background-color: rgba(var(--color-black),0.8) !important;
       }

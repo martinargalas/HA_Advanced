@@ -207,20 +207,7 @@ cards:
               .mdc-line-ripple::before, .mdc-line-ripple::after {
                 border-bottom-style: none !important;
               } 
-          
-            
-    # icon: |
-    #   [[[
-    #     var state = entity.state;
-    #     if(state == "on")
-    #       return '<ha-icon icon="mdi:toggle-switch" style="color: rgba(var(--color-blue), 0.6); width:100px; height: 60px"; justify-self: center>'
-    #     else
-    #       return '<ha-icon icon="mdi:toggle-switch-off" style="color: rgba(var(--color-theme),0.2); width:100px; height: 60px"; justify-self: center>'
-    #   ]]]
-    # state: |
-    #   [[[
-    #     return helpers.formatTime(states['input_datetime.alarmed'].state)
-    #   ]]]
+
   styles:
     card:
       - border-radius: "20px"

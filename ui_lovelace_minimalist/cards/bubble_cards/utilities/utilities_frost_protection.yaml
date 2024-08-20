@@ -1,7 +1,7 @@
 view_layout:
   grid-area: frost_protection
 type: custom:mushroom-entity-card
-entity: binary_sensor.e3_vitocal_frost_protection
+entity: binary_sensor.e3_tcu10_x07_frost_protection
 name: Ochrana
 icon: mdi:snowflake
 primary: ochrana proti mrazu

@@ -5,7 +5,7 @@ name: Čerpadlo
 icon: mdi:pump
 primary: Oběhové čerpadlo
 secondary: ''
-entity: binary_sensor.e3_vitocal_circulation_pump
+entity: binary_sensor.e3_tcu10_x07_circulation_pump
 card_mod:
   style:
     mushroom-shape-icon$: |

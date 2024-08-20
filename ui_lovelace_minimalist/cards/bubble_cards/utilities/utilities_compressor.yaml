@@ -1,7 +1,7 @@
 view_layout:
   grid-area: compressor
 type: custom:mushroom-entity-card
-entity: binary_sensor.e3_vitocal_compressor
+entity: binary_sensor.e3_tcu10_x07_compressor
 icon: mdi:heat-pump
 primary: compressor
 secondary: ''

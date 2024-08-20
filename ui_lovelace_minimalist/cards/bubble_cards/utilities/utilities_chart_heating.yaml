@@ -23,7 +23,7 @@ entities:
       colorize_states: false
       floating: true
     series:
-      - entity: sensor.e3_vitocal_supply_temperature
+      - entity: sensor.e3_tcu10_x07_supply_temperature
         name: Teplota soustavy
         unit: °C
         type: area
