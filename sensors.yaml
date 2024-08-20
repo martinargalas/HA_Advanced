@@ -704,7 +704,7 @@
 
     water_heating_on:
       value_template: >-
-        {% set current = states.sensor.e3_tcu10_x07_temperature.state | int %}
+        {% set current = states.sensor.e3_tcu10_x07_supply_temperature.state | int %}
         {%if current > 45%} on
         {% else %} off
         {%endif%}
