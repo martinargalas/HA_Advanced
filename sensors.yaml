@@ -15,7 +15,7 @@
   language: czech
 
 - platform: derivative
-  source: sensor.e3_vitocal_energy_consumption_of_hot_water_gas_heating_current_year
+  source: sensor.e3_tcu10_x07_energy_consumption_of_hot_water_gas_heating_current_year
   name: Heat_pump_consumption_per_seconds
   round: 0
   unit_time: s 
@@ -694,6 +694,22 @@
         {% else %}           
         {%endif%}
     
+    heat_pump_electricity_consumption_month:
+      value_template: >-
+        {% set heating = states.sensor.e3_tcu10_x07_heating_energy_consumption_this_month.state | float %}
+        {% set dhw = states.sensor.e3_tcu10_x07_dhw_energy_consumption_this_month.state | float %}
+        {% set consumption = heating + dhw | float %}
+        {{consumption}}
+      unit_of_measurement: "kWh"
+    
+    heat_pump_electricity_consumption_year:
+      value_template: >-
+        {% set heating = states.sensor.e3_tcu10_x07_heating_energy_consumption_this_year.state | float %}
+        {% set dhw = states.sensor.e3_tcu10_x07_dhw_energy_consumption_this_year.state | float %}
+        {% set consumption = heating + dhw | float %}
+        {{consumption}}
+      unit_of_measurement: "kWh"
+
     heating_on:
       value_template: >-
         {% set current = states.sensor.e3_tcu10_x07_supply_temperature.state %}

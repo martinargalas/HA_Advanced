@@ -32,7 +32,7 @@ card:
       show_states: false
       colorize_states: true
     series:
-      - entity: sensor.e3_tcu10_x07_energy_consumption_of_hot_water_gas_heating_current_month
+      - entity: sensor.e3_vitocal_energy_consumption_of_hot_water_gas_heating_current_month
         name: Spotřeba
         unit: kW
         type: column

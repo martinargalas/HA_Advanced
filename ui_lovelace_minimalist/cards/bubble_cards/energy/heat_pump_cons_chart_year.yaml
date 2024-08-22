@@ -24,7 +24,7 @@ card:
   span:
     start: year
   series:
-    - entity: sensor.e3_tcu10_x07_energy_consumption_of_hot_water_gas_heating_current_year
+    - entity: sensor.e3_vitocal_energy_consumption_of_hot_water_gas_heating_current_year
       name: Spotřeba
       unit: kW
       type: column
