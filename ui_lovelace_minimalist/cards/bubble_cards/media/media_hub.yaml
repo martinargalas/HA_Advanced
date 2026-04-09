@@ -1,0 +1,8 @@
+view_layout:
+  grid-area: "media_hub"  
+type: vertical-stack
+cards:  
+  - type: iframe
+    url: https://music.argalas.org/#/home?showFullscreenPlayer=true
+    aspect_ratio: 52%
+       

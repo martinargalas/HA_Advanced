@@ -1,0 +1,653 @@
+view_layout:
+  grid-area: thermostat_big
+type: custom:vertical-stack-in-card
+card_mod:
+  style: |
+    ha-card {
+      border-radius: 34px;
+      padding: 20px;
+      background: var(--mod-card-background);
+      backdrop-filter: blur(35px) saturate(100%);
+      -webkit-backdrop-filter: blur(35px) saturate(200%);
+      border: 1px solid var(--mod-card-border);
+      box-shadow: 
+        0 15px 25px var(--mod-card-shadow), 
+        inset 0 2px 3px var(--mod-card-inset-shadow);
+    }
+
+    ha-card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: 34px;
+      background: linear-gradient(
+        120deg,
+        var(--mod-card-gradient-start),
+        var(--mod-card-gradient-mid) 25%,
+        var(--mod-card-gradient-end) 50%,
+        transparent 70%
+      );
+      opacity: 0.35;
+      pointer-events: none;
+    }
+      
+cards:
+  - type: horizontal-stack
+    card_mod:
+      style: |
+        ha-card {
+            background-color: transparent;
+            box-shadow: none;
+          }
+    cards:
+    - type: custom:mushroom-template-card
+      entity: binary_sensor.e3_tcu10_x07_compressor
+      name: " "
+      icon: mdi:heat-pump
+      primary: >
+        Kompresor {{ 'běží' if is_state(entity, 'on') else 'neběží' }}
+      secondary: " "
+      card_mod:
+        style:
+          mushroom-state-info$: |
+            .container {
+              --card-primary-color: var(--text-color);
+              --card-secondary-color: var(--text-color);
+            }
+            .primary {
+              background: rgba(var(--color-background-black),0.3) !important;
+
+              margin-left: -74px !important;
+              margin-top: 0px !important;
+              margin-right: 10px !important;
+              border-radius: 32px;
+
+              height: 56px !important;
+
+              display: inline-flex;
+              justify-content: left;
+              align-items: center;
+              font-size: 14px !important;
+              font-weight: 600;
+              line-height: 1;
+
+              transform: translate(12px, 6px);
+              box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+              pointer-events: none;
+              padding-left: 60px; 
+            }
+
+          mushroom-shape-icon$: |
+            {% set sun_state = states('sun.sun') %}
+            {% set glow_color = 'var(--color-background-theme)' %}
+            ha-icon {
+              {{ '--icon-animation: rotation 1s linear infinite;' if is_state(config.entity, 'on') }}
+              transform-origin: 29% 88%;
+            }
+            .shape {
+              {{ '--shape-animation: ping 2s infinite;' if is_state(config.entity, 'on') }}
+              background-color: 
+                {% if is_state(config.entity, 'on') %}
+                  rgba({{ glow_color }},0.15) !important;
+                {% else %}
+                  rgba(var(--color-grey),0.2) !important;
+                {% endif %};
+              position: relative;
+              z-index: 3;   /* ikona bude nad vším */
+            }
+            :host {
+              {% if is_state(config.entity, 'on') %}
+                --card-mod-icon-color: rgb({{ glow_color }});   # ikona kopíruje den/noc
+              {% else %}
+                --card-mod-icon-color: rgba(var(--color-grey),1);
+              {% endif %}
+            }
+
+            @keyframes ping {
+              0% { box-shadow: 0 0 0 0 rgba({{ glow_color }},1); }
+              70% { box-shadow: 0 0 0 10px transparent; }
+              100% { box-shadow: 0 0 0 0 transparent; }
+            }
+
+          .: |
+            mushroom-shape-icon {
+              --icon-size: 48px;
+              margin-top: 12px !important;
+              display: flex;
+            }
+            ha-card {
+              clip-path: inset(0 0 0 0 round var(--ha-card-border-radius, 12px));
+              background: none !important;
+              margin-top: -10px !important;
+              margin-bottom: 10px !important;
+            }
+
+    - type: custom:mushroom-template-card
+      entity: sensor.water_heating_on
+      icon: mdi:shower-head
+      icon_color: cyan
+      name: Ohřev vody
+      primary: >
+        Ohřev vody {{ 'zapnutý' if is_state(entity, 'on') else 'vypnutý' }}
+      secondary: " "
+      card_mod:
+        style:
+          mushroom-state-info$: |
+            .container {
+              --card-primary-color: var(--text-color);
+              --card-secondary-color: var(--text-color);
+            }
+            .primary {
+              background: rgba(var(--color-background-black),0.3) !important;
+              color: white;
+
+              margin-left: -74px !important;
+              margin-top: 0px !important;
+              margin-right: 10px !important;
+              border-radius: 32px;
+
+              height: 56px !important;
+
+              display: inline-flex;
+              justify-content: left;
+              align-items: center;
+              font-size: 14px !important;
+              font-weight: 600;
+              line-height: 1;
+
+              transform: translate(12px, 6px);
+              box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+              pointer-events: none;
+              padding-left: 60px; 
+            }
+
+          mushroom-shape-icon$: |
+            {% set sun_state = states('sun.sun') %}
+            {% set glow_color = 'var(--color-background-theme)' %}
+            ha-icon {
+              {{ '--icon-animation: rotation 1s linear infinite;' if is_state(config.entity, 'on') }}
+              transform-origin: 29% 88%;
+            }
+            .shape {
+              {{ '--shape-animation: ping 2s infinite;' if is_state(config.entity, 'on') }}
+              background-color: 
+                {% if is_state(config.entity, 'on') %}
+                  rgba({{ glow_color }},0.15) !important;
+                {% else %}
+                  rgba(var(--color-grey),0.2) !important;
+                {% endif %};
+              position: relative;
+              z-index: 3;   /* ikona bude nad vším */
+            }
+            :host {
+              {% if is_state(config.entity, 'on') %}
+                --card-mod-icon-color: rgb({{ glow_color }});   # ikona kopíruje den/noc
+              {% else %}
+                --card-mod-icon-color: rgba(var(--color-grey),1);
+              {% endif %}
+            }
+
+            @keyframes ping {
+              0% { box-shadow: 0 0 0 0 rgba({{ glow_color }},1); }
+              70% { box-shadow: 0 0 0 10px transparent; }
+              100% { box-shadow: 0 0 0 0 transparent; }
+            }
+
+          .: |
+            mushroom-shape-icon {
+              --icon-size: 48px;
+              margin-top: 12px !important;
+              display: flex;
+            }
+            ha-card {
+              clip-path: inset(0 0 0 0 round var(--ha-card-border-radius, 12px));
+              background: none !important;
+              margin-top: -10px !important;
+              box-shadow: none;
+            }
+
+  - type: horizontal-stack
+    card_mod:
+      style: |
+        ha-card {
+            background-color: transparent;
+            box-shadow: none;
+          }
+    cards:
+    - type: custom:mushroom-template-card
+      entity: binary_sensor.e3_tcu10_x07_frost_protection
+      primary: >
+        Ochrana {{ 'aktivní' if is_state(entity, 'on') else 'vypnutá' }}
+      secondary: ' '
+      icon: mdi:snowflake
+      card_mod:
+        style:
+          mushroom-state-info$: |
+            .container {
+              --card-primary-color: var(--text-color);
+              --card-secondary-color: var(--text-color);
+            }
+            .primary {
+              background: rgba(var(--color-background-black),0.3) !important;
+
+              margin-left: -74px !important;
+              margin-top: -6px !important;
+              margin-right: 10px !important;
+              border-radius: 32px;
+
+              height: 56px !important;
+
+              display: inline-flex;
+              justify-content: left;
+              align-items: center;
+              font-size: 14px !important;
+              font-weight: 600;
+              line-height: 1;
+
+              transform: translate(12px, 6px);
+              box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+              pointer-events: none;
+              padding-left: 60px; 
+            }
+
+          mushroom-shape-icon$: |
+            {% set glow_color = 'var(--color-background-theme)' %}
+            ha-icon {
+              {{ '--icon-animation: rotation 1s linear infinite;' if is_state(config.entity, 'on') }}
+              transform-origin: 29% 88%;
+            }
+            .shape {
+              {{ '--shape-animation: ping 2s infinite;' if is_state(config.entity, 'on') }}
+              background-color: 
+                {% if is_state(config.entity, 'on') %}
+                  rgba({{ glow_color }},0.15) !important;
+                {% else %}
+                  rgba(var(--color-grey),0.2) !important;
+                {% endif %};
+              position: relative;
+              z-index: 3;   /* ikona bude nad vším */
+            }
+            :host {
+              {% if is_state(config.entity, 'on') %}
+                --card-mod-icon-color: rgb({{ glow_color }});   # ikona kopíruje den/noc
+              {% else %}
+                --card-mod-icon-color: rgba(var(--color-grey),1);
+              {% endif %}
+            }
+
+            @keyframes ping {
+              0% { box-shadow: 0 0 0 0 rgba({{ glow_color }},1); }
+              70% { box-shadow: 0 0 0 10px transparent; }
+              100% { box-shadow: 0 0 0 0 transparent; }
+            }
+
+          .: |
+            mushroom-shape-icon {
+              --icon-size: 48px;
+              margin-top: 7px !important;
+              display: flex;
+            }
+
+            ha-card {
+              clip-path: inset(0 0 0 0 round var(--ha-card-border-radius, 12px));
+              background: none !important;
+              margin-top: -10px !important;
+              margin-bottom: 10px !important;
+            }
+
+    - type: custom:mushroom-template-card
+      entity: binary_sensor.e3_tcu10_x07_circulation_pump      
+      icon: mdi:pump
+      layout: horizontal
+      name:  Čerpadlo
+      primary: >
+        Čerpadlo {{ 'běží' if is_state(entity, 'on') else 'neběží' }}
+      secondary: " "
+      card_mod:
+        style:
+          mushroom-state-info$: |
+            .container {
+              --card-primary-color: var(--text-color);
+              --card-secondary-color: var(--text-color);
+            }
+            .primary {
+              background: rgba(var(--color-background-black),0.3) !important;
+
+              margin-left: -76px !important;
+              margin-top: -6px !important;
+              margin-right: 10px !important;
+              border-radius: 32px;
+
+              height: 56px !important;
+
+              display: inline-flex;
+              justify-content: left;
+              align-items: center;
+              font-size: 14px !important;
+              font-weight: 600;
+              line-height: 1;
+
+              transform: translate(12px, 6px);
+              box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+              pointer-events: none;
+              padding-left: 60px; 
+            }
+
+          mushroom-shape-icon$: |
+            ha-icon {
+              {% if is_state(config.entity, 'on') %}
+                --icon-animation: spin 0.5s linear infinite reverse;
+              {% endif %}
+            }
+
+            .shape {
+              shape-color: none;
+              position: relative;
+              z-index: 3;
+
+              {% if is_state(config.entity, 'on') %}
+                --shape-animation: spin 2s linear infinite;
+                background-color: rgba(var(--color-background-theme), 0.12) !important;
+              {% else %}
+                border: 2px dashed rgba(var(--color-grey),1);
+                background-color: rgba(var(--color-grey),0.1) !important;
+              {% endif %}
+            }
+
+            :host {
+              {% if is_state(config.entity, 'on') %}
+                --card-mod-icon-color: rgba(var(--color-background-theme), 1);
+              {% else %}
+                --card-mod-icon-color: rgba(var(--color-grey), 1);
+              {% endif %}
+            }
+
+          .: |
+            mushroom-shape-icon {
+              --icon-size: 48px;
+              margin-top: 7px !important;
+              display: flex;
+            }
+
+            ha-card {
+              clip-path: inset(0 0 0 0 round var(--ha-card-border-radius, 12px));
+              background: none !important;
+              margin-top: -10px !important;
+              margin-bottom: 10px !important;
+              box-shadow: none;
+            }
+
+  - type: custom:vertical-stack-in-card
+    card_mod:
+      style: |
+        ha-card {
+            background-color: transparent;
+            box-shadow: none;
+          }
+    cards:
+      - type: custom:bubble-card
+        card_type: separator
+        name: Teplota v topení
+        icon: mdi:radiator
+        rows: 1
+        styles: |
+          .bubble-line {
+            background: var(--primary-text-color);
+            opacity: 0.1;
+          }
+          .bubble-container {
+            color: var(--text-color);
+          }
+        card_mod:
+          style: |
+            ha-card {
+                background-color: transparent;
+                box-shadow: none;
+              }
+
+      - type: custom:stack-in-card
+        mode: vertical
+        card_mod:
+          style: |
+            ha-card {
+                background-color: transparent;
+                box-shadow: none;
+              }
+        cards:
+
+          ############################################################
+          # SPODNÍ GRAF – e3_tcu10_x07_supply_temperature
+          ############################################################
+          - type: custom:mini-graph-card
+            entities:
+              - entity: sensor.e3_tcu10_x07_supply_temperature
+                show_fill: true
+                show_line: true
+            hours_to_show: 12
+            points_per_hour: 4
+            line_width: 3
+            decimals: 1
+            tap_action:
+              action: none
+            line_color: var(--graph-color1)
+            show:
+              name: false
+              icon: false
+              state: true
+              labels: false
+              legend: false
+            card_mod:
+              style: |
+                {% set sun_state = states('sun.sun') %}
+                {% set graph_color = 'var(--color-background-theme-secondary)' %}
+                ha-card {
+                  --graph-color1: rgb({{ graph_color }});
+                  background: none;
+                  box-shadow: none;
+                  border: none;
+                  opacity: 0.9;
+                  position: relative;
+                  z-index: 2;
+                  margin-top: -10px;
+
+                  mask-image: linear-gradient(
+                    to right,
+                    rgba(0,0,0,0) 0%,
+                    rgba(0,0,0,1) 10%,
+                    rgba(0,0,0,1) 90%,
+                    rgba(0,0,0,0) 100%
+                  );
+
+                  filter:
+                    drop-shadow(0 0 4px rgba({{ graph_color }},0.35))
+                    drop-shadow(0 0 6px rgba({{ graph_color }},0.18));
+                }
+
+                ha-card .state {
+                  font-size: 0.7rem;
+                  font-weight: 600;
+                  position: absolute;      /* potřebné, aby right fungovalo */
+                  right: 30px;             /* odsazení od pravého okraje */
+                  top: 10px;               /* odsazení od horního okraje */
+                  left: auto;
+                  text-align: right;       /* aby text byl opravdu vpravo */
+                }
+
+          ############################################################
+          # HORNÍ GRAF – heating_on
+          ############################################################
+          - type: custom:mini-graph-card
+            entities:
+              - entity: sensor.heating_on
+                show_fill: false
+                show_line: true
+                y_axis: secondary
+            hours_to_show: 12
+            points_per_hour: 4
+            line_width: 2
+            decimals: 1
+            tap_action:
+              action: none
+            line_color: var(--graph-color2)
+            show:
+              name: false
+              icon: false
+              state: false
+              labels: false
+              legend: false
+            card_mod:
+              style: |
+                {% set sun_state = states('sun.sun') %}
+                {% set graph_color = 'var(--color-background-theme)' %}
+                ha-card {
+                  --graph-color2: rgb({{ graph_color }});
+                  background: none;
+                  box-shadow: none;
+                  border: none;
+                  opacity: 0.9;
+                  position: relative;
+                  top: -18px;
+                  z-index: 1;
+                  margin-top: -100%;  /* překrytí spodního grafu */
+
+                  mask-image: linear-gradient(
+                    to right,
+                    rgba(0,0,0,0) 0%,
+                    rgba(0,0,0,1) 10%,
+                    rgba(0,0,0,1) 90%,
+                    rgba(0,0,0,0) 100%
+                  );
+
+                  filter:
+                    drop-shadow(0 0 4px rgba({{ graph_color }},0.35))
+                    drop-shadow(0 0 6px rgba({{ graph_color }},0.18));
+                }
+
+      - type: custom:bubble-card
+        card_type: separator
+        name: Teplota vody
+        icon: mdi:water-boiler
+        rows: 1
+        styles: |
+          .bubble-line {
+            background: var(--primary-text-color);
+            opacity: 0.1;
+            
+          }
+          .bubble-container {
+            color: var(--text-color);
+          }
+
+      - type: custom:stack-in-card
+        mode: vertical
+        card_mod:
+          style: |
+            ha-card {
+                background-color: transparent;
+                box-shadow: none;
+              }
+        cards:
+
+          ############################################################
+          # SPODNÍ GRAF – current_water_temperature
+          ############################################################
+          - type: custom:mini-graph-card
+            entities:
+              - sensor.current_water_temperature
+            hours_to_show: 12
+            points_per_hour: 4
+            line_width: 3
+            decimals: 1
+            tap_action:
+              action: none
+            line_color: var(--graph-color1)
+            show:
+              name: false
+              icon: false
+              state: true
+              labels: false
+              legend: false
+            card_mod:
+              style: |
+                {% set sun_state = states('sun.sun') %}
+                {% set graph_color = 'var(--color-background-theme-secondary)' %}
+                ha-card {
+                  --graph-color1: rgb({{ graph_color }});
+                  background: none;
+                  box-shadow: none;
+                  border: none;
+                  opacity: 0.9;
+                  position: relative;
+                  margin-top: -10px;
+                  z-index: 2;
+
+                  mask-image: linear-gradient(
+                    to right,
+                    rgba(0,0,0,0) 0%,
+                    rgba(0,0,0,1) 10%,
+                    rgba(0,0,0,1) 90%,
+                    rgba(0,0,0,0) 100%
+                  );
+
+                  filter:
+                    drop-shadow(0 0 4px rgba({{ graph_color }},0.35))
+                    drop-shadow(0 0 6px rgba({{ graph_color }},0.18));
+                }
+
+                ha-card .state {
+                  font-size: 0.7rem;
+                  font-weight: 600;
+                  position: absolute;      /* potřebné, aby right fungovalo */
+                  right: 30px;             /* odsazení od pravého okraje */
+                  top: 10px;               /* odsazení od horního okraje */
+                  left: auto;
+                  text-align: right;       /* aby text byl opravdu vpravo */
+                }
+
+          ############################################################
+          # HORNÍ GRAF – water_temperature
+          ############################################################
+          - type: custom:mini-graph-card
+            entities:
+              - sensor.water_temperature
+            hours_to_show: 12
+            points_per_hour: 4
+            line_width: 2
+            show_fill: false
+            decimals: 1
+            tap_action:
+              action: none
+            line_color: var(--graph-color2)
+            show:
+              name: false
+              icon: false
+              state: false
+              labels: false
+              legend: false
+            card_mod:
+              style: |
+                {% set sun_state = states('sun.sun') %}
+                {% set graph_color = 'var(--color-background-theme)' %}
+                ha-card {
+                  --graph-color2: rgb({{ graph_color }});
+                  background: none;
+                  box-shadow: none;
+                  border: none;
+                  opacity: 0.9;
+                  margin-top: -100%;        /* překrytí */
+                  position: relative;
+                  top: -18px;
+                  z-index: 1;
+
+                  mask-image: linear-gradient(
+                    to right,
+                    rgba(0,0,0,0) 0%,
+                    rgba(0,0,0,1) 10%,
+                    rgba(0,0,0,1) 90%,
+                    rgba(0,0,0,0) 100%
+                  );
+
+                  filter:
+                    drop-shadow(0 0 4px rgba({{ graph_color }},0.35))
+                    drop-shadow(0 0 6px rgba({{ graph_color }},0.18));
+                }

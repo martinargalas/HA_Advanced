@@ -1,0 +1,350 @@
+view_layout:
+type: custom:button-card
+color: var(--google-grey-500)
+entity: |
+  [[[
+    if (states['binary_sensor.luba_vsqcfhrv_charging'].state == 'off' || states['sensor.luba_vsqcfhrv_battery'].state == '100')
+      return "sensor.luba_vsqcfhrv_progress";
+    if (states['binary_sensor.luba_vsqcfhrv_charging'].state == 'on' && states['sensor.luba_vsqcfhrv_battery'].state != '100' )
+      return "sensor.luba_vsqcfhrv_battery";
+  ]]]
+
+show_name: false
+show_icon: false
+custom_fields:
+  details:
+    card:
+      type: custom:button-card
+      entity: input_boolean.alarmed_toggle
+      show_icon: false
+      show_label: false
+      show_name: false
+      tap_action:
+        action: none    
+      custom_fields:
+        top:
+          card:
+            type: "custom:button-card"
+            tap_action:
+              action: call-service
+              service: button.press
+              target:
+                entity_id: button.luba_vsqcfhrv_emergency_nudge_forward
+            hold_action:
+              action: call-service
+              service: button.press
+              target:
+                entity_id: button.luba_vsqcfhrv_emergency_nudge_forward 
+              repeat: 500
+            show_name: false
+            show_label: false
+            show_icon: true
+            icon: mdi:chevron-up
+            entity: button.luba_vsqcfhrv_emergency_nudge_forward 
+            styles:
+              card:
+                - height: "60px"
+                - width: "86px"
+                - background-color: transparent !important;
+                - box-shadow: none;
+                - border-radius: 0;
+              icon:
+                - justify-self: "center"
+                - justify-top: "center"
+                - width: 30px
+                - height: 60px
+        left:
+          card:
+            type: "custom:button-card"
+            tap_action:
+              action: call-service
+              service: button.press
+              target:
+                entity_id: button.luba_vsqcfhrv_emergency_nudge_left  
+            hold_action:
+              action: call-service
+              service: button.press
+              target:
+                entity_id: button.luba_vsqcfhrv_emergency_nudge_left 
+              repeat: 500
+            show_name: false
+            show_label: false
+            show_icon: true
+            icon: mdi:chevron-left
+            entity: button.luba_vsqcfhrv_emergency_nudge_left 
+            styles:
+              card:
+                - height: "60px"
+                - width: "86px"
+                # - left: "10px"
+                - background-color: transparent !important;
+                - box-shadow: none;
+                - border-radius: 0;
+              icon:
+                - justify-self: "center"
+                - justify-top: "center"
+                - width: 30px
+                - height: 60px
+        right:
+          card:
+            type: "custom:button-card"
+            tap_action:
+              action: call-service
+              service: button.press
+              target:
+                entity_id: button.luba_vsqcfhrv_emergency_nudge_right   
+            hold_action:
+              action: call-service
+              service: button.press
+              target:
+                entity_id: button.luba_vsqcfhrv_emergency_nudge_right 
+              repeat: 500
+            show_name: false
+            show_label: false
+            show_icon: true
+            icon: mdi:chevron-right
+            entity: button.luba_vsqcfhrv_emergency_nudge_right
+            styles:
+              card:
+                - height: "60px"
+                - width: "86px"
+                # - left: "-10px"
+                - background-color: transparent !important;
+                - box-shadow: none;
+                - border-radius: 0;
+              icon:
+                - justify-self: "center"
+                - justify-top: "center"
+                - width: 30px
+                - height: 60px
+        back:
+          card:
+            type: "custom:button-card"
+            tap_action:
+              action: call-service
+              service: button.press
+              target:
+                entity_id: button.luba_vsqcfhrv_emergency_nudge_back  
+            hold_action:
+              action: call-service
+              service: button.press
+              target:
+                entity_id: button.luba_vsqcfhrv_emergency_nudge_back 
+              repeat: 500
+            show_name: false
+            show_label: false
+            show_icon: true
+            icon: mdi:chevron-down
+            entity: button.luba_vsqcfhrv_emergency_nudge_back  
+            styles:
+              card:
+                - height: "60px"
+                - width: "86px"
+                - background-color: transparent !important;
+                - box-shadow: none;
+                - border-radius: 0;
+              icon:
+                - justify-self: "center"
+                - justify-top: "center"
+                - width: 30px
+                - height: 60px
+    
+      styles:
+        card:
+          - padding: 0px
+          - box-shadow: "var(--box-shadow)"
+          - background-color: transparent !important;
+          - border-radius: "21px"
+          - height: 60px
+          - width: "100%"
+          - border-radius: 0;
+        grid:
+          - grid-template-areas: >
+              "top left right back"
+          - grid-template-columns: 1fr 1fr 1fr 1fr 
+          - grid-template-rows: 1fr
+    
+        custom_fields:
+          zone1:
+            - place-self:  left
+            - justify-self: left
+          zone2:
+            - place-self:  left
+            - justify-self: left
+          zone3:
+            - place-self:  right
+            - justify-self: right
+          zone4:
+            - place-self:  right
+            - justify-self: right
+      
+  icon:
+    card:
+      type: custom:button-card
+      tap_action:
+        action: none
+      show_icon: true
+      show_name: false
+      show_label: false
+      icon: |
+        [[[
+          if (states['binary_sensor.luba_vsqcfhrv_charging'].state == 'off' || states['sensor.luba_vsqcfhrv_battery'].state == '100' )
+            if (states['lawn_mower.luba_vsqcfhrv'].state == 'mowing')
+              return "mdi:pause";
+            else if (states['lawn_mower.luba_vsqcfhrv'].state == 'paused')
+              return "mdi:play";
+            else if (states['lawn_mower.luba_vsqcfhrv'].state == 'docked')
+              return "mdi:play";
+            else if (states['lawn_mower.luba_vsqcfhrv'].state == 'returning')
+              return " ";
+          if (states['binary_sensor.luba_vsqcfhrv_charging'].state == 'on' && states['sensor.luba_vsqcfhrv_battery'].state != '100' )
+            return "mdi:battery-charging-medium";
+        ]]]
+      styles:
+        card:
+          - padding: 0px
+          - height: 30px
+          - box-shadow: none
+          - background-color: transparent
+          - padding-right: 110px
+          
+        icon:
+          - padding-bottom: 10px
+      card_mod:
+        style: |
+          ha-card {
+            {% if states('binary_sensor.luba_vsqcfhrv_charging') == 'on' and states['sensor.luba_vsqcfhrv_battery'].state | int(0) < 100 %}
+              animation: blink 3s linear infinite;
+            {%endif%}
+          }
+            @keyframes blink {
+              50% {opacity: 0;}
+          }
+  button_run:
+    card:
+      type: custom:button-card
+      tap_action:
+        action: call-service
+        service: |
+          [[[
+            if (states['binary_sensor.luba_vsqcfhrv_charging'].state == 'off' || states['sensor.luba_vsqcfhrv_battery'].state == '100' )
+              if (states['lawn_mower.luba_vsqcfhrv'].state == 'mowing')
+                return "script.luba_pause";
+              else if (states['lawn_mower.luba_vsqcfhrv'].state == 'paused')
+                return "script.luba_unpause";
+              else if (states['lawn_mower.luba_vsqcfhrv'].state == 'docked')
+                return "script.luba_unpause";
+            if (states['binary_sensor.luba_vsqcfhrv_charging'].state == 'on' && states['sensor.luba_vsqcfhrv_battery'].state != '100' )
+              return " ";
+          ]]] 
+      show_name: false
+      show_label: true
+      show_icon: false
+      label: |
+        [[[
+          if (states['binary_sensor.luba_vsqcfhrv_charging'].state == 'off' || states['sensor.luba_vsqcfhrv_battery'].state == '100')
+            if (states['lawn_mower.luba_vsqcfhrv'].state == 'docked')
+              return "Spustit sečení";
+            else if (states['lawn_mower.luba_vsqcfhrv'].state == 'mowing' && states['sensor.luba_vsqcfhrv_activity_mode'].state != 'MODE_RETURNING')
+              return "Pozastavit - " + states['sensor.luba_vsqcfhrv_progress'].state + "%";
+            else if (states['lawn_mower.luba_vsqcfhrv'].state == 'paused')
+              return "Pokračovat - " + states['sensor.luba_vsqcfhrv_progress'].state + "%";
+            else if (states['lawn_mower.luba_vsqcfhrv'].state == 'returning' && states['sensor.luba_vsqcfhrv_activity_mode'].state == 'MODE_RETURNING')
+              return "Návrat do stanice";
+          if (states['binary_sensor.luba_vsqcfhrv_charging'].state == 'on' && states['sensor.luba_vsqcfhrv_battery'].state != '100')
+              return "Nabíjení - " + states['sensor.luba_vsqcfhrv_battery'].state + "%";
+        ]]]
+      entity: |
+        [[[
+          if (states['binary_sensor.luba_vsqcfhrv_charging'].state == 'off' || states['sensor.luba_vsqcfhrv_battery'].state == '100')
+            return "lawn_mower.luba_vsqcfhrv";
+          if (states['binary_sensor.luba_vsqcfhrv_charging'].state == 'on' && states['sensor.luba_vsqcfhrv_battery'].state != '100')
+            return "binary_sensor.luba_vsqcfhrv_charging";
+        ]]]
+      state:
+        - value: "on"
+          styles:
+            card:
+              - background: rgba(var(--color-blue), 0.5)
+        - value: mowing
+          styles:
+            card:
+              - background: rgba(var(--color-green), 0.5)
+        - value: paused
+          styles:
+            card:
+              - background: rgba(var(--google-yellow), 0.5)
+        - value: docked
+          styles:
+            card:
+              - background: rgba(var(--color-green), 0.5)
+        - value: returning
+          styles:
+            card:
+              - background: rgba(var(--color-blue), 0.5)
+        - value: N/A
+          styles:
+            card:
+              - background: rgba(var(--color-grey), 0.7)
+      styles:
+        card:
+          - padding: 0px
+          - height: 60px
+          - top: "px"
+        label:
+          - font-size: 14px
+          - font-weight: 500
+          - padding-left: 30px
+      card_mod:
+        style: |
+          ha-card {
+            {% if states('lawn_mower.luba_vsqcfhrv') == 'returning' %}
+              animation: blink 2s linear infinite;
+            {%endif%}
+          }
+            @keyframes blink {
+              50% {opacity: 0;}
+          }
+  bar: |
+    [[[
+      var color = "linear-gradient(to right, rgba(var(--color-theme),0.2), rgba(var(--color-theme),0.3))";
+      var state = entity.state;
+      return `
+      <div>
+      <div style="background:${color}; height: 68px; width:${state}%">
+      </div>
+      </div>
+      `
+    ]]]
+styles:
+  custom_fields:
+    button_run:
+      - place-self: start
+      - height: 52px
+      - width: 100%
+    bar:
+      - justify-self: start
+      - width: 100%
+      - margin-top: "-60px"
+      - border-radius: 20px
+    icon:
+      - margin-top: "-50px"
+      - box-shadow: none
+    details:
+      - place-self: start
+      - height: 60px
+      - box-shadow: none
+  grid: 
+    - grid-template-areas: |
+
+        "button_run button_run button_run" 
+        "bar bar bar" 
+        "icon icon icon"   
+        "details details details" 
+  card:
+    - padding: 0px
+    - box-shadow: var(--box-shadow)
+    - background-color: rgba(var(--color-background-black),0.2);
+    - margin: 10px
+    - max-width: 344px
+    

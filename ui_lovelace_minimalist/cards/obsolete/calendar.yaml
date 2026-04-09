@@ -1,0 +1,57 @@
+view_layout:
+  grid-area: "calendar"
+  place-self: left stretch end
+initial_view: listWeek
+type: custom:atomic-calendar-revive
+name: 
+showLoader: true
+enableModeChange: true
+card_mod:
+  style: |       
+    ha-card {
+      {% if states('sun.sun')|title == 'Above_horizon' %}
+        background-color: rgba(var(--color-background-grey),var(--opacity-bg)) !important;
+        backdrop-filter: blur(0.25px) !important;
+      {%endif%}
+      {% if states('sun.sun')|title == 'Below_horizon' %}
+        background-color: rgba(var(--color-background-grey),0.05) !important;
+      {%endif%}
+      max-height: 300px !important;
+    }
+entities:
+  - entity: automation.refresh_calendar
+    icon: ''
+  - entity: calendar.family
+    name: Family
+    maxDaysToShow: 7
+  - entity: calendar.utilities
+    name: Utilities
+    maxDaysToShow: 7
+  - entity: calendar.ceske_statni_svatky
+    name: České státní svátky
+    
+defaultMode: Event
+showHiddenText: true
+showEventIcon: true
+calShowDescription: false
+disableCalEventLink: false
+showLastCalendarWeek: false
+disableCalLink: false
+dimFinishedEvents: true
+showDate: false
+showCurrentEventLine: false
+showMonth: true
+showWeekDay: true
+showDescription: false
+disableLocationLink: false
+showNoEventsForToday: false
+showFullDayProgress: false
+showCalendarName: false
+showWeekNumber: false
+showEventDate: true
+showDatePerEvent: false
+showAllDayHours: false
+hoursOnSameLine: false
+maxDaysToShow: 10
+showTimeRemaining: false
+disableEventLink: false

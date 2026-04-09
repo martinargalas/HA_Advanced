@@ -1,0 +1,200 @@
+type: conditional
+conditions:
+  - condition: state
+    entity: switch.energy_daily_view
+    state: "on"
+card:
+  type: custom:vertical-stack-in-card
+  card_mod:
+    style: |
+      ha-card {
+        background-color: transparent !important;
+        box-shadow: none !important;
+      }
+  cards:
+
+    ############################################################
+    # DEN – sun above horizon (bílá barva)
+    ############################################################
+    - type: conditional
+      conditions:
+        - condition: state
+          entity: sun.sun
+          state: "above_horizon"
+      card:
+        type: custom:config-template-card
+        entities:
+          - input_number.counter_graph
+        card:
+          type: custom:apexcharts-card
+          card_mod:
+            style: |
+              ha-card {
+                background-color: transparent !important;
+              }
+          experimental:
+            brush: false
+          graph_span: >
+            [[[
+              if (states['input_boolean.switch_current'].state == 'on' )
+                return "12h";
+            ]]]
+          span:
+            offset: ${'-' + states['input_number.counter_graph'].state +'d'}
+          stacked: false
+          update_interval: 15m
+          header:
+            show: false
+          series:
+            - entity: sensor.active_power
+              transform: return x/1000
+              unit: kW
+              type: column
+              color: "rgb(250,250,250)"   # BÍLÁ – den
+              stroke_width: 1
+              group_by:
+                duration: 15m
+                func: max
+              show:
+                legend_value: false
+                name_in_header: false
+                in_brush: false
+          apex_config:
+            chart:
+              type: area
+              height: 180
+              dropShadow:
+                enabled: true
+                enabledOnSeries: [0]
+                top: 0
+                left: 0
+                blur: 4
+                color: "#888"
+                opacity: 0.35
+            fill:
+              type: gradient
+              gradient:
+                shadeIntensity: 0.1
+                opacityFrom: 0.6
+                opacityTo: 0.8
+                inverseColors: true
+                stops:
+                  - 0
+                  - 50
+                  - 100
+            xaxis:
+              labels: { show: false }
+              axisBorder: { show: false }
+              axisTicks: { show: false }
+            grid:
+              show: false
+            tooltip:
+              enabled: true
+              shared: true
+              followCursor: true
+            legend:
+              show: false
+          yaxis:
+            - min: auto
+              max: auto
+              decimals: 0
+          card_mod:
+            style: |
+              ha-card {
+                background-color: transparent !important;
+                box-shadow: none !important;
+                max-height: 250px !important;
+              }
+
+    ############################################################
+    # NOC – sun below horizon (modrá barva)
+    ############################################################
+    - type: conditional
+      conditions:
+        - condition: state
+          entity: sun.sun
+          state: "below_horizon"
+      card:
+        type: custom:config-template-card
+        entities:
+          - input_number.counter_graph
+        card:
+          type: custom:apexcharts-card
+          card_mod:
+            style: |
+              ha-card {
+                background-color: transparent !important;
+              }
+          experimental:
+            brush: false
+          graph_span: >
+            [[[
+              if (states['input_boolean.switch_current'].state == 'on' )
+                return "12h";
+            ]]]
+          span:
+            offset: ${'-' + states['input_number.counter_graph'].state +'d'}
+          stacked: false
+          update_interval: 15m
+          header:
+            show: false
+          series:
+            - entity: sensor.active_power
+              transform: return x/1000
+              unit: kW
+              type: column
+              color: "rgb(255, 255, 255)"   # MODRÁ – noc
+              stroke_width: 1
+              group_by:
+                duration: 15m
+                func: max
+              show:
+                legend_value: false
+                name_in_header: false
+                in_brush: false
+          apex_config:
+            chart:
+              type: area
+              height: 180
+              dropShadow:
+                enabled: true
+                enabledOnSeries: [0]
+                top: 0
+                left: 0
+                blur: 4
+                color: "#888"
+                opacity: 0.35
+            fill:
+              type: gradient
+              gradient:
+                shadeIntensity: 0.1
+                opacityFrom: 0.6
+                opacityTo: 0.8
+                inverseColors: true
+                stops:
+                  - 0
+                  - 50
+                  - 100
+            xaxis:
+              labels: { show: false }
+              axisBorder: { show: false }
+              axisTicks: { show: false }
+            grid:
+              show: false
+            tooltip:
+              enabled: true
+              shared: true
+              followCursor: true
+            legend:
+              show: false
+          yaxis:
+            - min: auto
+              max: auto
+              decimals: 0
+          card_mod:
+            style: |
+              ha-card {
+                background-color: transparent !important;
+                box-shadow: none !important;
+                max-height: 250px !important;
+              }

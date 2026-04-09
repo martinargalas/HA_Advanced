@@ -1,0 +1,16 @@
+view_layout:
+  grid-area: heat_pump_desc
+type: custom:bubble-card
+card_type: separator
+name: Tepelné čerpadlo
+icon: mdi:heat-pump-outline
+rows: 1
+styles: |
+  .bubble-line {
+    background: rgba(var(--color-background-black),0.4);
+    opacity: 1;
+  }
+
+  .bubble-container {
+    color: var(--text-color);
+  }

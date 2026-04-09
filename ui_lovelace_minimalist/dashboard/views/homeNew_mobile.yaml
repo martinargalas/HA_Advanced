@@ -1,0 +1,206 @@
+title: "Home"
+path: "home"
+icon: "mdi:home"
+
+type: "custom:grid-layout"
+layout:
+  grid-template-rows: "min-content"
+  grid-template-columns: "1fr 1fr 1fr 1fr"
+  grid-template-areas: >
+    "welcome welcome weather weather"
+    "panel_horizontal panel_horizontal panel_horizontal panel_horizontal"
+    "panel_horizontal panel_horizontal panel_horizontal panel_horizontal"
+    "rooms rooms rooms rooms"
+    "rooms rooms rooms rooms"
+    "rooms rooms rooms rooms"
+    "rooms rooms rooms rooms"
+    "rooms rooms rooms rooms"
+    "rooms rooms rooms rooms"
+
+view_layout:
+  grid-area: "home"
+cards:
+  #BUBBLE CARDS
+  - !include /config/ui_lovelace_minimalist/cards/bubble_cards/bubble_main.yaml
+
+  - type: vertical-stack
+    cards:
+# HEATING
+      - type: custom:bubble-card
+        card_type: pop-up
+        hash: "#heating"
+        width_desktop: 340px
+        margin: 8px
+        margin_top_mobile: -56px
+        bg_blur: 50
+        bg_opacity: 0
+        is_sidebar_hidden: true
+       
+        icon: mdi:radiator
+        name: "Vytápění místností"
+        hide_backdrop: true
+      - !include utilities_bubble.yaml
+
+# LIGHTS
+  - type: vertical-stack
+    cards:
+      - type: custom:bubble-card
+        card_type: pop-up
+        hash: "#lights"
+        width_desktop: 340px
+        margin: 8px
+        margin_top_mobile: -56px
+        bg_color: rgba(var(--color-background-black),1)
+        bg_blur: 50
+        bg_opacity: 0
+        is_sidebar_hidden: true
+        icon: mdi:lightbulb-group
+        margin_top_desktop: "-35px"
+        name: "Osvětlení"
+        hide_backdrop: true
+      - !include lights_bubble.yaml
+
+# BLINDS
+  - type: vertical-stack
+    cards:
+      - type: custom:bubble-card
+        card_type: pop-up
+        hash: "#blinds"
+        width_desktop: 340px
+        margin: 8px
+        margin_top_mobile: -56px
+        bg_blur: 50
+        bg_opacity: 0
+        hide_backdrop: true
+        is_sidebar_hidden: true
+        icon: mdi:blinds-horizontal
+        margin_top_desktop: "-35px"
+        name: "Ovládání žaluzií"
+      - !include /config/ui_lovelace_minimalist/cards/bubble_cards/blinds/blinds.yaml
+
+# CLEANING
+  - type: vertical-stack
+    cards:
+      - type: custom:bubble-card
+        card_type: pop-up
+        hash: "#cleaning"
+        width_desktop: 340px
+        margin_top_mobile: -56px
+        bg_blur: 50
+        bg_opacity: 0
+        hide_backdrop: true
+        icon: mdi:broom
+        margin_top_desktop: "-35px"
+        name: "Úklid"
+      - !include cleaning_bubble.yaml
+
+# MEDIA
+  - type: vertical-stack
+    cards:
+      - type: custom:bubble-card
+        card_type: pop-up
+        hash: "#media"
+        width_desktop: 340px
+        margin: 8px
+        margin_top_mobile: -56px
+        bg_blur: 50
+        bg_opacity: 0
+        hide_backdrop: true
+        icon: mdi:multimedia
+        margin_top_desktop: "-35px"
+        name: "Média"
+      - !include media_bubble.yaml
+
+# WEATHER
+  - type: vertical-stack
+    cards:
+      - type: custom:bubble-card
+        card_type: pop-up
+        hash: "#weather"
+        margin: 8px
+        width_desktop: 340px
+        margin_top_mobile: -56px
+        bg_blur: 50
+        bg_opacity: 0
+        hide_backdrop: true
+        icon: mdi:weather-partly-cloudy
+        margin_top_desktop: "-35px"
+        name: "Počasí"
+      - !include weather_bubble.yaml
+
+# ENERGY
+  - type: vertical-stack
+    cards:
+      - type: custom:bubble-card
+        card_type: pop-up
+        hash: "#energy"
+        margin: 8px
+        width_desktop: 340px
+        margin_top_mobile: -56px
+        bg_blur: 50
+        bg_opacity: 0
+        hide_backdrop: true
+        icon: mdi:solar-power-variant
+        margin_top_desktop: "-35px"
+        name: "Energie"
+      - !include energy_bubble.yaml
+
+# SECURITY
+  - type: vertical-stack
+    cards:
+      - type: custom:bubble-card
+        card_type: pop-up
+        hash: "#security"
+        width_desktop: 340px
+        margin_top_mobile: -56px
+        bg_blur: 50
+        bg_opacity: 0
+        hide_backdrop: true
+        icon: mdi:cctv
+        margin_top_desktop: "-35px"
+        name: "Zabezpečení"
+        
+      - !include security_bubble.yaml      
+
+  - view_layout:
+      grid-area: "weather"
+      place-self: right end stretch
+    type: custom:clock-weather-card
+    entity: weather.home
+    sun_entity: sun.sun
+    weather_icon_type: fill
+    animated_icon: true
+    hide_today_section: false
+    hide_forecast_section: true
+    hide_clock: true
+    hide_date: true
+    tap_action:
+      action: none
+    card_mod:
+      style: |
+        ha-card {
+          background-color: rgba(var(--color-black),0.0) !important;
+          box-shadow: none !important;
+          top: -18px !important;
+          font-weight: 300 !important;
+          font-size: 16px !important;
+          text-shadow: var(--text-shadow) !important;
+        }
+        ha-card * {
+          color: var(--text-color) !important;
+          font-family: "Roboto", sans-serif !important;
+          max-height: 45px !important;
+          font-family: Roboto;
+          font-weight: 400 !important;
+          font-size: 20px !important;
+          text-shadow: var(--text-shadow) !important;
+        }
+
+ # WELCOME
+  - !include /config/ui_lovelace_minimalist/cards/welcome_mobile.yaml
+
+  # ROOMS
+  - !include /config/ui_lovelace_minimalist/cards/rooms_mobile.yaml
+
+  #HORIZONTAL PANEL
+  - !include /config/ui_lovelace_minimalist/cards/panel_horizontal_mobile.yaml

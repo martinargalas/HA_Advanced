@@ -1,0 +1,43 @@
+view_layout:
+  grid-area: "welcome"
+  place-self: left end stretch
+
+type: custom:mushroom-title-card
+title: >
+  {{ states['sensor.day_in_week_name'].state }}, {{ states['sensor.day_in_week'].state }}. {{ states['sensor.month_name'].state }}
+subtitle: >
+  Svátek má {{ states["sensor.nameday"].state }}
+
+card_mod:
+  style: |
+    ha-card {
+      background: transparent;
+      max-height: 100px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      top: -10px;
+    }
+
+    .title {
+      color: white !important;
+      font-family: Roboto;
+      font-size: 30px !important;
+      font-weight: 300;
+      line-height: 1.2;
+      text-align: center;
+      text-shadow: var(--text-shadow)
+    }
+
+    .subtitle {
+      color: rgba(255,255,255,0.75) !important;
+      font-family: Roboto;
+      font-size: 24px !important;
+      font-weight: 300;
+      margin-top: -4px;
+      text-align: center;
+      text-shadow: var(--text-shadow)
+    }
+      

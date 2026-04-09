@@ -1,0 +1,81 @@
+view_layout:
+  grid-area: "garden_1"
+type: entities
+show_header_toggle: false
+card_mod:
+  style: |
+    ha-card {
+      border-radius: 34px;
+      padding: 5px;
+      background: var(--mod-card-background);
+      backdrop-filter: blur(35px) saturate(100%);
+      -webkit-backdrop-filter: blur(35px) saturate(200%);
+      border: 1px solid var(--mod-card-border);
+      box-shadow: 
+        0 15px 25px var(--mod-card-shadow), 
+        inset 0 2px 3px var(--mod-card-inset-shadow);
+    }
+
+    ha-card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: 34px;
+      padding: 5px;
+      background: linear-gradient(
+        120deg,
+        var(--mod-card-gradient-start),
+        var(--mod-card-gradient-mid) 25%,
+        var(--mod-card-gradient-end) 50%,
+        transparent 70%
+      );
+      opacity: 0.35;
+      pointer-events: none;
+    }
+entities:
+  - type: "custom:button-card"
+    template:
+      - card_light_slider_collapse_color
+      - yellow_on
+      - grey_no_state
+    entity: light.garden_front
+    variables:
+      ulm_card_light_enable_slider: true
+      ulm_card_light_enable_buttons: true
+      ulm_card_light_name: "Osvětlení chodníku"
+      ulm_card_light_force_background_color: false
+    styles:
+      icon:
+        - color: var(--button-card-icon)
+        - filter: drop-shadow(0 2px 6px var(--button-card-icon-shadow))
+      name:
+        - font-size: 20px
+        - font-weight: 600
+        - color: var(--button-card-name)
+      label:
+        - font-size: 14px
+        - color: var(--button-card-label)
+    card_mod:
+      style: |
+        ha-card::before {
+          content: "";
+          position: absolute;
+          inset: 0;
+          background: linear-gradient(
+            120deg,
+            var(--button-card-before-gradient-start),
+            var(--button-card-before-gradient-mid) 30%,
+            var(--button-card-before-gradient-end) 60%
+          );
+          opacity: 0.35;
+          pointer-events: none;
+        }
+        ha-card::after {
+          content: "";
+          position: absolute;
+          inset: 0;
+          box-shadow:
+            inset 0 0 0 1.5px var(--button-card-after-border),
+            inset 0 0 20px var(--button-card-after-shadow);
+          pointer-events: none;
+        } 

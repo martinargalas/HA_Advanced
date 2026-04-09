@@ -1,0 +1,301 @@
+type: custom:button-card
+name: Ložnice
+icon: mdi:bed
+show_state: false
+show_label: true
+show_name: false
+tap_action:
+  action: none
+double_tap_action:
+  action: none
+hold_action:
+  action: none
+styles:
+  card:
+    - height: 180px
+    - border-radius: 26px
+    - padding: 20px
+    - position: relative
+    - overflow: hidden
+    - transition: transform 0.25s ease
+  icon:
+    - width: 46px
+    - color: var(--button-card-icon)
+    - filter: drop-shadow(0 2px 6px var(--button-card-icon-shadow))
+  name:
+    - font-size: 20px
+    - font-weight: 600
+    - color: var(--button-card-name)
+  label:
+    - font-size: 14px
+    - color: var(--button-card-label)
+      
+  grid:
+    
+    - grid-template-rows: "min-content"
+    - grid-template-columns: 1fr 1fr
+    - grid-template-rows: 1fr 1fr
+    - grid-template-areas: >
+        "i i"
+        "item1 item2 "
+
+  custom_fields:
+    item1:
+      - place-self:  center
+      - justify-self: center
+    item2:
+      - place-self:  center
+      - justify-self: center
+    item3:
+      - place-self:  center
+      - justify-self: center
+    item4:
+      - place-self:  center
+      - justify-self: center
+    
+custom_fields:
+  # item1:
+  #   card:
+  #     type: "custom:button-card"
+  #     show_name: false
+  #     show_label: false
+  #     show_icon: true
+  #     label: "Koupelna obsazena"
+  #     entity: binary_sensor.zachod_obsazen
+  #     icon: mdi:minus-circle
+  #     state:
+  #     - value: "on"
+  #       styles:
+  #         card:
+  #           - background: var(--macos-red-background)   
+  #     - value: "off"
+  #       styles:
+  #         card:
+  #           - background: none  
+  #       styles:
+  #         card:
+  #           - background: none
+  #     styles:
+  #       card:
+  #         - border-radius: "42px"       
+  #         - height: "52px"
+  #         - width: "52px"
+  #         - background: var(--button-card-background)
+  #         - backdrop-filter: blur(20px) saturate(180%)
+  #         - -webkit-backdrop-filter: blur(20px) saturate(180%)
+  #         - border: 1px solid var(--button-card-border)
+  #         - box-shadow:
+  #             - 0 10px 25px var(--button-card-shadow)
+  #             - inset 0 1px 1px var(--button-card-inset-shadow)
+  #         - position: relative
+  #         - overflow: hidden
+  #         - transition: transform 0.25s ease
+  #       icon:
+  #         - width: 28px
+  #         - color: var(--button-card-icon)
+  #         - filter: drop-shadow(0 2px 6px var(--button-card-icon-shadow))
+  item1:
+    card:
+      type: "custom:button-card"
+      show_name: false
+      show_label: false
+      show_icon: true
+      label: "Sonos koupelna"
+      entity: media_player.bedroom_speaker
+      icon: mdi:speaker
+      tap_action:
+        action: toggle
+      state:
+      - value: "playing"
+        styles:
+          card:
+            - background: var(--macos-blue-background)   
+      - value: "off"
+        styles:
+          card:
+            - background: none  
+      styles:
+        card:
+          - border-radius: "42px"       
+          - height: "52px"
+          - width: "52px"
+          - background: var(--button-card-background)
+          - backdrop-filter: blur(20px) saturate(180%)
+          - -webkit-backdrop-filter: blur(20px) saturate(180%)
+          - border: 1px solid var(--button-card-border)
+          - box-shadow:
+              - 0 10px 25px var(--button-card-shadow)
+              - inset 0 1px 1px var(--button-card-inset-shadow)
+          - position: relative
+          - overflow: hidden
+          - transition: transform 0.25s ease
+        icon:
+          - width: 28px
+          - color: var(--button-card-icon)
+          - filter: drop-shadow(0 2px 6px var(--button-card-icon-shadow))
+
+  item2:
+    card:
+      type: "custom:button-card"
+      show_name: false
+      show_label: false
+      show_icon: true
+      label: "Žaluzie"
+      entity: cover.balcony
+      icon: mdi:blinds-horizontal
+      state:
+      - value: "open"
+        icon: mdi:blinds-horizontal
+        styles:
+          card:
+            - background: none  
+      - value: "closed"
+        icon: mdi:blinds-horizontal-closed
+        styles:
+          card:
+            - background: var(--macos-blue-background)   
+      styles:
+        card:
+          - border-radius: "42px"       
+          - height: "52px"
+          - width: "52px"
+          - background: var(--button-card-background)
+          - backdrop-filter: blur(20px) saturate(180%)
+          - -webkit-backdrop-filter: blur(20px) saturate(180%)
+          - border: 1px solid var(--button-card-border)
+          - box-shadow:
+              - 0 10px 25px var(--button-card-shadow)
+              - inset 0 1px 1px var(--button-card-inset-shadow)
+          - position: relative
+          - overflow: hidden
+          - transition: transform 0.25s ease
+        icon:
+          - width: 28px
+          - color: var(--button-card-icon)
+          - filter: drop-shadow(0 2px 6px var(--button-card-icon-shadow))
+          
+      tap_action:
+        action: call-service
+        service: honeycomb   
+        entity: cover.balcony
+        service_data:
+          entity_id: entity
+          animation_speed: 25
+          buttons:
+            - icon: mdi:numeric-1-box
+              active: >
+                [[[
+                  return (states['cover.balcony'].attributes.current_tilt_position <= states['sensor.blinds_tilt_determine_min_high'].state 
+                  && states['cover.balcony'].attributes.current_tilt_position >= states['sensor.blinds_tilt_determine_min_low'].state) 
+                  && states['cover.balcony'].state == "closed"
+                  ? "True" : "1" == "1"
+                ]]]
+              tap_action:
+                action: call-service
+                service: script.tilt_blinds_bedroom_min
+            - icon: mdi:numeric-2-box
+              active: >
+                [[[
+                  return (states['cover.balcony'].attributes.current_tilt_position <= states['sensor.blinds_tilt_determine_mid_high'].state 
+                  && states['cover.balcony'].attributes.current_tilt_position >= states['sensor.blinds_tilt_determine_mid_low'].state) 
+                  && states['cover.balcony'].state == "closed"
+                  ? "True" : "1" == "1"
+                ]]]
+              tap_action:
+                action: call-service
+                service: script.tilt_blinds_bedroom_mid
+            - icon: mdi:numeric-3-box
+              active: >
+                [[[
+                  return (states['cover.balcony'].attributes.current_tilt_position <= states['sensor.blinds_tilt_determine_max_high'].state 
+                  && states['cover.balcony'].attributes.current_tilt_position >= states['sensor.blinds_tilt_determine_max_low'].state)
+                  && states['cover.balcony'].state == "closed" 
+                  ? "True" : "1" == "1"
+                ]]]
+              tap_action:
+                action: call-service
+                service: script.tilt_blinds_bedroom_max
+            - icon: mdi:window-shutter-open
+              active: >
+                [[[
+                  return (states['cover.balcony'].state == "open") ? "True" : "1" == "1"
+                ]]]
+              tap_action:
+                action: call-service
+                service: script.open_blinds_bedroom
+            - icon: mdi:window-shutter
+              active: >
+                [[[
+                  return (states['cover.balcony'].attributes.current_tilt_position == 0 && states['cover.balcony'].state == "closed") ? "True" : "1" == "1"
+                ]]]
+              tap_action:
+                action: call-service
+                service: script.close_blinds_bedroom
+            - show: false
+  
+
+  
+
+  # item4:
+  #   card:
+  #     type: "custom:button-card"
+  #     show_name: false
+  #     show_label: false
+  #     show_icon: true
+  #     label: "Kiosk"
+  #     entity: switch.zarizeni_tab_a8_uzivatele_martin_screen
+  #     icon: mdi:tablet-dashboard
+  #     state:
+  #     - value: "on"
+  #       styles:
+  #         card:
+  #           - background: var(--macos-blue-background)   
+  #     - value: "off"
+  #       styles:
+  #         card:
+  #           - background: none  
+  #     styles:
+  #       card:
+  #         - border-radius: "42px"       
+  #         - height: "52px"
+  #         - width: "52px"
+  #         - background: var(--button-card-background)
+  #         - backdrop-filter: blur(20px) saturate(180%)
+  #         - -webkit-backdrop-filter: blur(20px) saturate(180%)
+  #         - border: 1px solid var(--button-card-border)
+  #         - box-shadow:
+  #             - 0 10px 25px var(--button-card-shadow)
+  #             - inset 0 1px 1px var(--button-card-inset-shadow)
+  #         - position: relative
+  #         - overflow: hidden
+  #         - transition: transform 0.25s ease
+  #       icon:
+  #         - width: 28px
+  #         - color: var(--button-card-icon)
+  #         - filter: drop-shadow(0 2px 6px var(--button-card-icon-shadow))
+card_mod:
+  style: |
+    ha-card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: 26px;
+      background: linear-gradient(
+        120deg,
+        var(--button-card-before-gradient-start),
+        var(--button-card-before-gradient-mid) 30%,
+        var(--button-card-before-gradient-end) 60%
+      );
+      opacity: 0.35;
+      pointer-events: none;
+    }
+    ha-card::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: 26px;
+      box-shadow:
+        inset 0 0 0 1.5px var(--button-card-after-border),
+        inset 0 0 20px var(--button-card-after-shadow);
+      pointer-events: none;
+    } 

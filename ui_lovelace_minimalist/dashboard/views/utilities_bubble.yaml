@@ -1,0 +1,43 @@
+type: custom:layout-card
+layout_type: custom:grid-layout
+
+layout:
+  grid-template-columns: 0.5fr 0.5fr 0.5fr 0.5fr
+  grid-template-rows: min-content
+  grid-template-areas: >
+    "temperature_setting_title temperature_setting_title temperature_setting_title temperature_setting_title"
+    "thermostat_living_room thermostat_living_room thermostat_office thermostat_office"
+    "thermostat_kids thermostat_kids thermostat_bedroom thermostat_bedroom "
+    "thermostat_hallway thermostat_hallway temperature_outside temperature_outside"
+    "heat_pump_desc heat_pump_desc heat_pump_desc heat_pump_desc"
+    "thermostat_big thermostat_big thermostat_big thermostat_big"
+
+cards:
+
+# ROOM TEMPERATURE SETTING TITLE  
+  - !include /config/ui_lovelace_minimalist/cards/bubble_cards/utilities/utilities_room_temperature_title.yaml
+
+# HEAT PUMP DESC TITLE
+  - !include /config/ui_lovelace_minimalist/cards/bubble_cards/utilities/utilities_heat_pump_title.yaml
+
+# THERMOSTAT
+  - !include /config/ui_lovelace_minimalist/cards/bubble_cards/utilities/mobile/utilities_thermostat_big.yaml
+
+# THERMOSTAT LIVING ROOM  
+  - !include /config/ui_lovelace_minimalist/cards/bubble_cards/utilities/mobile/utilities_thermostat_living_room.yaml
+
+# THERMOSTAT OFFICE                
+  - !include /config/ui_lovelace_minimalist/cards/bubble_cards/utilities/mobile/utilities_thermostat_office.yaml
+
+# THERMOSTAT KIDS               
+  - !include /config/ui_lovelace_minimalist/cards/bubble_cards/utilities/mobile/utilities_thermostat_kids.yaml
+
+# THERMOSTAT BEDROOM                
+  - !include /config/ui_lovelace_minimalist/cards/bubble_cards/utilities/mobile/utilities_thermostat_bedroom.yaml
+  
+# THERMOSTAT HALLWAY                
+  - !include /config/ui_lovelace_minimalist/cards/bubble_cards/utilities/mobile/utilities_thermostat_hallway.yaml
+
+# TEMPERATURE OUTSIDE         
+  - !include /config/ui_lovelace_minimalist/cards/bubble_cards/utilities/mobile/utilities_temperature_outside.yaml
+

@@ -1,0 +1,276 @@
+liquid_glass_2:
+    name: "Liquid Glass 2"
+    version: "1.0.5"
+    creator: " ken-hacs-2025"
+    link: "https://github.com/Clooos/Bubble-Card/discussions/1805"
+
+    supported:
+        - button
+        - calendar
+        - climate
+        - cover
+        - media-player
+        - select
+        - separator
+
+    description: |
+        This version is ideal for users who prioritize rich visual effects.
+        It produces complex and lush glass distortion, including Chromatic Aberration. However, due to the complexity of the SVG filter, it may place a heavy load on the CPU and GPU, potentially slowing down performance on less powerful devices.
+        <br><br>
+        <code-block><pre>
+        liquid_glass_2: 
+            radius: YOUR_VALUE
+        </pre></code-block>
+
+    code: |
+        ha-card {
+          --bubble-button-background-color: rgba(0,0,0,0.4);
+          --bubble-sub-button-background-color: rgba(0,0,0,0.4);
+         --bubble-icon-background-color: rgba(0,0,0,0.4);
+          --bubble-secondary-background-color: rgba(0,0,0,0.4);
+        }
+        .bubble-container {
+          background: none;
+        }
+        .card-content::after {
+          background: none;
+        }
+        .bubble-range-fill,
+        .bubble-background {
+          opacity: 0.4 !important;
+        }
+        
+        ${(() => {
+          
+          window.bubbleCardFilterCache = window.bubbleCardFilterCache || {};
+          const cache = window.bubbleCardFilterCache;
+          
+          const { 
+            radius = 28, 
+            blur = 2,
+            saturate = 120,
+            depth = 4, 
+            strength = 100, 
+            chromaticAberration = 3 
+          } = this.config.liquid_glass_2 || {};
+          
+          const getDisplacementFilter = ({
+            height, width, radius, depth, strength, chromaticAberration
+          }) => {
+            const key = `${width}-${height}-${radius}-${depth}-${strength}-${chromaticAberration}`;
+            if (cache[key]) {
+              return cache[key];
+            }
+            
+            const getDisplacementMap = ({ height, width, radius, depth }) =>
+              "data:image/svg+xml;utf8," +
+              encodeURIComponent(`<svg height="${height}" width="${width}" viewBox="0 0 ${width} ${height}" xmlns="http://www.w3.org/2000/svg">
+                <style>.mix { mix-blend-mode: screen; }</style>
+                <defs>
+                  <linearGradient id="Y" x1="0" x2="0" y1="${Math.ceil((radius / height) * 15)}%" y2="${Math.floor(100 - (radius / height) * 15)}%">
+                    <stop offset="0%" stop-color="#0F0" />
+                    <stop offset="100%" stop-color="#000" />
+                  </linearGradient>
+                  <linearGradient id="X" x1="${Math.ceil((radius / width) * 15)}%" x2="${Math.floor(100 - (radius / width) * 15)}%" y1="0" y2="0">
+                    <stop offset="0%" stop-color="#F00" />
+                    <stop offset="100%" stop-color="#000" />
+                  </linearGradient>
+                </defs>
+                <rect x="0" y="0" height="${height}" width="${width}" fill="#808080" />
+                <g filter="blur(2px)">
+                  <rect x="0" y="0" height="${height}" width="${width}" fill="#000080" />
+                  <rect x="0" y="0" height="${height}" width="${width}" fill="url(#Y)" class="mix" />
+                  <rect x="0" y="0" height="${height}" width="${width}" fill="url(#X)" class="mix" />
+                  <rect x="${depth}" y="${depth}" height="${height - 2 * depth}" width="${width - 2 * depth}" fill="#808080" rx="${radius}" ry="${radius}" filter="blur(${depth}px)" />
+                </g>
+              </svg>`);
+            
+            const filterUri = "data:image/svg+xml;utf8," +
+              encodeURIComponent(`<svg height="${height}" width="${width}" viewBox="0 0 ${width} ${height}" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                  <filter id="displace" color-interpolation-filters="sRGB">
+                    <feImage x="0" y="0" height="${height}" width="${width}" href="${getDisplacementMap({ height, width, radius, depth })}" result="displacementMap" />
+                    <feDisplacementMap transform-origin="center" in="SourceGraphic" in2="displacementMap" scale="${strength + chromaticAberration * 2}" xChannelSelector="R" yChannelSelector="G" />
+                    <feColorMatrix type="matrix" values="1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 0" result="displacedR" />
+                    <feDisplacementMap in="SourceGraphic" in2="displacementMap" scale="${strength + chromaticAberration}" xChannelSelector="R" yChannelSelector="G" />
+                    <feColorMatrix type="matrix" values="0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 0 0 0 1 0" result="displacedG" />
+                    <feDisplacementMap in="SourceGraphic" in2="displacementMap" scale="${strength}" xChannelSelector="R" yChannelSelector="G" />
+                    <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 1 0 0 0 0 0 1 0" result="displacedB" />
+                    <feBlend in="displacedR" in2="displacedG" mode="screen"/>
+                    <feBlend in2="displacedB" mode="screen"/>
+                  </filter>
+                </defs>
+              </svg>`) + "#displace";
+            
+            cache[key] = filterUri;
+            return filterUri;
+          };
+          
+          let elementsToRender = new Set();
+          const intersectionObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+              if (entry.isIntersecting) {
+                elementsToRender.add(entry.target);
+                scheduleUpdate();
+              } else {
+                elementsToRender.delete(entry.target);
+                entry.target.style.backdropFilter = `blur(${blur}px) saturate(${saturate}%)`;
+              }
+            });
+          }, { rootMargin: '50px' });
+          
+          let scheduled = false;
+          const processElements = () => {
+            scheduled = false;
+            elementsToRender.forEach(el => {
+              // Unobserve before applying styles to prevent infinite loop
+              if (el._isObserved) {
+                resizeObserver.unobserve(el);
+                el._isObserved = false;
+              }
+        
+              const width = el.clientWidth || el._defaultWidth;
+              const height = el.clientHeight || el._defaultHeight;
+          
+              if (width !== el._lastWidth || height !== el._lastHeight) {
+                el._lastWidth = width;
+                el._lastHeight = height;
+          
+                el._filterUri = getDisplacementFilter({ height, width, radius, depth, strength, chromaticAberration });
+              }
+          
+              if (el._filterUri) {
+                el.style.boxShadow = `inset 0px 1px 2px rgba(255,255,255,0.4),
+                                      inset 0px 2px 4px rgba(0,0,0,0.1),
+                                      0 2px 4px rgba(0,0,0,0.6)`;
+                el.style.backdropFilter = `blur(${blur}px) saturate(${saturate}%) url("${el._filterUri}")`;
+                el.style.background = "rgba(0,0,0,0)";
+                el.style.transform = "translateZ(0)";
+              }
+          
+              // Re-observe after applying styles
+              if (!el._isObserved) {
+                resizeObserver.observe(el);
+                el._isObserved = true;
+              }
+            });
+          };
+          
+          const scheduleUpdate = () => {
+            if (!scheduled) {
+              scheduled = true;
+              requestAnimationFrame(processElements);
+            }
+          };
+          
+          const resizeObserver = new ResizeObserver(scheduleUpdate);
+          
+          const setupLiquid = (el, defaultWidth, defaultHeight, type) => {
+            if (!el || el._liquidInit) return;
+            el._liquidInit = true;
+            el._defaultWidth = defaultWidth;
+            el._defaultHeight = defaultHeight;
+            el._type = type;
+            el._lastWidth = 0;
+            el._lastHeight = 0;
+            el._isObserved = false;
+          
+            intersectionObserver.observe(el);
+            resizeObserver.observe(el);
+            el._isObserved = true;
+          };
+          
+          const card = this;
+          const applyLiquidToMenuSurface = (root) => {
+            if (!root) return;
+            root.querySelectorAll("ha-select").forEach(haSelect => {
+              const haMenu = haSelect.shadowRoot?.querySelector("ha-menu");
+              if (!haMenu) return;
+              const mwcMenu = haMenu.shadowRoot?.querySelector("mwc-menu-surface");
+              if (!mwcMenu) return;
+              const surface = mwcMenu.shadowRoot?.querySelector("div.mdc-menu-surface");
+              if (!surface) return;
+              setupLiquid(surface, 200, 352, "menu");
+            });
+          };
+          applyLiquidToMenuSurface(card.shadowRoot);
+          
+          const container = card.shadowRoot?.querySelector(".card-content") || card.querySelector(".card-content");
+          if (container) {
+            if (!container._liquidDiv) {
+              const liquidDiv = document.createElement("div");
+              liquidDiv.style.cssText = `
+                position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+                z-index: 0; border-radius: ${radius}px;
+              `;
+              container.insertBefore(liquidDiv, container.firstChild);
+              container._liquidDiv = liquidDiv;
+            }
+            setupLiquid(container._liquidDiv, 500, 56, "card");
+          }
+          
+          return ``;
+          
+        })()}
+
+    editor:
+      - name: radius
+        label: Inner Curve
+        selector:
+          number:
+            min: 0
+            max: 250
+            unit_of_measurement: px
+            mode: slider
+        default: 28
+        description: Adjusts the effect layer’s corner radius.
+      - name: blur
+        label: Blur
+        selector:
+          number:
+            min: 0
+            max: 50
+            unit_of_measurement: px
+            mode: slider
+        default: 2
+        description: Adjusts the intensity of the background blur effect.
+      - name: saturate
+        label: Saturate
+        selector:
+          number:
+            min: 0
+            max: 200
+            unit_of_measurement: '%'
+            mode: slider
+        default: 120
+        description: Adjusts the color saturation of the background.
+      - name: depth
+        label: Depth
+        selector:
+          number:
+            min: 0
+            max: 20
+            unit_of_measurement: px
+            mode: slider
+        default: 4
+        description: Adjusts the depth of the shadow and the 3D appearance.
+      - name: strength
+        label: Displacement Strength
+        selector:
+          number:
+            min: 0
+            max: 200
+            unit_of_measurement: units
+            mode: slider
+        default: 100
+        description: Adjusts the intensity of the liquid glass distortion effect.
+      - name: chromaticAberration
+        label: Chromatic Aberration
+        selector:
+          number:
+            min: 0
+            max: 20
+            unit_of_measurement: units
+            mode: slider
+        default: 3
+        description: Adjusts the amount of color fringing on the edges of the background.

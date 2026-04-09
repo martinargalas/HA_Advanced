@@ -1,0 +1,375 @@
+view_layout:
+  grid-area: "overview_big"
+type: custom:vertical-stack-in-card
+card_mod:
+  style: |
+    ha-card {
+      border-radius: 34px;
+      padding: 10px !important;
+      background: var(--mod-card-background);
+      backdrop-filter: blur(35px) saturate(100%);
+      -webkit-backdrop-filter: blur(35px) saturate(200%);
+      border: 1px solid var(--mod-card-border);
+      box-shadow: 
+        0 15px 25px var(--mod-card-shadow), 
+        inset 0 2px 3px var(--mod-card-inset-shadow);
+    }
+
+    ha-card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: 34px;
+      background: linear-gradient(
+        120deg,
+        var(--mod-card-gradient-start),
+        var(--mod-card-gradient-mid) 25%,
+        var(--mod-card-gradient-end) 50%,
+        transparent 70%
+      );
+      opacity: 0.35;
+      pointer-events: none;
+    }
+cards:
+
+    - type: custom:button-card
+      entity: input_boolean.alarmed_toggle
+      show_icon: false
+      show_label: false
+      show_name: false
+      tap_action:
+        action: none    
+      custom_fields:
+        item1:
+          card:
+            type: "custom:button-card"
+            show_name: false
+            show_label: false
+            show_icon: true
+            label: "Předchozí"
+            entity: input_number.counter_graph
+            icon: mdi:chevron-left
+            card_mod:
+                style: |
+                  ha-card {
+                    z-index: 2 !important;
+                  }
+            tap_action:
+              action: call-service
+              service: script.convert_to_action
+              service_data:
+                service1: input_number.decrement
+                entity_id1: input_number.counter_graph
+                service2: input_boolean.turn_off
+                entity_id2: input_boolean.switch_current        
+            styles:
+              card:
+                - box-shadow: "none"
+                - border-radius: "50%"
+                - background-color: transparent             
+                - height: 48px
+                - width: 48px
+                - left: "4px"
+                - color: var(--text-color)
+              icon:
+                - justify-self: "start"
+                - line-height: "0"
+                - height: "48px"
+                - width: "48px"
+                - color: var(--text-color)
+                - filter: drop-shadow(0 2px 6px var(--button-card-icon-shadow))
+
+              label:
+                - justify-self: "start"
+                - font-size: "14px"
+                - font-weight: 430
+                - margin-left: "35%"
+                - text-overflow: "ellipsis"
+                - overflow: "hidden"
+                - margin-top: "-33%"     
+                - color: var(--text-color)
+        item2:
+          card:
+            type: "custom:button-card"
+            show_name: false
+            show_label: false
+            show_icon: true
+            label: " "
+            entity: input_number.counter_graph
+            icon: mdi:chevron-right
+            card_mod:
+              style: |
+                ha-card {
+                  z-index: 2 !important;
+                }
+            tap_action:
+              action: call-service
+              service: script.convert_to_action
+              service_data:
+                service1: input_number.increment
+                entity_id1: input_number.counter_graph
+                service2: input_boolean.turn_off
+                entity_id2: input_boolean.switch_current
+            styles:
+              card:
+                - box-shadow: "none"
+                - border-radius: "50%"
+                - background-color: transparent             
+                - height: 48px
+                - width: 48px
+                - left: "5px"
+                - color: var(--text-color)
+              icon:
+                - justify-self: "start"
+                - line-height: "0"
+                - height: "48px"
+                - width: "48px"
+                - color: var(--text-color)
+                - filter: drop-shadow(0 2px 6px var(--button-card-icon-shadow))
+              label:
+                - justify-self: "start"
+                - font-size: "14px"
+                - font-weight: 430
+                - margin-left: "14%"
+                - text-overflow: "ellipsis"
+                - overflow: "hidden"
+                - margin-top: "-33%"   
+                - color: var(--text-color)
+        item3:
+          card:
+            type: custom:button-card
+            entity: input_number.counter_graph
+
+            show_name: false
+            show_label: true
+            show_icon: false
+            label: Aktuálně
+
+            tap_action:
+              action: call-service
+              service: script.multi_tap_action
+              data:
+                actions:
+                  - service: input_number.set_value
+                    entity_id: input_number.counter_graph
+                    data:
+                      value: 0
+                  - service: input_boolean.turn_on
+                    entity_id: input_boolean.switch_current
+            hold_action:
+              action: none
+            double_tap_action:
+              action: none
+            state:
+            - value: 0
+              styles:
+                card:
+                  - background: var(--macos-blue-background)   
+            - value: <0
+              styles:
+                card:
+                  - background: var(--macos-blue-grey)   
+            
+            card_mod:
+              style: |
+                @keyframes ping {
+                  0% {
+                    box-shadow: 0 0 0 0 rgba(var(--color-background-macos-blue), 0.9);
+                  }
+                  70% {
+                    box-shadow: 0 0 0 12px rgba(var(--color-background-macos-blue), 0);
+                  }
+                  100% {
+                    box-shadow: 0 0 0 0 rgba(var(--color-background-macos-blue), 0);
+                  }
+                }
+
+                ha-card {
+                  z-index: 2 !important;
+                }
+
+            styles:
+              card:
+                - border-radius: 42px
+                - height: 42px
+                - width: 80px
+                - padding: 0
+                - left: 8px
+                - box-shadow: "none"
+
+                - animation: >-
+                    [[[
+                      if (states['input_number.counter_graph'].state == 0) {
+                        return "ping 0.8s ease-out 1";
+                      }
+                      return "none";
+                    ]]]
+
+                - background-color: >-
+                    [[[
+                      return states['input_number.counter_graph'].state == 0
+                        ? "rgba(var(--macos-blue-background), 0.5)"
+                        : "rgba(var(--color-grey), 0.2)";
+                    ]]]
+                
+
+              label:
+                - justify-self: center
+                - font-size: 14px
+                - font-weight: 430
+                - text-overflow: ellipsis
+                - overflow: hidden
+                - color: var(--text-color)
+              icon:
+                - color: var(--text-color)
+                - filter: drop-shadow(0 2px 6px var(--button-card-icon-shadow))
+
+        item4:
+          card:
+            type: "custom:button-card"
+            show_name: false
+            show_label: true
+            show_icon: false
+            label: >-
+              [[[ 
+                return (states['input_text.status_bar_calendar_dropdown_text'].state)
+              ]]]
+            entity: input_number.counter_graph
+            icon: mdi:alpha-d-box-outline
+            tap_action:
+              action: none
+            hold_action:
+              action: none
+            double_tap_action:
+              action: none
+            styles:
+              card:
+                - box-shadow: "none"
+                - border-radius: "42px"
+                - background-color: "transparent"            
+                - height: "42px"
+                - width: "100px"
+                - padding: "10px"
+                - left: "180px"
+              
+              label:
+                - justify-self: "center"
+                - font-size: "14px"
+                - font-weight: 430
+                - text-overflow: "ellipsis"
+                - overflow: "hidden"
+                - color: "var(--text-color)"
+        item5:
+          card:
+            type: "custom:button-card"
+            show_name: false
+            show_label: false
+            show_icon: false
+            tap_action:
+              action: none
+            hold_action:
+              action: none
+            double_tap_action:
+              action: none
+            card_mod:
+              style: |
+                ha-card {
+                  border-radius: 42px !important;
+                  z-index: 0 !important;
+                }
+            styles:
+              card:
+                - border-radius: "50%"
+                - background: var(--button-card-background)
+                - backdrop-filter: blur(20px) saturate(180%)
+                - -webkit-backdrop-filter: blur(20px) saturate(180%)
+                - border: 1px solid var(--button-card-border)
+                - box-shadow: none
+                - position: relative
+                - overflow: hidden
+                - transition: transform 0.25s ease               
+                - height: 48px
+                - width: 184px
+                - left: "-325px"
+                - margin-left: 7px            
+
+      styles:
+        card:
+          - padding: 1px
+          - overflow: hidden
+          - box-shadow: "var(--box-shadow)"
+          - background-color: rgba(var(--color-background-black),0.2);
+        grid:
+          - overflow: hidden
+          - grid-template-areas: 
+              '"item1 item2 item3 item4 item5 item6 ."'
+          - grid-template-columns: 0.1fr 0.1fr 0.5fr 0.1fr 1fr 
+          - grid-template-rows: 1fr
+
+        custom_fields:
+          item1:
+            - place-self:  center
+            - justify-self: left
+          item2:
+            - place-self:  center
+            - justify-self: center
+          item3:
+            - place-self:  center
+            - justify-self: left
+          item4:
+            - place-self:  center
+            - justify-self: right
+          item5:
+            - place-self:  center
+            - justify-self: left
+            
+          
+      card_mod:
+        style: |
+          ha-card {
+            height: 56px;
+            border-radius: 99px !important;
+            overflow: hidden !important;
+            max-width: 576px !important;
+            margin: 10px !important;
+          }
+          ha-card::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            border-radius: 26px;
+            background: linear-gradient(
+              120deg,
+              var(--button-card-before-gradient-start),
+              var(--button-card-before-gradient-mid) 30%,
+              var(--button-card-before-gradient-end) 60%
+            );
+            opacity: 0.35;
+            pointer-events: none;
+          }
+          ha-card::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            border-radius: 26px;
+            box-shadow:
+              inset 0 0 0 1px var(--button-card-after-border),
+              inset 0 0 20px var(--button-card-after-shadow);
+            pointer-events: none;
+          }
+          ha-card:active {
+            transform: scale(0.97);
+          }
+
+    - !include /config/ui_lovelace_minimalist/cards/bubble_cards/energy/prod_cons_chart_title.yaml
+    - !include /config/ui_lovelace_minimalist/cards/bubble_cards/energy/prod_cons_chart_day.yaml
+    - !include /config/ui_lovelace_minimalist/cards/bubble_cards/energy/prod_cons_chart_month.yaml      
+    - !include /config/ui_lovelace_minimalist/cards/bubble_cards/energy/prod_cons_chart_year.yaml
+
+    - !include /config/ui_lovelace_minimalist/cards/bubble_cards/energy/energy_export_chart_title.yaml
+    - !include /config/ui_lovelace_minimalist/cards/bubble_cards/energy/energy_export_chart_day.yaml
+    - !include /config/ui_lovelace_minimalist/cards/bubble_cards/energy/energy_export_chart_month.yaml
+    - !include /config/ui_lovelace_minimalist/cards/bubble_cards/energy/energy_export_chart_year.yaml
+
+
+    

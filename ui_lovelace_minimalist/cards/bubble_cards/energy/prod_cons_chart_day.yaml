@@ -1,0 +1,230 @@
+type: conditional
+conditions:
+  - condition: state
+    entity: switch.energy_daily_view
+    state: "on"
+card:
+  type: custom:vertical-stack-in-card
+  card_mod:
+      style: |
+        ha-card {
+          background-color: transparent !important;
+          box-shadow: none !important;
+          max-height: 95% !important;
+        }
+  cards:
+    ############################################################
+    # Varianta pro den (před západem)
+    ############################################################
+    - type: conditional
+      conditions:
+        - condition: state
+          entity: sun.sun
+          state: "above_horizon"
+      card:
+        type: custom:config-template-card
+        entities:
+          - input_number.counter_graph
+        card:
+          type: custom:apexcharts-card
+          graph_span: |
+            [[[
+              if (states['input_boolean.switch_current'].state == 'on') return "14h";
+            ]]]
+          span:
+            offset: ${'-' + states['input_number.counter_graph'].state +'d'}
+
+          stacked: true
+          update_interval: 15m
+
+          header:
+            show: false
+
+          series:
+            ############################################################
+            # Spotřeba – secondary
+            ############################################################
+            - entity: sensor.total_load
+              name: Spotřeba
+              unit: kW
+              transform: return -x
+              type: column
+              stroke_width: 1
+              color: "rgb(250,250,250)"   # světlá barva pro den
+              group_by:
+                duration: 1h
+                func: diff
+                start_with_last: true
+
+            ############################################################
+            # Výroba – primární
+            ############################################################
+            - entity: sensor.today_s_pv_generation
+              name: Výroba
+              unit: kW
+              type: column
+              stroke_width: 1
+              color: "rgb(250,250,250)"    # oranžová pro den
+              group_by:
+                duration: 1h
+                func: diff
+                start_with_last: true
+
+          apex_config:
+            chart:
+              type: area
+              height: 252
+              toolbar:
+                show: false
+              dropShadow:
+                enabled: true
+                enabledOnSeries: [0,1]
+                top: 0
+                left: 0
+                blur: 4
+                color: "#888"
+                opacity: 0.35
+
+            fill:
+              type: gradient
+              gradient:
+                shadeIntensity: 0.1
+                opacityFrom: 0.4
+                opacityTo: 0.7
+                inverseColors: true
+                stops:
+                  - 0
+                  - 50
+                  - 100
+
+            xaxis:
+              labels: { show: false }
+              axisBorder: { show: false }
+              axisTicks: { show: false }
+
+            grid:
+              show: false
+
+            legend:
+              show: false
+
+            tooltip:
+              enabled: true
+              shared: true
+              followCursor: true
+
+          card_mod:
+            style: |
+              ha-card {
+                background-color: transparent !important;
+                box-shadow: none !important;
+                max-height: 250px !important;
+              }
+
+    ############################################################
+    # Varianta pro noc (po západu)
+    ############################################################
+    - type: conditional
+      conditions:
+        - condition: state
+          entity: sun.sun
+          state: "below_horizon"
+      card:
+        type: custom:config-template-card
+        entities:
+          - input_number.counter_graph
+        card:
+          type: custom:apexcharts-card
+          graph_span: |
+            [[[
+              if (states['input_boolean.switch_current'].state == 'on') return "14h";
+            ]]]
+          span:
+            offset: ${'-' + states['input_number.counter_graph'].state +'d'}
+
+          stacked: true
+          update_interval: 15m
+
+          header:
+            show: false
+
+          series:
+            ############################################################
+            # Spotřeba – secondary
+            ############################################################
+            - entity: sensor.total_load
+              name: Spotřeba
+              unit: kW
+              transform: return -x
+              type: column
+              stroke_width: 1
+              color: "rgb(0,120,230)"   # tmavší modrá pro noc
+              group_by:
+                duration: 1h
+                func: diff
+                start_with_last: true
+
+            ############################################################
+            # Výroba – primární
+            ############################################################
+            - entity: sensor.today_s_pv_generation
+              name: Výroba
+              unit: kW
+              type: column
+              stroke_width: 1
+              color: "rgb(0,120,230)"    # světlejší modrá pro noc
+              group_by:
+                duration: 1h
+                func: diff
+                start_with_last: true
+
+          apex_config:
+            chart:
+              type: area
+              height: 252
+              toolbar:
+                show: false
+              dropShadow:
+                enabled: true
+                enabledOnSeries: [0,1]
+                top: 0
+                left: 0
+                blur: 4
+                color: "#888"
+                opacity: 0.35
+
+            fill:
+              type: gradient
+              gradient:
+                shadeIntensity: 0.1
+                opacityFrom: 0.4
+                opacityTo: 0.7
+                inverseColors: true
+                stops:
+                  - 0
+                  - 50
+                  - 100
+                  
+            xaxis:
+              labels: { show: false }
+              axisBorder: { show: false }
+              axisTicks: { show: false }
+
+            grid:
+              show: false
+
+            legend:
+              show: false
+
+            tooltip:
+              enabled: true
+              shared: true
+              followCursor: true
+
+          card_mod:
+            style: |
+              ha-card {
+                background-color: transparent !important;
+                box-shadow: none !important;
+                max-height: 250px !important;
+              }

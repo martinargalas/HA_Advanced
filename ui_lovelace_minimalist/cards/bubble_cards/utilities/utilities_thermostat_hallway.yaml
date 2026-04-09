@@ -1,0 +1,253 @@
+view_layout:
+  grid-area: thermostat_hallway
+type: custom:vertical-stack-in-card
+card_mod:
+  style: |
+    ha-card {
+      border-radius: 34px;
+      background: none;
+      backdrop-filter: blur(35px) saturate(100%);
+      -webkit-backdrop-filter: blur(35px) saturate(100%);
+      border: 1px solid var(--mod-card-border);
+      box-shadow: 
+        0 15px 25px var(--mod-card-shadow), 
+        inset 0 2px 3px var(--mod-card-inset-shadow);
+    }
+    ha-card::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: 26px;
+      box-shadow:
+        inset 0 0 0 1px var(--button-card-after-border),
+        inset 0 0 20px var(--button-card-after-shadow);
+      pointer-events: none;
+    }
+    ha-card:active {
+      transform: scale(0.97);
+    }
+cards:
+  - type: custom:mushroom-climate-card
+    entity: climate.smart_radiator_thermostat_e1_2
+    show_temperature_control: true
+    collapsible_controls: false
+    secondary_info: none
+    name: " "
+    layout: horizontal
+    fill_container: true
+    icon: mdi:hanger
+    card_mod:
+      style:
+        mushroom-state-info$: |
+          .container {
+            --card-primary-color: var(--text-color);
+            --card-secondary-color: var(--text-color);
+          }
+          .primary {
+            background: rgba(var(--color-background-black),0.3) !important;
+            color: white;
+            margin-top: -73px !important;
+            margin-left: -96px !important;
+            
+            border-radius: 32px;
+            width: 290px !important;
+            height: 58px !important;
+            
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 14px !important;
+            font-weight: 600;
+            line-height: 1;
+            transform: translate(12px, 6px);
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+            pointer-events: none;
+          }
+
+        mushroom-climate-temperature-control$:
+          mushroom-input-number$: |
+            .container {
+              margin-top: -39px !important;
+              margin-left: 10px !important;
+              border-radius: 20px;
+              background-color: rgba(var(--color-background-black), 0.3) !important;
+              height: 38px !important;
+              width: 80px !important;
+              
+            }
+            .value {
+              color: rgba(var(--primary-text-color),0.8) !important;
+            }
+
+        mushroom-shape-icon$: |
+          {% set hvac = state_attr('climate.smart_radiator_thermostat_e1_2', 'hvac_action') %}
+          {% set sun_state = states('sun.sun') %}
+
+          {% set rgb = 'var(--color-background-theme)' %}
+
+          ::part(badge) {
+            display: none !important;
+          }
+
+          .shape {
+            --temp-rgb: {{ rgb }};
+
+            {% if hvac == 'heating' %}
+              --icon-color: rgba({{ rgb }}, 1);
+              background-color: rgba({{ rgb }}, 0.18) !important;
+            {% else %}
+              --icon-color: rgba(160,160,160,0.7);
+              background-color: rgba(160,160,160,0.7);
+            {% endif %}
+
+            opacity: 1;
+            position: relative;
+            z-index: 2;
+
+            border: 1px solid rgba(255,255,255,0.06);
+            transform-origin: 50% 60%;
+          }
+
+          /* ========== STATIC GLOW / HALO (PEAK STATE) ========== */
+
+          .shape::before,
+          .shape::after {
+            content: '';
+            position: absolute;
+            inset: -1px;
+            border-radius: inherit;
+            pointer-events: none;
+            opacity: 1;
+            transform: scale(1);
+          }
+
+          {% if hvac == 'heating' %}
+
+          /* Glow */
+          .shape::before {
+            box-shadow:
+              0 0 18px 3px rgba(var(--temp-rgb), 0.12),
+              0 0 34px 9px rgba(var(--temp-rgb), 0.42);
+          }
+
+          /* Halo */
+          .shape::after {
+            box-shadow:
+              0 0 90px 30px rgba(var(--temp-rgb), 0.35),
+              0 20px 70px -16px rgba(var(--temp-rgb), 0.25);
+            mix-blend-mode: screen;
+          }
+
+          {% else %}
+
+          .shape::before,
+          .shape::after {
+            box-shadow: none;
+          }
+
+          {% endif %}
+
+
+        .: |
+          mushroom-badge-icon {
+            display: none !important;
+          }
+
+          mushroom-shape-icon {
+            --icon-size: 48px;
+            display: flex;
+
+            padding-right: 20px;
+            padding-bottom: 80px;
+            margin-top: 5px;
+            margin-left: 7px;
+          }
+
+          ha-card {
+            clip-path: inset(0 0 0 0 round var(--ha-card-border-radius, 14px));
+            --card-primary-font-size: 1.4rem !important;
+            --card-primary-line-height: 1.3 !important;
+            height: 161px !important;
+          }
+
+
+  - type: custom:vertical-stack-in-card
+    cards:
+      - type: custom:mini-graph-card
+        entities:
+          - sensor.temperature_sensor_5
+        hours_to_show: 24
+        line_width: 4
+        decimals: 1
+        tap_action:
+          action: none
+
+        line_color: var(--graph-color)
+
+        show:
+          name: false
+          icon: false
+          state: true
+          labels: false
+          legend: false
+
+        card_mod:
+          style: |
+            {% set sun_state = states('sun.sun') %}
+            {% set climate_state = states('climate.smart_radiator_thermostat_e1_2') %}
+
+            {% set rgb = 'var(--color-background-theme-secondary)' %}
+
+            ha-card {
+              --graph-color: rgb({{ rgb }});
+              background: none;
+              box-shadow: none;
+              border: none;
+              opacity: 90%;
+              width: 335px;
+
+              mask-image: linear-gradient(
+                to right,
+                rgba(0,0,0,0) 0%,
+                rgba(0,0,0,1) 10%,
+                rgba(0,0,0,1) 90%,
+                rgba(0,0,0,0) 100%
+              );
+            }
+
+            {% if climate_state != 'off' %}
+            ha-card {
+              filter:
+                drop-shadow(0 0 4px rgba({{ rgb }},0.35))
+                drop-shadow(0 0 6px rgba({{ rgb }},0.18));
+            }
+            {% endif %}
+
+            ha-card .state {
+              font-size: 0.7rem;
+              font-weight: 700;
+              right: -61px !important;
+              top: -21px !important;
+              left: auto !important;
+              text-align: right;
+            }
+
+            .name {
+              color: rgba(var(--primary-text-color),0.7);
+              font-size: 14px;
+              font-weight: 700;
+            }
+
+    card_mod:
+      style:
+        .: |
+          ha-card {
+              background: none;
+              box-shadow: none;
+              border: none;
+              margin: 8px 12px; 
+              position: absolute;
+              bottom: -10px;
+              right: -10px;
+              pointer-events: none;
+            }

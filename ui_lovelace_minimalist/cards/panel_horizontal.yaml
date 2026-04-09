@@ -1,0 +1,112 @@
+view_layout:
+  grid-area: "panel_horizontal"      
+  place-self: left end stretch  
+type: custom:mod-card
+card:
+  !include /config/ui_lovelace_minimalist/cards/chips.yaml
+  # type: custom:layout-card
+  # layout_type: custom:grid-layout
+  # layout:
+  #   grid-template-areas: |
+  #     "card card card card card card card"
+  #   grid-template-columns: repeat(7, 110px)
+  #   grid-auto-rows: 100px
+  #   gap: 8px
+
+  # cards:
+  #   # TUV chip jako button-card
+  #   - type: conditional
+  #     conditions:
+  #       - condition: state
+  #         entity: sensor.e3_vitocal_dhw_storage_temperature
+  #         state_not: unavailable
+  #     card:
+  #       type: custom:button-card
+  #       show_name: false
+  #       show_label: true
+  #       entity: sensor.e3_vitocal_dhw_storage_temperature
+  #       label: >
+  #         [[[
+  #           return "TUV " + states['sensor.e3_vitocal_dhw_storage_temperature'].state + " °C";
+  #         ]]]
+  #       icon: mdi:circle
+  #       styles:
+  #         card:
+  #           - grid-area: card
+  #           - place-self: left end stretch
+  #           - width: 100%
+  #         label:
+  #           - color: var(--text-color)
+  #           - font-family: "Roboto"
+  #           - font-weight: 600 
+  #           - text-shadow: var(--text-shadow)
+  #         icon:
+  #           - color: >
+  #               [[[
+  #                 const temp = parseFloat(states['sensor.e3_vitocal_dhw_storage_temperature'].state);
+  #                 if (temp > 45) return 'var(--macos-red)';
+  #                 if (temp > 43) return 'var(--macos-yellow)';
+  #                 return 'var(--macos-blue)';
+  #               ]]]
+  #       card_mod:
+  #         style: |
+  #           ha-card::before {
+  #             content: "";
+  #             position: absolute;
+  #             inset: 0;
+  #             background: linear-gradient(
+  #               120deg,
+  #               var(--button-card-before-gradient-start),
+  #               var(--button-card-before-gradient-mid) 30%,
+  #               var(--button-card-before-gradient-end) 60%
+  #             );
+  #             opacity: 0.35;
+  #             pointer-events: none;
+  #           }
+  #           ha-card::after {
+  #             content: "";
+  #             position: absolute;
+  #             inset: 0;
+  #             box-shadow:
+  #               inset 0 0 0 1px var(--button-card-after-border),
+  #               inset 0 0 20px var(--button-card-after-shadow);
+  #             pointer-events: none;
+  #           }
+  #           ha-card:active {
+  #             transform: scale(0.97);
+  #           }
+  
+card_mod:
+  style: |
+    ha-card {
+      z-index: -1;
+      padding-left: 20px !important;
+      padding-top: 8px !important;
+      padding-bottom: 5px !important;
+      height: 100px !important;
+      width: 201% !important;
+      border-radius: 34px;
+      background: var(--mod-card-background);
+      backdrop-filter: blur(35px) saturate(100%);
+      -webkit-backdrop-filter: blur(35px) saturate(200%);
+      border: 1px solid var(--mod-card-border);
+      box-shadow: 
+        0 15px 25px var(--mod-card-shadow), 
+        inset 0 2px 3px var(--mod-card-inset-shadow);
+    }
+
+    ha-card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: 34px;
+      background: linear-gradient(
+        120deg,
+        var(--mod-card-gradient-start),
+        var(--mod-card-gradient-mid) 25%,
+        var(--mod-card-gradient-end) 50%,
+        transparent 70%
+      );
+      opacity: 0.35;
+      pointer-events: none;
+    }

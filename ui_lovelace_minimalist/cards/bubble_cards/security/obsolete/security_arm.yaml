@@ -1,0 +1,19 @@
+view_layout:
+  grid-area: "security_arm"
+type: custom:mushroom-alarm-control-panel-card
+entity: alarm_control_panel.homebase_3
+states:
+  - armed_home
+  - armed_away
+  - armed_night
+show_keypad: true
+primary_info: none
+fill_container: true
+layout: vertical
+tap_action:
+  action: none
+card_mod:
+  style: |
+    ha-card {
+        background-color: rgba(var(--color-grey),0.1)
+      }

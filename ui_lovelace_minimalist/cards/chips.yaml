@@ -1,0 +1,526 @@
+view_layout:
+  grid-area: "chips"
+  justify-self: start
+  align-self: start
+type: vertical-stack
+cards:
+  - type: custom:mushroom-chips-card
+    chips:
+      - type: template
+        entity: sensor.e3_vitocal_dhw_storage_temperature
+        icon: mdi:circle
+        content: >-
+          TUV {{states('sensor.e3_vitocal_dhw_storage_temperature')|float}} °C
+        icon_color: >-
+          {% if states('sensor.e3_vitocal_dhw_storage_temperature')|float > 45 %}
+            red
+          {% elif states('sensor.e3_vitocal_dhw_storage_temperature')|float > 43 %}
+            yellow
+          {% else %}
+            blue
+          {% endif %}
+        card_mod:
+          style: |
+            
+            ha-card::before {
+              position: absolute;
+              inset: 0;
+              border-radius: 26px;
+              background: linear-gradient(
+                120deg,
+                var(--button-card-before-gradient-start),
+                var(--button-card-before-gradient-mid) 30%,
+                var(--button-card-before-gradient-end) 60%
+              );
+              opacity: 0.35;
+              pointer-events: none;
+            }
+            ha-card::after {
+              content: "";
+              position: absolute;
+              inset: 0;
+              border-radius: 26px;
+              box-shadow:
+                inset 0 0 0 1.5px var(--button-card-after-border),
+                inset 0 0 20px var(--button-card-after-shadow);
+              pointer-events: none;
+            }
+            ha-card:active {
+              transform: scale(0.97);
+            }
+
+            ha-card {
+              --text-color: white;
+            }
+
+            {% if states('sensor.water_heating_on') == 'on' %}
+            ha-card {
+              animation: heat 3s ease-out infinite;
+            }
+
+            @keyframes heat {
+              0% {
+                box-shadow: 0 0 0px rgba(255,255,255,0.4);
+                box-shadow: 0 0 0px rgba(255,255,255,0.6);
+              }
+
+              50% {
+                box-shadow: 0 0 25px rgba(255,255,255,0.35);
+                box-shadow: 0 0 25px rgba(255,255,255,0.55);
+              }
+
+              100% {
+                box-shadow: 0 0 60px rgba(255,255,255,0);
+                box-shadow: 0 0 60px rgba(255,255,255,0.2);
+              }
+            }
+
+            {% endif %}
+
+      - type: template
+        entity: sensor.active_power
+        icon: >-
+          {% if states('sensor.active_power')|float > 0 %}
+            mdi:arrow-up-bold
+          {% elif states('sensor.active_power')|float < 0 %}
+            mdi:arrow-down-bold
+          {% else %}
+            mdi:minus
+          {% endif %}
+        content: >
+          {% set p = states('sensor.active_power')|float %}
+          {% if p|abs < 999 %}
+            {{ p|abs | round(0) | int }} W
+          {% else %}
+            {{ (p|abs / 1000) | round(1) }} kW
+          {% endif %}
+        icon_color: >-
+          {% if states('sensor.active_power')|float > 0 %}
+            white
+          {% elif states('sensor.active_power')|float < 0 %}
+            white
+          {% else %}
+            gray
+          {% endif %}
+        card_mod:
+          style: |
+            ha-card::before {
+              position: absolute;
+              inset: 0;
+              border-radius: 26px;
+              background: linear-gradient(
+                120deg,
+                var(--button-card-before-gradient-start),
+                var(--button-card-before-gradient-mid) 30%,
+                var(--button-card-before-gradient-end) 60%
+              );
+              opacity: 0.35;
+              pointer-events: none;
+            }
+            ha-card::after {
+              content: "";
+              position: absolute;
+              inset: 0;
+              border-radius: 26px;
+              box-shadow:
+                inset 0 0 0 1.5px var(--button-card-after-border),
+                inset 0 0 20px var(--button-card-after-shadow);
+              pointer-events: none;
+            }
+            ha-card:active {
+              transform: scale(0.97);
+            }
+            ha-card {
+              --text-color: white;
+            }
+
+      - type: template
+        entity: sensor.energy_virtual_batery_day
+        icon: >-
+          {% set e = states('sensor.energy_virtual_batery_day')|float %}
+          {% if e > 0 %}
+            mdi:battery-charging
+          {% else %}
+            mdi:battery-outline
+          {% endif %}
+        content: >
+          {% set e = states('sensor.energy_virtual_batery_day')|float %}
+          {{ e }} kWh
+        icon_color: white
+        card_mod:
+          style: |
+            ha-card::before {
+              position: absolute;
+              inset: 0;
+              border-radius: 26px;
+              background: linear-gradient(
+                120deg,
+                var(--button-card-before-gradient-start),
+                var(--button-card-before-gradient-mid) 30%,
+                var(--button-card-before-gradient-end) 60%
+              );
+              opacity: 0.35;
+              pointer-events: none;
+            }
+            ha-card::after {
+              content: "";
+              position: absolute;
+              inset: 0;
+              border-radius: 26px;
+              box-shadow:
+                inset 0 0 0 1.5px var(--button-card-after-border),
+                inset 0 0 20px var(--button-card-after-shadow);
+              pointer-events: none;
+            }
+            ha-card:active {
+              transform: scale(0.97);
+            }
+            ha-card {
+              --text-color: white;
+            }
+
+      - type: template
+        entity: sensor.x50_download_speed_2
+        icon: >-
+          {% set s = states('sensor.x50_download_speed_2')|float %}
+          {% if s > 0 %}
+            mdi:swap-vertical-bold
+          {% else %}
+            mdi:download-off
+          {% endif %}
+        content: >
+          {% set s = states('sensor.x50_download_speed_2')|float %}
+          {{ s | round(1) }} MB/s
+        icon_color: >-
+          {% if states('sensor.x50_download_speed_2')|float > 0 %}
+            white
+          {% else %}
+            gray
+          {% endif %}
+        card_mod:
+          style: |
+            ha-card::before {
+              position: absolute;
+              inset: 0;
+              border-radius: 26px;
+              background: linear-gradient(
+                120deg,
+                var(--button-card-before-gradient-start),
+                var(--button-card-before-gradient-mid) 30%,
+                var(--button-card-before-gradient-end) 60%
+              );
+              opacity: 0.35;
+              pointer-events: none;
+            }
+            ha-card::after {
+              content: "";
+              position: absolute;
+              inset: 0;
+              border-radius: 26px;
+              box-shadow:
+                inset 0 0 0 1.5px var(--button-card-after-border),
+                inset 0 0 20px var(--button-card-after-shadow);
+              pointer-events: none;
+            }
+            ha-card:active {
+              transform: scale(0.97);
+            }
+            ha-card {
+              --text-color: white;
+            }
+
+  - type: custom:mushroom-chips-card   
+    chips:       
+      - type: conditional
+        conditions:
+          - condition: or
+            conditions:
+              - entity: sensor.sabnzbd_status
+                state: 'Downloading'
+              - entity: sensor.qbittorrent_status
+                state: 'downloading'
+              - entity: sensor.qbittorrent_status
+                state: 'up_down'
+        chip:
+          type: template
+          icon: mdi:download
+          icon_color: white
+          content: >
+            {% set sab = states('sensor.sabnzbd_speed')|float(0) %}
+            {% set qbit = states('sensor.qbittorrent_download_speed')|float(0) %}
+            {% set total = sab + qbit %}
+
+            {% if total >= 1 %}
+              {{ total | round(1) }} MB/s
+            {% else %}
+              {{ (total * 1024) | round(0) | int }} kB/s
+            {% endif %}
+          card_mod:
+            style: |
+              ha-card::before {
+                content: "";
+                position: absolute;
+                inset: 0;
+                border-radius: 26px;
+                background: linear-gradient(
+                  120deg,
+                  var(--button-card-before-gradient-start),
+                  var(--button-card-before-gradient-mid) 30%,
+                  var(--button-card-before-gradient-end) 60%
+                );
+                opacity: 0.35;
+                pointer-events: none;
+              }
+              ha-card::after {
+                content: "";
+                position: absolute;
+                inset: 0;
+                border-radius: 26px;
+                box-shadow:
+                  inset 0 0 0 1.5px var(--button-card-after-border),
+                  inset 0 0 20px var(--button-card-after-shadow);
+                pointer-events: none;
+              }
+              ha-card:active {
+                transform: scale(0.97);
+              }
+
+              ha-card {
+                --text-color: white;
+              }
+
+      - type: conditional
+        conditions:
+          - entity: sensor.pracka_washer_machine_state
+            state: 'run'
+        chip:
+          type: template
+          entity: sensor.washer_remaining_time
+          icon: mdi:washing-machine
+          icon_color: white
+          content: >
+            {{states('sensor.washer_remaining_time')}}
+          card_mod:
+            style: |
+              ha-card {
+                transform: scale({{ 1 if states('sensor.pracka_washer_machine_state') == 'run' else 0 }});
+                opacity: {{ 1 if states('sensor.pracka_washer_machine_state') == 'run' else 0 }};
+                transition: transform 0.5s ease-out, opacity 0.5s ease-out;
+              }
+              ha-card::before {
+                content: "";
+                position: absolute;
+                inset: 0;
+                border-radius: 26px;
+                background: linear-gradient(
+                  120deg,
+                  var(--button-card-before-gradient-start),
+                  var(--button-card-before-gradient-mid) 30%,
+                  var(--button-card-before-gradient-end) 60%
+                );
+                opacity: 0.35;
+                pointer-events: none;
+              }
+              ha-card::after {
+                content: "";
+                position: absolute;
+                inset: 0;
+                border-radius: 26px;
+                box-shadow:
+                  inset 0 0 0 1.5px var(--button-card-after-border),
+                  inset 0 0 20px var(--button-card-after-shadow);
+                pointer-events: none;
+              }
+              ha-card:active {
+                transform: scale(0.97);
+              }
+              ha-card {
+                --text-color: white;
+              }
+
+      - type: conditional
+        conditions:
+          - entity: binary_sensor.e3_tcu10_x07_compressor
+            state: 'on'
+        chip:
+          type: template
+          entity: binary_sensor.e3_tcu10_x07_compressor
+          icon: mdi:hvac
+          icon_color: white
+          content: "TČ"
+          card_mod:
+            style: |
+              ha-card {
+                transform: scale({{ 1 if states('binary_sensor.e3_tcu10_x07_compressor') == 'on' else 0 }});
+                opacity: {{ 1 if states('binary_sensor.e3_tcu10_x07_compressor') == 'on' else 0 }};
+                transition: transform 0.5s ease-out, opacity 0.5s ease-out;
+                --text-color: white;
+              }
+              ha-card::before {
+                content: "";
+                position: absolute;
+                inset: 0;
+                border-radius: 26px;
+                background: linear-gradient(
+                  120deg,
+                  var(--button-card-before-gradient-start),
+                  var(--button-card-before-gradient-mid) 30%,
+                  var(--button-card-before-gradient-end) 60%
+                );
+                opacity: 0.35;
+                pointer-events: none;
+              }
+              ha-card::after {
+                content: "";
+                position: absolute;
+                inset: 0;
+                border-radius: 26px;
+                box-shadow:
+                  inset 0 0 0 1.5px var(--button-card-after-border),
+                  inset 0 0 20px var(--button-card-after-shadow);
+                pointer-events: none;
+              }
+              ha-card:active {
+                transform: scale(0.97);
+              }
+
+      - type: conditional
+        conditions:
+          - entity: lawn_mower.luba_vsqcfhrv
+            state: 'mowing'
+        chip:
+          type: template
+          entity: lawn_mower.luba_vsqcfhrv
+          icon: mdi:robot-mower
+          icon_color: white
+          # content: >
+          #   {{ states('sensor.luba_vsqcfhrv_work_area') }}
+          card_mod:
+            style: |
+              ha-card {
+                transform: scale({{ 1 if states('lawn_mower.luba_vsqcfhrv') == 'mowing' else 0 }});
+                opacity: {{ 1 if states('lawn_mower.luba_vsqcfhrv') == 'mowing' else 0 }};
+                transition: transform 0.5s ease-out, opacity 0.5s ease-out;
+                --text-color: white;
+              }
+              ha-card::before {
+                content: "";
+                position: absolute;
+                inset: 0;
+                border-radius: 26px;
+                background: linear-gradient(
+                  120deg,
+                  var(--button-card-before-gradient-start),
+                  var(--button-card-before-gradient-mid) 30%,
+                  var(--button-card-before-gradient-end) 60%
+                );
+                opacity: 0.35;
+                pointer-events: none;
+              }
+              ha-card::after {
+                content: "";
+                position: absolute;
+                inset: 0;
+                border-radius: 26px;
+                box-shadow:
+                  inset 0 0 0 1.5px var(--button-card-after-border),
+                  inset 0 0 20px var(--button-card-after-shadow);
+                pointer-events: none;
+              }
+              ha-card:active {
+                transform: scale(0.97);
+              }
+
+      - type: conditional
+        conditions:
+          - entity: input_boolean.alarmed_toggle
+            state_not: '0'
+        chip:
+          type: template
+          entity: input_boolean.alarmed_toggle
+          icon: mdi:alarm-note
+          icon_color: white
+          card_mod:
+            style: |
+              ha-card {
+                transform: scale({{ 1 if states('input_boolean.alarmed_toggle')== 'on' else '0' }});
+                opacity: {{ 1 if states('input_boolean.alarmed_toggle') == 'on' else '0' }};
+                transition: transform 0.4s ease, opacity 0.4s ease;
+                --text-color: white;
+              }
+
+              ha-card::before {
+                content: "";
+                position: absolute;
+                inset: 0;
+                border-radius: 26px;
+                background: linear-gradient(
+                  120deg,
+                  var(--button-card-before-gradient-start),
+                  var(--button-card-before-gradient-mid) 30%,
+                  var(--button-card-before-gradient-end) 60%
+                );
+                opacity: 0.35;
+                pointer-events: none;
+              }
+              ha-card::after {
+                content: "";
+                position: absolute;
+                inset: 0;
+                border-radius: 26px;
+                box-shadow:
+                  inset 0 0 0 1.5px var(--button-card-after-border),
+                  inset 0 0 20px var(--button-card-after-shadow);
+                pointer-events: none;
+              }
+              ha-card:active {
+                transform: scale(0.97);
+              }   
+
+      - type: conditional
+        conditions:
+          - entity: sensor.martin_mac_mini
+            state_not: '0'
+        chip:
+          type: template
+          entity: sensor.martin_mac_mini
+          icon: mdi:plex
+          icon_color: white
+          content: >
+            Plex: {{ states('sensor.martin_mac_mini') | int }}
+          card_mod:
+            style: |
+              ha-card {
+                transform: scale({{ 1 if states('sensor.martin_mac_mini')|int >= 1 else 0 }});
+                opacity: {{ 1 if states('sensor.martin_mac_mini')|int >= 1 else 0 }};
+                transition: transform 0.4s ease, opacity 0.4s ease;
+                --text-color: white;
+              }
+
+              ha-card::before {
+                content: "";
+                position: absolute;
+                inset: 0;
+                border-radius: 26px;
+                background: linear-gradient(
+                  120deg,
+                  var(--button-card-before-gradient-start),
+                  var(--button-card-before-gradient-mid) 30%,
+                  var(--button-card-before-gradient-end) 60%
+                );
+                opacity: 0.35;
+                pointer-events: none;
+              }
+              ha-card::after {
+                content: "";
+                position: absolute;
+                inset: 0;
+                border-radius: 26px;
+                box-shadow:
+                  inset 0 0 0 1.5px var(--button-card-after-border),
+                  inset 0 0 20px var(--button-card-after-shadow);
+                pointer-events: none;
+              }
+              ha-card:active {
+                transform: scale(0.97);
+              }   

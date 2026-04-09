@@ -1,0 +1,169 @@
+view_layout:
+  grid-area: "media_playlists"  
+type: vertical-stack
+cards:  
+- type: entities
+  show_header_toggle: false
+  card_mod:
+    style: |
+      ha-card {
+          background-color: rgba(var(--color-grey),0.1)
+        }
+  entities:
+  - type: "custom:config-template-card"
+    variables:
+      - states['sun.sun'].state
+    entities:
+      - media_player.bedroom
+    card:
+      type: custom:mini-media-player
+      entity: media_player.bedroom
+      background: "${vars[0] === 'above_horizon' ? '/local/community/spotify/music8.jpg' : '/local/community/spotify/Music.jpg'}"
+      group: false
+      source: icon
+      artwork: cover  
+      sound_mode: full
+      info: short
+      volume_stateless: true
+      shortcuts:
+        hide_when_off: true
+        columns: 3
+        buttons:
+          - cover: /local/community/spotify/classic_road.png
+            name: roadtrip
+            type: service
+            id: spotcast.start
+            data:
+              device_name: Hub
+              uri: spotify:playlist:37i9dQZF1DX9wC1KY45plY
+              random_song: true
+              shuffle: true
+            styles: 
+              card:
+                - background-color: "rgba(var(--color-grey),var(--opacity-bg))"
+                - font-color: black
+          - cover: /local/community/spotify/folk.png
+            name: Folk
+            type: service
+            id: spotcast.start
+            data:
+              device_name: Hub
+              uri: spotify:playlist:37i9dQZF1EQp62d3Dl7ECY
+              random_song: true
+              shuffle: true
+          - cover: /local/community/spotify/chill_mix2.png
+            name: Chill
+            type: service
+            id: spotcast.start
+            data:
+              device_name: Hub
+              uri: spotify:playlist:37i9dQZF1EVHGWrwldPRtj
+              random_song: true
+              shuffle: true
+          - cover: /local/community/spotify/rock2.png
+            name: Rock
+            type: service
+            id: spotcast.start
+            data:
+              device_name: Hub
+              uri: spotify:playlist:37i9dQZF1EQpj7X7UK8OOF
+              random_song: true
+              shuffle: true
+          - cover: /local/community/spotify/discover.png
+            name: Weekly
+            type: service
+            id: spotcast.start
+            data:
+              device_name: Hub
+              uri: spotify:playlist:37i9dQZEVXcV2IpyptTja0
+              random_song: true
+              shuffle: true
+          - cover: /local/community/spotify/russian.png
+            name: Russia
+            type: service
+            id: spotcast.start
+            data:
+              device_name: Hub
+              uri: spotify:playlist:37i9dQZF1E34WPiU0RyiiP
+              random_song: true
+              shuffle: true
+          - cover: /local/community/spotify/ludovico.png
+            name: Ludovico
+            type: service
+            id: spotcast.start
+            data:
+              device_name: Hub
+              uri: spotify:playlist:37i9dQZF1DWUofLlXqRWZz
+              random_song: true
+              shuffle: true
+          - cover: /local/community/spotify/sunny.png
+            name: Sunny
+            type: service
+            id: spotcast.start
+            data:
+              device_name: Hub
+              uri: spotify:playlist:37i9dQZF1DX1BzILRveYHb
+              random_song: true
+              shuffle: true
+          - cover: /local/community/spotify/Country.png
+            type: script
+            id: script.media_play_country_radio
+          - cover: /local/community/spotify/radiozurnal.jpg
+            type: script
+            id: script.media_play_cro_radiozurnal
+          - cover: /local/community/spotify/evropa2.jpg
+            type: script
+            id: script.media_play_evropa_2
+          - cover: /local/community/spotify/impuls.jpg
+            type: script
+            id: script.media_play_impuls_radio
+          - cover: /local/community/spotify/rock.png
+            type: script
+            id: script.media_play_rock_radio
+          - cover: /local/community/spotify/osmdesatka.png
+            type: script
+            id: script.media_play_osmdesatka_radio
+          - cover: /local/community/spotify/frekvence1.jpg
+            type: script
+            id: script.media_play_frekvence_1
+
+- type: entities
+  show_header_toggle: false
+  card_mod:
+    style: |
+      ha-card {
+          background-color: rgba(var(--color-grey),0.1)
+        }
+  entities:
+  - type: "custom:config-template-card"
+    variables:
+      - states['sun.sun'].state
+    entities:
+      - media_player.kids
+    card:
+      type: custom:mini-media-player
+      entity: media_player.kids
+      background: "${vars[0] === 'above_horizon' ? '/local/community/spotify/music7.jpg' : '/local/community/spotify/Music3.jpg'}"
+      group: false
+      source: icon
+      artwork: cover  
+      sound_mode: full
+      info: short
+      volume_stateless: true
+      shortcuts:
+        hide_when_off: true
+        columns: 3
+        buttons:
+          - cover: /local/community/spotify/disko.png
+            type: script
+            id: script.media_play_pigy_cz_disko
+          - cover: /local/community/spotify/pohadky.png
+            type: script
+            id: script.media_play_pigy_cz_pohadky 
+          - cover: /local/community/spotify/pisnicky.png
+            type: script
+            id: script.media_play_pigy_cz_pisnicky
+
+
+  
+

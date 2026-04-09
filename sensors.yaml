@@ -1,0 +1,55 @@
+- platform: mediarr
+  seer:
+    url: "http://192.168.4.99:5056"
+    api_key: !secret mediarr 
+    tmdb_api_key: !secret tmdb 
+    max_items: 30
+    trending: true
+    discover: true
+    hide_existing: false
+
+  sonarr:
+    url: "http://192.168.4.99:8989"
+    api_key: !secret sonarr
+    max_items: 10
+    days_to_check: 60
+
+  radarr:
+    url: "http://192.168.4.99:7878"
+    api_key: !secret radarr
+    max_items: 10
+    days_to_check: 60
+
+  plex:
+    url: "http://192.168.4.99:32400"
+    tmdb_api_key: !secret tmdb 
+    token: !secret plex_token
+    max_items: 5
+    language: en
+
+  tmdb:
+    tmdb_api_key: !secret tmdb 
+    trending_type: all
+    max_items: 5
+    trending: true
+    now_playing: true
+    upcoming: true
+    on_air: true
+    airing_today: false
+    popular_movies: true
+    popular_tv: true
+    filters:
+      min_year: 2025
+      exclude_talk_shows: true
+      exclude_genres: [10763, 10764, 10767]
+
+- platform: time_date
+  display_options:
+    - 'time'
+
+- platform: derivative
+  source: sensor.e3_tcu10_x07_dhw_energy_consumption_this_year
+  name: Heat_pump_consumption_per_seconds
+  round: 0
+  unit_time: s 
+  time_window: "00:00:05"  

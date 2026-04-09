@@ -1,0 +1,11 @@
+view_layout:
+  grid-area: "heat_pump_cons_chart_title"
+type: custom:bubble-card
+card_type: separator
+name: Spotřeba tepelného čerpadla
+icon: mdi:heat-pump-outline
+styles: |
+  .bubble-line {
+    background: var(--primary-text-color);
+    opacity: 0.1;
+  }

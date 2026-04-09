@@ -1,0 +1,14 @@
+view_layout:
+  grid-area: "flow_sankey_card_title"
+type: custom:bubble-card
+card_type: separator
+name: Aktuální stav
+icon: mdi:refresh
+styles: |
+  .bubble-line {
+    background: rgba(var(--color-background-black),0.4);
+    opacity: 1;
+  }
+  .bubble-container {
+    color: var(--text-color);
+  }

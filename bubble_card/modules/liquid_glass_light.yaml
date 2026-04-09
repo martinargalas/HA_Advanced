@@ -1,0 +1,359 @@
+liquid_glass_light:
+    name: "Liquid Glass (Optimized Version)"
+    version: "1.1.0"
+    creator: "ken-hacs-2025"
+    link: "https://github.com/Clooos/Bubble-Card/discussions/1809"
+
+    supported:
+        - button
+        - calendar
+        - climate
+        - cover
+        - media-player
+        - select
+        - separator
+        - horizontal-buttons-stack
+
+    description: |
+        The optimized version is a simplified Liquid Glass module designed for better performance. It achieves this by removing the resource-intensive Chromatic Aberration effect from the SVG filter. The code also includes a logic fix to prevent a constant CPU-heavy loop that occurred during resizing, which makes the module smoother and more efficient, especially on less powerful devices. This version is ideal for users who prioritize performance over the advanced chromatic aberration visual effect.
+        
+        <br><br>
+        <code-block><pre>
+        liquid_glass_light: 
+            radius: YOUR_VALUE
+        </pre></code-block>
+
+    code: |
+        ha-card {
+          --bubble-button-background-color: rgba(0,0,0,0.4);
+          --bubble-sub-button-background-color: rgba(0,0,0,0.4);
+          --bubble-icon-background-color: rgba(0,0,0,0.4);
+          --bubble-secondary-background-color: ${this.config.liquid_glass_light?.showBorder ? 'transparent' : 'unset'};
+        }
+        
+        .bubble-container {
+          background: none;
+        }
+        
+        .card-content::after {
+          background: none;
+        }
+        
+        .bubble-range-fill,
+        .bubble-background {
+          opacity: ${this.config.liquid_glass_light?.highlightOpacity ?? '0.4'} !important;
+        }
+        
+        :host(.show-border-styles) .horizontal-buttons-stack-container {
+          margin-top :5px;
+          margin-bottom :5px;
+          transform: translateX(5px);
+        }
+        :host(.show-border-styles) .horizontal-buttons-stack-card {
+          height: 61px;
+        }
+        
+        :host(.show-border-styles) .card-content {
+          position: relative;
+          border-radius: 61px;
+          box-shadow: 0px 1px 3px rgba(255,255,255,0.4), inset 0 2px 4px rgba(0,0,0,0.6);
+        }
+        
+        :host(.show-border-styles) .card-content::before {
+          content: "";
+          position: absolute;
+          inset: 0;
+          backdrop-filter: blur(var(--my-blur, 2px)) saturate(var(--my-saturate, 110%));
+        }
+        
+        .card-content {
+          mask-image: none !important;
+        }
+        .bubble-background-color {
+          border: none;
+        }
+        
+        
+        ${(() => {
+          window.bubbleCardFilterCache = window.bubbleCardFilterCache || {};
+          const cache = window.bubbleCardFilterCache;
+        
+          const {
+            radius = 28,
+            blur = 2,
+            saturate = 110,
+            depth = 3,
+            strength = 100
+          } = this.config.liquid_glass_light || {};
+        
+          const displacementMapTemplate = `
+            <svg xmlns="http://www.w3.org/2000/svg" width="{width}" height="{height}" viewBox="0 0 {width} {height}">
+              <style>.mix { mix-blend-mode: screen; }</style>
+              <defs>
+                <linearGradient id="Y" x1="0" x2="0" y1="{fillStart}%" y2="{fillEnd}%">
+                  <stop offset="0%" stop-color="#0F0" />
+                  <stop offset="100%" stop-color="#000" />
+                </linearGradient>
+                <linearGradient id="X" x1="{fillStart}%" x2="{fillEnd}%" y1="0" y2="0">
+                  <stop offset="0%" stop-color="#F00" />
+                  <stop offset="100%" stop-color="#000" />
+                </linearGradient>
+              </defs>
+              <rect x="0" y="0" width="{width}" height="{height}" fill="#808080" />
+              <g style="filter: blur(2px);">
+                <rect x="0" y="0" width="{width}" height="{height}" fill="url(#Y)" />
+                <rect x="0" y="0" width="{width}" height="{height}" fill="url(#X)" class="mix" />
+                <rect x="{depth}" y="{depth}" width="{innerWidth}" height="{innerHeight}" fill="#808080" rx="{radius}" ry="{radius}" style="filter: blur({depth}px);" />
+              </g>
+            </svg>
+            `;
+        
+          const getDisplacementMap = ({ height, width, radius, depth }) => {
+            const innerWidth = width - 2 * depth;
+            const innerHeight = height - 2 * depth;
+            const fillStart = Math.ceil((radius / height) * 15);
+            const fillEnd = Math.floor(100 - (radius / height) * 15);
+        
+            const svgString = displacementMapTemplate
+              .replace(/{height}/g, height)
+              .replace(/{width}/g, width)
+              .replace(/{depth}/g, depth)
+              .replace(/{radius}/g, radius)
+              .replace(/{innerWidth}/g, innerWidth)
+              .replace(/{innerHeight}/g, innerHeight)
+              .replace(/{fillStart}/g, fillStart)
+              .replace(/{fillEnd}/g, fillEnd);
+        
+            return "data:image/svg+xml;utf8," + encodeURIComponent(svgString);
+          };
+        
+          const getDisplacementFilter = ({ height, width, radius, depth, strength }) => {
+            const key = `light-${width}-${height}-${radius}-${depth}-${strength}`;
+            if (cache[key]) return cache[key];
+        
+            const filterUri = "data:image/svg+xml;utf8," + encodeURIComponent(`
+              <svg height="${height}" width="${width}" viewBox="0 0 ${width} ${height}" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                  <filter id="displace" color-interpolation-filters="sRGB">
+                    <feImage x="0" y="0" height="${height}" width="${width}" href="${getDisplacementMap({ height, width, radius, depth })}" result="displacementMap" />
+                    <feDisplacementMap in="SourceGraphic" in2="displacementMap" scale="${strength}" xChannelSelector="R" yChannelSelector="G" />
+                  </filter>
+                </defs>
+              </svg>
+            `) + "#displace";
+        
+            cache[key] = filterUri;
+            return filterUri;
+          };
+        
+          let elementsToRender = new Set();
+          const THROTTLE_INTERVAL = 100; // 100ms
+          let scheduledUpdate = false;
+          let lastUpdate = 0;
+        
+          const processScheduledUpdates = () => {
+            scheduledUpdate = false;
+            const now = Date.now();
+            if (now - lastUpdate < THROTTLE_INTERVAL) {
+              requestAnimationFrame(processScheduledUpdates);
+              return;
+            }
+            lastUpdate = now;
+        
+            elementsToRender.forEach(el => {
+              const width = el.clientWidth || el._defaultWidth;
+              const height = el.clientHeight || el._defaultHeight;
+        
+              if (width !== el._lastWidth || height !== el._lastHeight) {
+                el._lastWidth = width;
+                el._lastHeight = height;
+                el._filterUri = getDisplacementFilter({ height, width, radius, depth, strength });
+              }
+        
+              if (el._filterUri) {
+                el.style.boxShadow = "inset 0px 1px 3px rgba(255,255,255,0.4), 0 2px 4px rgba(0,0,0,0.6)";
+                el.style.backdropFilter = `blur(${blur}px) saturate(${saturate}%) url("${el._filterUri}")`;
+                el.style.background = "rgba(0,0,0,0)";
+                el.style.transform = "translateZ(0)";
+              }
+            });
+          };
+        
+          const scheduleUpdate = () => {
+            if (!scheduledUpdate) {
+              scheduledUpdate = true;
+              requestAnimationFrame(processScheduledUpdates);
+            }
+          };
+        
+          const intersectionObserver = new IntersectionObserver(entries => {
+            entries.forEach(entry => {
+              if (entry.isIntersecting) {
+                elementsToRender.add(entry.target);
+              } else {
+                elementsToRender.delete(entry.target);
+                entry.target.style.backdropFilter = `blur(${blur}px) saturate(${saturate}%)`;
+              }
+            });
+            scheduleUpdate();
+          }, { rootMargin: '50px' });
+        
+          const resizeObserver = new ResizeObserver(entries => {
+            entries.forEach(entry => {
+              const el = entry.target;
+              const width = el.clientWidth || el._defaultWidth;
+              const height = el.clientHeight || el._defaultHeight;
+        
+              if (width !== el._lastWidth || height !== el._lastHeight) {
+                el._lastWidth = width;
+                el._lastHeight = height;
+                el._filterUri = getDisplacementFilter({ height, width, radius, depth, strength });
+                el.style.backdropFilter = `blur(${blur}px) saturate(${saturate}%) url("${el._filterUri}")`;
+              }
+            });
+          });
+        
+          const setupLiquid = (el, defaultWidth, defaultHeight, type) => {
+            if (!el || el._liquidInit) return;
+            el._liquidInit = true;
+            el._defaultWidth = defaultWidth;
+            el._defaultHeight = defaultHeight;
+            el._type = type;
+            el._lastWidth = 0;
+            el._lastHeight = 0;
+        
+            intersectionObserver.observe(el);
+            resizeObserver.observe(el);
+          };
+        
+          const card = this;
+          
+          card.style.setProperty("--my-blur", `${blur}px`);
+          card.style.setProperty("--my-saturate", `${saturate}%`);
+          
+          const applyLiquidToMenuSurface = (root) => {
+            if (!root) return;
+            root.querySelectorAll("ha-select").forEach(haSelect => {
+              const haMenu = haSelect.shadowRoot?.querySelector("ha-menu");
+              if (!haMenu) return;
+              const mwcMenu = haMenu.shadowRoot?.querySelector("mwc-menu-surface");
+              if (!mwcMenu) return;
+              const surface = mwcMenu.shadowRoot?.querySelector("div.mdc-menu-surface");
+              if (!surface) return;
+              setupLiquid(surface, 200, 352, "menu");
+            });
+          };
+        
+          applyLiquidToMenuSurface(card.shadowRoot);
+        
+          const container =
+            card.shadowRoot?.querySelector(".card-content") ||
+            card.querySelector(".card-content");
+          
+          if (container) {
+            const isHorizontalButtonsStack =
+              this.config.card_type === "horizontal-buttons-stack";
+          
+            if (!isHorizontalButtonsStack) {
+              if (!container._liquidDiv) {
+                const liquidDiv = document.createElement("div");
+                liquidDiv.style.cssText = `
+                  position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+                  border-radius: ${radius}px;
+                `;
+                container.insertBefore(liquidDiv, container.firstChild);
+                container._liquidDiv = liquidDiv;
+              }
+              setupLiquid(container._liquidDiv, 500, 56, "card");
+            } else {
+              if (this.config.liquid_glass_light?.showBorder) {
+                 card.classList.add("show-border-styles");
+                } else {
+                 card.classList.remove("show-border-styles");
+                }
+          
+              const applyLiquidToButtons = (root) => {
+                if (!root) return;
+                const containers = root.querySelectorAll(
+                  ".horizontal-buttons-stack-container"
+                );
+                if (!containers.length) return;
+                containers.forEach((container) => {
+                  container.querySelectorAll("ha-ripple").forEach((button) => {
+                    setupLiquid(button, 100, 50, "button");
+                  });
+                });
+              };
+          
+              applyLiquidToButtons(card.shadowRoot);
+            }
+          }
+        
+        
+          return ``;
+        })()}
+
+    editor:
+      - name: radius
+        label: Inner Curve
+        selector:
+          number:
+            min: 0
+            max: 250
+            unit_of_measurement: px
+            mode: slider
+        default: 28
+        description: Adjusts the roundness of the card corners.
+      - name: blur
+        label: Blur
+        selector:
+          number:
+            min: 0
+            max: 50
+            unit_of_measurement: px
+            mode: slider
+        default: 2
+        description: Adjusts the intensity of the background blur effect.
+      - name: saturate
+        label: Saturate
+        selector:
+          number:
+            min: 0
+            max: 200
+            unit_of_measurement: '%'
+            mode: slider
+        default: 100
+        description: Adjusts the color saturation of the background.
+      - name: depth
+        label: Depth
+        selector:
+          number:
+            min: 0
+            max: 20
+            unit_of_measurement: px
+            mode: slider
+        default: 3
+        description: Adjusts the depth of the shadow and the 3D appearance.
+      - name: strength
+        label: Displacement Strength
+        selector:
+          number:
+            min: 0
+            max: 200
+            unit_of_measurement: units
+            mode: slider
+        default: 100
+        description: Adjusts the intensity of the liquid glass distortion effect.
+      - name: highlightOpacity
+        label: Highlight Opacity
+        selector:
+          number:
+            min: 0
+            max: 1
+            mode: slider
+            step: 0.05
+        default: 0.4
+      - name: showBorder
+        label: Show Border (Horizontal buttons stack)
+        selector:
+          boolean: {}

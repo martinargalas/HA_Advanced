@@ -1,0 +1,13 @@
+view_layout:
+  grid-area: "security_stream_front"
+type: custom:webrtc-camera
+url:
+  - !secret rtsp_camera_front
+ui: false
+background: false
+poster: http://192.168.4.99:8123/local/community/spotify/camera.jpg
+style: '.header {top: unset; bottom: -250px}'
+# shortcuts:
+# - name: Refresh
+#   icon: mdi:refresh
+#   service: script.camera_garden_stream

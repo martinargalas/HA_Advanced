@@ -1,0 +1,6 @@
+view_layout:
+  grid-area: "robot_1_title"
+type: custom:bubble-card
+card_type: separator
+name: Úklid
+icon: mdi:robot-vacuum-variant

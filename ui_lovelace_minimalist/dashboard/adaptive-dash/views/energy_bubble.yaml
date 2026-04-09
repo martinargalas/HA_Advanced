@@ -1,0 +1,215 @@
+type: custom:layout-card
+layout_type: custom:grid-layout
+
+layout:
+  grid-template-columns: "0.45fr 0.45fr 0.45fr 0.56fr 0.05fr 1fr 1fr"
+  grid-template-rows: "min-content"
+  grid-template-areas: >
+  
+    "flow_sankey_card_title flow_sankey_card_title flow_sankey_card_title flow_sankey_card_title . overview_title overview_title "
+    "energy_visualisation energy_visualisation energy_visualisation energy_visualisation . overview_big overview_big "
+    "energy_visualisation energy_visualisation energy_visualisation energy_visualisation . overview_big overview_big"
+    "energy_visualisation energy_visualisation energy_visualisation energy_visualisation . overview_big overview_big"
+    "energy_visualisation energy_visualisation energy_visualisation energy_visualisation . overview_big overview_big"
+    "energy_visualisation energy_visualisation energy_visualisation energy_visualisation . overview_big overview_big"
+    ". . . . . . day_month_year_filter "
+
+cards:
+
+
+
+# DAY MONTH YEAR FILTER
+  ############################################################
+  # DEN – sun above horizon (oranžová / theme, dropdown původní)
+  ############################################################
+  - view_layout:
+      grid-area: day_month_year_filter
+    type: conditional
+    conditions:
+      - condition: state
+        entity: sun.sun
+        state: "above_horizon"
+    card:
+      type: custom:bubble-card
+      card_type: select
+      name: ' '
+      entity: input_select.graph_day_month_year
+      icon: mdi:calendar-filter-outline
+      show_state: true
+      tap_action:
+        action: none
+      styles: | 
+        ha-card {
+          --bubble-select-list-item-accent-color: rgba(var(--color-background-macos-blue),0.8) !important;
+          --bubble-select-list-background-color: rgba(var(--color-background-black),0.3) !important;
+          --bubble-select-icon-background-color: rgba(var(--color-background-macos-blue),0.25) !important;
+        }
+
+        .bubble-select-background {
+          opacity: 10 !important;
+          background-color: rgba(var(--color-background-macos-blue),1) !important;
+        }
+
+        .bubble-select-card-container {
+          background: none !important;
+          opacity: 10 !important;
+          height: 56px !important;
+          top: -601px !important;
+          left: 24px !important;
+          z-index: 5;
+        }
+
+        .card-content {
+          width: 85%;
+          margin: 0 !important;
+          
+        }
+
+        .bubble-icon-container {
+          background: transparent !important;
+          color: var(--text-color) !important;
+        }
+
+        .bubble-dropdown-container {
+          background-color: transparent !important;   # Ponecháno původní
+        }
+
+        .bubble-dropdown-arrow {
+          width: 48px !important;
+          height: 48px !important;
+          border-radius: 50% !important;
+          overflow: hidden !important;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          background-color: rgba(var(--color-background-black), 0.5) !important;
+          background: linear-gradient(
+              120deg,
+              var(--button-card-before-gradient-start),
+              var(--button-card-before-gradient-mid) 30%,
+              var(--button-card-before-gradient-end) 60%
+            );
+          box-shadow:
+            inset 0 0 0 1px var(--button-card-after-border),
+            inset 0 0 20px var(--button-card-after-shadow);
+          pointer-events: none;
+        }
+
+        .mwc-list-item {
+          background-color: rgba(var(--color-background-macos-blue),0.15) !important;
+        }
+
+        * { 
+          font-size: 14px !important;
+          font-weight: 600 !important;
+          color: var(--text-color) !important;
+        }
+
+        .bubble-name-container {
+          color: var(--text-color) !important;
+        }
+
+
+  ############################################################
+  # NOC – sun below horizon (původní barvy)
+  ############################################################
+  - view_layout:
+      grid-area: day_month_year_filter
+    type: conditional
+    conditions:
+      - condition: state
+        entity: sun.sun
+        state: "below_horizon"
+    card:
+      type: custom:bubble-card
+      card_type: select
+      name: ' '
+      entity: input_select.graph_day_month_year
+      icon: mdi:calendar-filter-outline
+      show_state: true
+      tap_action:
+        action: none
+      styles: | 
+        ha-card {
+          --bubble-select-list-item-accent-color: rgba(var(--color-background-macos-blue),0.7) !important;
+          --bubble-select-list-background-color: rgba(var(--color-black),0.4)  !important;
+          --bubble-select-icon-background-color: rgba(var(--color-background-macos-blue,0.4)  !important;
+        }
+
+        .bubble-select-background {
+          opacity: 10 !important;
+          background-color: rgba(var(--color-grey),0.1)  !important;
+        }
+
+        .bubble-select-card-container {
+          background: none !important;
+          opacity: 10 !important;
+          height: 56px !important;
+          top: -590px !important;
+          left: 34px !important;
+          z-index: 5;
+        }
+
+        .card-content {
+          width: 85%;
+          margin: 0 !important;
+        }
+
+        .bubble-icon-container {
+          background: transparent !important;
+        }
+
+        .bubble-dropdown-container {
+          background-color: transparent !important;
+        }
+
+        .bubble-dropdown-arrow {
+          width: 48px !important;
+          height: 48px !important;
+          border-radius: 50% !important;
+          overflow: hidden !important;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          background-color: rgba(var(--color-background-black), 0.3) !important;
+        }
+
+        .mwc-list-item {
+          background-color: rgba(var(--text-color),0.1) !important;
+        }
+
+        * { 
+          font-size: 14px !important;
+          font-weight: 600 !important;
+          color: var(--text-color) !important;
+        }
+
+        .bubble-name-container {
+          color: var(--text-color) !important;
+        }
+
+        .bubble-icon-container {
+          color: var(--text-color) !important;
+        }
+
+
+# STATISTICS
+  # - !include /config/ui_lovelace_minimalist/cards/bubble_cards/energy/statistics_export.yaml
+  # - !include /config/ui_lovelace_minimalist/cards/bubble_cards/energy/statistics_import.yaml
+  # - !include /config/ui_lovelace_minimalist/cards/bubble_cards/energy/statistics_production.yaml
+  # - !include /config/ui_lovelace_minimalist/cards/bubble_cards/energy/statistics_consumption.yaml
+
+# VIRTUAL BATTERY\
+  # - !include /config/ui_lovelace_minimalist/cards/bubble_cards/energy/virtual_baterry.yaml
+
+# FLOW SANKEY CARD TITLE
+  - !include /config/ui_lovelace_minimalist/cards/bubble_cards/energy/flow_sankey_card_title.yaml
+
+# OVERVIEW TITLE
+  - !include /config/ui_lovelace_minimalist/cards/bubble_cards/energy/overview_title.yaml
+
+# OVERVIEW GRAPH
+  - !include /config/ui_lovelace_minimalist/cards/bubble_cards/energy/overview_big.yaml
+
+# OVERVIEW GRAPH
+  - !include /config/ui_lovelace_minimalist/cards/bubble_cards/energy/energy_visualisation_flow.yaml

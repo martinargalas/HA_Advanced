@@ -1,0 +1,57 @@
+view_layout:
+  grid-area: "thermostats"     
+  place-self: left end stretch
+type: custom:mod-card
+card:
+  type: grid
+  columns: 2
+  square: false
+  cards:
+
+    # THERMOSTAT LIVING ROOM  
+    - !include /config/ui_lovelace_minimalist/cards/bubble_cards/utilities/utilities_thermostat_living_room.yaml
+
+    # THERMOSTAT OFFICE                
+    - !include /config/ui_lovelace_minimalist/cards/bubble_cards/utilities/utilities_thermostat_office.yaml
+
+    # THERMOSTAT KIDS               
+    - !include /config/ui_lovelace_minimalist/cards/bubble_cards/utilities/utilities_thermostat_kids.yaml
+
+    # THERMOSTAT BEDROOM                
+    - !include /config/ui_lovelace_minimalist/cards/bubble_cards/utilities/utilities_thermostat_bedroom.yaml
+    
+    # THERMOSTAT HALLWAY                
+    - !include /config/ui_lovelace_minimalist/cards/bubble_cards/utilities/utilities_thermostat_hallway.yaml
+
+    # TEMPERATURE OUTSIDE         
+    - !include /config/ui_lovelace_minimalist/cards/bubble_cards/utilities/utilities_temperature_outside.yaml
+
+card_mod:
+  style: |
+    ha-card {
+      border-radius: 34px;
+      padding: 20px;
+      background: var(--mod-card-background);
+      backdrop-filter: blur(35px) saturate(100%);
+      -webkit-backdrop-filter: blur(35px) saturate(200%);
+      border: 1px solid var(--mod-card-border);
+      box-shadow: 
+        0 15px 25px var(--mod-card-shadow), 
+        inset 0 2px 3px var(--mod-card-inset-shadow);
+    }
+
+    ha-card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: 34px;
+      background: linear-gradient(
+        120deg,
+        var(--mod-card-gradient-start),
+        var(--mod-card-gradient-mid) 25%,
+        var(--mod-card-gradient-end) 50%,
+        transparent 70%
+      );
+      opacity: 0.35;
+      pointer-events: none;
+    }

@@ -1,0 +1,200 @@
+type: custom:button-card
+name: Obývací pokoj
+icon: mdi:sofa
+show_state: false
+show_label: false
+show_name: false
+tap_action:
+  action: none
+double_tap_action:
+  action: none
+hold_action:
+  action: none
+styles:
+  card:
+    - height: 120px
+    - border-radius: 26px
+    - padding: 7px
+    - position: relative
+    - overflow: hidden
+    - transition: transform 0.25s ease
+  icon:
+    - width: 42px
+    - color: var(--button-card-icon)
+    - filter: drop-shadow(0 2px 6px var(--button-card-icon-shadow))
+  name:
+    - font-size: 20px
+    - font-weight: 600
+    - color: var(--button-card-name)
+  label:
+    - font-size: 14px
+    - color: var(--button-card-label)
+      
+  grid:
+    
+    - grid-template-rows: "min-content"
+    - grid-template-columns: 1fr 1fr 1fr 
+    - grid-template-rows: 1fr 1fr
+    - grid-template-areas: >
+        "i i i"
+        "item1 item2 item3"
+
+  custom_fields:
+    item1:
+      - place-self:  center
+      - justify-self: center
+    item2:
+      - place-self:  center
+      - justify-self: center
+    item3:
+      - place-self:  center
+      - justify-self: center
+    item4:
+      - place-self:  center
+      - justify-self: center
+    
+custom_fields:
+  item1:
+    card:
+      type: "custom:button-card"
+      show_name: false
+      show_label: false
+      show_icon: true
+      label: "Světla"
+      entity: light.living_room
+      icon: mdi:lightbulb-outline
+      tap_action:
+        action: toggle
+      state:
+      - value: "on"
+        styles:
+          card:
+            - background: var(--macos-yellow-background)   
+      - value: "off"
+        styles:
+          card:
+            - background: none    
+      styles:
+        card:
+          - border-radius: "42px"       
+          - height: "52px"
+          - width: "52px"
+          - background: var(--button-card-background)
+          - backdrop-filter: blur(20px) saturate(180%)
+          - -webkit-backdrop-filter: blur(20px) saturate(180%)
+          - border: 1px solid var(--button-card-border)
+          - box-shadow:
+              - 0 10px 25px var(--button-card-shadow)
+              - inset 0 1px 1px var(--button-card-inset-shadow)
+          - position: relative
+          - overflow: hidden
+          - transition: transform 0.25s ease
+        icon:
+          - width: 28px
+          - color: var(--button-card-icon)
+          - filter: drop-shadow(0 2px 6px var(--button-card-icon-shadow))
+
+  item2:
+    card:
+      type: "custom:button-card"
+      show_name: false
+      show_label: false
+      show_icon: true
+      label: "TV"
+      entity: media_player.shield_2
+      icon: mdi:television
+      state:
+      - value: "on"
+        styles:
+          card:
+            - background: var(--macos-blue-background)    
+      - value: "off"
+        styles:
+          card:
+            - background: none
+      styles:
+        card:
+          - border-radius: "42px"       
+          - height: "52px"
+          - width: "52px"
+          - background: var(--button-card-background)
+          - backdrop-filter: blur(20px) saturate(180%)
+          - -webkit-backdrop-filter: blur(20px) saturate(180%)
+          - border: 1px solid var(--button-card-border)
+          - box-shadow:
+              - 0 10px 25px var(--button-card-shadow)
+              - inset 0 1px 1px var(--button-card-inset-shadow)
+          - position: relative
+          - overflow: hidden
+          - transition: transform 0.25s ease
+        icon:
+          - width: 28px
+          - color: var(--button-card-icon)
+          - filter: drop-shadow(0 2px 6px var(--button-card-icon-shadow))
+
+  item3:
+    card:
+      type: "custom:button-card"
+      show_name: false
+      show_label: false
+      show_icon: true
+      label: "Playstation"
+      entity: media_player.playstation_5
+      icon: mdi:sony-playstation
+      state:
+      - value: "on"
+        styles:
+          card:
+            - background: var(--macos-blue-background)   
+      - value: "off"
+        styles:
+          card:
+            - background: none  
+      styles:
+        card:
+          - border-radius: "42px"       
+          - height: "52px"
+          - width: "52px"
+          - background: var(--button-card-background)
+          - backdrop-filter: blur(20px) saturate(180%)
+          - -webkit-backdrop-filter: blur(20px) saturate(180%)
+          - border: 1px solid var(--button-card-border)
+          - box-shadow:
+              - 0 10px 25px var(--button-card-shadow)
+              - inset 0 1px 1px var(--button-card-inset-shadow)
+          - position: relative
+          - overflow: hidden
+          - transition: transform 0.25s ease
+        icon:
+          - width: 28px
+          - color: var(--button-card-icon)
+          - filter: drop-shadow(0 2px 6px var(--button-card-icon-shadow))
+  
+card_mod:
+  style: |
+    ha-card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: 26px;
+      background: linear-gradient(
+        120deg,
+        var(--button-card-before-gradient-start),
+        var(--button-card-before-gradient-mid) 30%,
+        var(--button-card-before-gradient-end) 60%
+      );
+      opacity: 0.35;
+      pointer-events: none;
+    }
+    ha-card::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: 26px;
+      box-shadow:
+        inset 0 0 0 1.5px var(--button-card-after-border),
+        inset 0 0 20px var(--button-card-after-shadow);
+      pointer-events: none;
+    } 
+
+    

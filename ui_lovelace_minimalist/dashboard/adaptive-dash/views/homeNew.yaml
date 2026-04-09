@@ -1,0 +1,303 @@
+title: "Home"
+path: "home"
+icon: "mdi:home"
+# theme: minimalist-desktop-light
+# layout:
+#   background: center / cover no-repeat url('/local/community/spotify/dark-4k.jpg')
+#   lovelace-background: center / cover no-repeat fixed url('/local/community/spotify/dark-4k.jpg')
+
+type: "custom:grid-layout"
+layout:
+  grid-template-rows: "min-content"
+  grid-template-columns: "0.1fr 0.8fr 0.8fr 0.8fr 0.07fr 1fr 1fr 1fr 1fr 1fr 1fr 0.1fr"
+  grid-template-areas: >
+    ". welcome welcome welcome . panel_horizontal panel_horizontal panel_horizontal person1 person1 person2 ."
+    ". welcome welcome welcome . panel_horizontal panel_horizontal panel_horizontal person1 person1 person2 ."
+    ". panel_vertical panel_vertical panel_vertical . rooms rooms rooms rooms rooms rooms ."
+    ". panel_vertical panel_vertical panel_vertical . rooms rooms rooms rooms rooms rooms ."
+    ". panel_vertical panel_vertical panel_vertical . rooms rooms rooms rooms rooms rooms ."
+    ". panel_vertical panel_vertical panel_vertical . rooms rooms rooms rooms rooms rooms ."
+    ". panel_vertical panel_vertical panel_vertical . rooms rooms rooms rooms rooms rooms ."
+    ". panel_vertical panel_vertical panel_vertical . rooms rooms rooms rooms rooms rooms ."
+
+cards:
+  #BUBBLE CARD
+  - !include /config/ui_lovelace_minimalist/cards/bubble_cards/bubble_main.yaml
+
+  - type: conditional
+    conditions:
+      - entity: sun.sun
+        state: above_horizon
+    card:
+      type: vertical-stack
+      cards:
+        - type: custom:bubble-card
+          card_type: pop-up
+          hash: "#heating"
+          margin_top_desktop: -7%
+          width_desktop: 1280px
+          bg_blur: 90
+          bg_opacity: 0
+          auto_close: 60000
+          icon: mdi:radiator
+          name: "Vytápění místností"
+          hide_backdrop: true
+          styles: >
+            .bubble-pop-up .bubble-button-background {
+              background: 
+                linear-gradient(rgba(255,255,255,0.6) 20%, rgba(255,255,255,0.4) 40%, rgba(0,132,255,0.68)),
+                url('/local/community/spotify/light3-4k.jpg') center / cover no-repeat;
+              box-shadow:
+                inset 0 0 0 1px var(--button-card-after-border),
+                inset 0 0 20px var(--button-card-after-shadow);
+            }
+
+            .bubble-pop-up .bubble-button-background::before {
+              content: "";
+              position: absolute;
+              inset: 0;
+              background: rgba(255, 255, 255, 0.1);
+              pointer-events: none;
+            }
+
+            .bubble-pop-up * { 
+              color: white !important; 
+            }
+
+            .bubble-pop-up .bubble-close-button.close-pop-up {
+              background: 
+                radial-gradient(circle, rgba(0,132,255,0.28) 35%, rgba(0,132,255,0.18) 70%),
+                url('/local/community/spotify/light3-4k.jpg') ;
+              background-position: top left !important;
+              box-shadow:
+                inset 0 0 0 5px var(--button-card-after-border),
+                inset 0 0 20px var(--button-card-after-shadow);
+            }
+        - !include utilities_bubble.yaml
+
+  - type: conditional
+    conditions:
+      - entity: sun.sun
+        state: below_horizon
+    card:
+      type: vertical-stack
+      cards:
+        - type: custom:bubble-card
+          card_type: pop-up
+          hash: "#heating"
+          margin_top_desktop: -7%
+          width_desktop: 1280px
+          bg_blur: 90
+          bg_opacity: 0
+          auto_close: 60000
+          icon: mdi:radiator
+          name: "Vytápění místností"
+          hide_backdrop: true
+          styles: >
+            .bubble-pop-up .bubble-button-background {
+              background: 
+                linear-gradient(rgba(0,0,0,0.6) 20%, rgba(0,0,0,0.4) 40%, rgba(0,132,255,0.38)),
+                url('/local/community/spotify/light3-4k.jpg') center / cover no-repeat;
+            }
+
+            .bubble-pop-up .bubble-button-background::before {
+              content: "";
+              position: absolute;
+              inset: 0;
+              background: rgba(255, 255, 255, 0.1);
+              pointer-events: none;
+            }
+
+            .bubble-pop-up * { 
+              color: white !important; 
+            }
+
+            .bubble-pop-up .bubble-close-button.close-pop-up {
+              background: 
+                radial-gradient(circle, rgba(0,132,255,0.98) 35%, rgba(0,132,255,0.58) 70%),
+                url('/local/community/spotify/light3-4k.jpg') ;
+              background-position: top left !important;
+            }
+        - !include utilities_bubble.yaml     
+
+  # LIGHTING
+  - type: vertical-stack
+    cards:
+      - type: custom:bubble-card
+        card_type: pop-up
+        margin_top_desktop: -7%
+        hash: "#lights"
+        width_desktop: 1280px
+        bg_blur: 90
+        bg_opacity: 0
+        is_sidebar_hidden: true
+        auto_close: 60000
+        icon: mdi:lightbulb-group
+        name: "Osvětlení"
+        hide_backdrop: true
+      - !include lights_bubble.yaml
+
+  # BLINDS
+  - type: vertical-stack
+    cards:
+      - type: custom:bubble-card
+        card_type: pop-up
+        hash: "#blinds"
+        margin_top_desktop: -7%
+        width_desktop: 540px
+        bg_blur: 90
+        bg_opacity: 0
+        is_sidebar_hidden: true
+        auto_close: 60000
+        hide_backdrop: true
+        icon: mdi:blinds-horizontal
+        name: "Ovládání žaluzií"
+      - !include /config/ui_lovelace_minimalist/cards/bubble_cards/blinds/blinds.yaml
+
+  # CLEANING
+  - type: vertical-stack
+    cards:
+      - type: custom:bubble-card
+        card_type: pop-up
+        hash: "#cleaning"
+        margin_top_desktop: -7%
+        width_desktop: 824px
+        bg_blur: 90
+        bg_opacity: 0
+        is_sidebar_hidden: true
+        auto_close: 60000
+        icon: mdi:broom
+        name: "Úklid"
+        hide_backdrop: true
+      - !include cleaning_bubble.yaml
+      #- !include /config/ui_lovelace_minimalist/cards/bubble_cards/cleaning/cleaning.yaml
+
+  # MEDIA
+  - type: vertical-stack
+    cards:
+      - type: custom:bubble-card
+        card_type: pop-up
+        hash: "#media"
+        margin_top_desktop: -7%
+        width_desktop: 1280px
+        bg_blur: 90
+        bg_opacity: 0
+        is_sidebar_hidden: true
+        auto_close: 1200000
+        icon: mdi:multimedia
+        name: "Média"
+        hide_backdrop: true
+      - !include media_bubble.yaml
+
+  # WEATHER
+  - type: vertical-stack
+    cards:
+      - type: custom:bubble-card
+        card_type: pop-up
+        hash: "#weather"
+        margin_top_desktop: -7%
+        width_desktop: 1080px
+        bg_blur: 90
+        bg_opacity: 0
+        is_sidebar_hidden: true
+        auto_close: 60000
+        icon: mdi:weather-partly-cloudy
+        name: "Počasí"
+        hide_backdrop: true
+      - !include weather_bubble.yaml
+
+  # ENERGY
+  - type: vertical-stack
+    cards:
+      - type: custom:bubble-card
+        card_type: pop-up
+        hash: "#energy"
+        margin_top_desktop: -7%
+        width_desktop: 1280px
+        bg_blur: 50
+        bg_opacity: 0
+        is_sidebar_hidden: true
+        auto_close: 60000
+        icon: mdi:solar-power-variant
+        name: "Energie"
+        hide_backdrop: true
+      - !include energy_bubble.yaml
+
+  # SECURITY
+  - type: vertical-stack
+    cards:
+      - type: custom:bubble-card
+        card_type: pop-up
+        hash: "#security"
+        margin_top_desktop: -7%
+        width_desktop: 1280px
+        bg_blur: 50
+        bg_opacity: 0
+        is_sidebar_hidden: true
+        auto_close: 60000
+        icon: mdi:cctv
+        name: "Zabezpečení"   
+        hide_backdrop: true
+      - !include security_bubble.yaml
+
+  - type: vertical-stack
+    cards:
+      - type: custom:bubble-card
+        card_type: pop-up
+        hash: "#security_front"
+        margin_top_desktop: -7%
+        width_desktop: 1280px
+        bg_blur: 90
+        bg_opacity: 0
+        is_sidebar_hidden: true
+        auto_close: 60000
+        icon: mdi:cctv
+        name: "Zabezpečení"   
+        hide_backdrop: true
+        trigger:
+          - condition: state
+            entity: input_boolean.bubble_stream_front
+            state: "on"
+      - !include securityFront_bubble.yaml
+
+  - type: vertical-stack
+    cards:
+      - type: custom:bubble-card
+        card_type: pop-up
+        hash: "#security_garden"
+        margin_top_desktop: -7%
+        width_desktop: 1280px
+        bg_blur: 90
+        bg_opacity: 0
+        is_sidebar_hidden: true
+        auto_close: 60000
+        icon: mdi:cctv
+        name: "Zabezpečení"   
+        hide_backdrop: true
+        trigger:
+          - condition: state
+            entity: input_boolean.bubble_stream_garden
+            state: "on"
+      - !include securityGarden_bubble.yaml
+    
+
+  # WELCOME
+  - !include /config/ui_lovelace_minimalist/cards/welcome.yaml
+
+  # CALENDAR
+  #- !include /config/ui_lovelace_minimalist/cards/calendar.yaml
+
+  # PERSON 1
+  - !include /config/ui_lovelace_minimalist/cards/person1.yaml
+
+  # PERSON 2
+  - !include /config/ui_lovelace_minimalist/cards/person2.yaml
+
+  # ROOMS
+  - !include /config/ui_lovelace_minimalist/cards/rooms.yaml
+
+  #HORIZONTAL PANEL
+  - !include /config/ui_lovelace_minimalist/cards/panel_horizontal.yaml
+
+  #VERTICAL PANEL
+  - !include /config/ui_lovelace_minimalist/cards/panel_vertical.yaml

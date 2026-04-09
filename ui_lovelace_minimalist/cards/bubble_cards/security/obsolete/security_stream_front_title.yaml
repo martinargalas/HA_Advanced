@@ -1,0 +1,6 @@
+view_layout:
+  grid-area: "security_stream_front_title"
+type: custom:bubble-card
+card_type: separator
+name: Vchod
+icon: mdi:cctv

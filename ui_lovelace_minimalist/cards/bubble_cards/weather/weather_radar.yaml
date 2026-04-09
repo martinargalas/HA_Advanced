@@ -1,0 +1,13 @@
+view_layout:
+  grid-area: "radar"  
+type: iframe
+tap_action:
+  action: none
+url: >-
+  https://embed.windy.com/embed2.html?lat=49.522&lon=18.430&detailLat=49.446&detailLon=17.899&width=650&height=450&zoom=8&level=surface&overlay=radar&product=radar&menu=&message=&marker=&calendar=24&pressure=&type=map&location=coordinates&detail=&metricWind=km%2Fh&metricTemp=%C2%B0C&radarRange=-1
+aspect_ratio: 80%
+card_mod:
+  style: |
+    ha-card {
+        background-color: rgba(var(--color-black),0.0)
+      }

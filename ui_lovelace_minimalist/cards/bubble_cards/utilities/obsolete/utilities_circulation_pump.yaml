@@ -1,0 +1,36 @@
+view_layout:
+  grid-area: circulation_pump
+type: custom:mushroom-entity-card
+name: Čerpadlo
+icon: mdi:pump
+primary: Oběhové čerpadlo
+secondary: ''
+entity: binary_sensor.e3_tcu10_x07_circulation_pump
+card_mod:
+  style:
+    mushroom-state-info$: |
+      .container {
+        --card-primary-color: blue;
+        --card-secondary-color: orange;
+      }
+    mushroom-shape-icon$: |
+      ha-icon {
+        {{ '--icon-animation: spin 0.5s linear infinite reverse;' if is_state(config.entity, 'on') }}  
+        {{ '--icon-animation: spin 0.5s linear infinite reverse;' if is_state(config.entity, 'on') }}            
+      }
+        
+      .shape {
+        {{ 'border: 2px dashed rgb(var(--rgb-red)); ' if is_state(config.entity, 'off') }}
+        {{ '--shape-animation: spin 2s linear infinite;' if is_state(config.entity, 'on') }}
+        shape-color: none; 
+        background-color: 
+          {% if is_state(config.entity, 'on') %}
+            rgba(var(--color-green), 0.1)
+          {% else %}
+            rgba(var(--color-grey), 0.1)
+          {% endif %} !important; 
+      }     
+      :host {
+        {{ '--card-mod-icon-color: rgba(var(--color-green),1);'  if is_state(config.entity, 'on') }}  
+        {{ '--card-mod-icon-color: "rgba(var(--color-grey),1)";'  if is_state(config.entity, 'off') }}
+      }

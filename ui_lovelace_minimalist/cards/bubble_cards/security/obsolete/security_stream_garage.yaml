@@ -1,0 +1,10 @@
+view_layout:
+  grid-area: "security_stream_garage"
+type: custom:webrtc-camera
+url:
+  - rtsp://C2rBIrVk8moJ:M0sJI9ShBq72@192.168.0.215/live1
+ui: false
+background: false
+poster: http://192.168.4.99:8123/local/community/spotify/camera.jpg
+style: '.header {top: unset; bottom: -250px}'
+

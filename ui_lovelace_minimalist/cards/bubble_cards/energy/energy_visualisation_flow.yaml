@@ -1,0 +1,146 @@
+view_layout:
+  grid-area: "energy_visualisation"
+type: custom:stack-in-card
+card_mod:
+  style: |
+    ha-card {
+      overflow: hidden;
+    }
+cards:
+  # DENNÍ režim, vyrábí elektřinu, posílá do sítě
+  - type: conditional
+    conditions:
+      - entity: sun.sun
+        state: above_horizon
+      - condition: numeric_state
+        entity: sensor.pv_power
+        above: 0
+      - condition: numeric_state
+        entity: sensor.active_power
+        above: 0
+    card:
+      type: picture-elements
+      image: http://192.168.4.99:8123/local/community/pictures/white_to_grid2.gif
+      card_mod:
+        style: |
+          @keyframes glowPulse {
+            0% { transform: scale(1); opacity: 0.9; }
+            50% { transform: scale(1.02); opacity: 1; }
+            100% { transform: scale(1); opacity: 0.9; }
+          }
+      elements: !include /config/ui_lovelace_minimalist/cards/bubble_cards/energy/energy_visualisation_flow_elements.yaml
+
+  # DENNÍ režim, vyrábí elektřinu, odebírá ze sítě
+  - type: conditional
+    conditions:
+      - entity: sun.sun
+        state: above_horizon
+      - condition: numeric_state
+        entity: sensor.pv_power
+        above: 0
+      - condition: numeric_state
+        entity: sensor.active_power
+        below: 0
+    card:
+      type: picture-elements
+      image: 'http://192.168.4.99:8123/local/community/pictures/white_from_grid3.gif'
+      card_mod:
+        style: |
+          @keyframes glowPulse {
+            0% { transform: scale(1); opacity: 0.9; }
+            50% { transform: scale(1.02); opacity: 1; }
+            100% { transform: scale(1); opacity: 0.9; }
+          }
+      elements: !include /config/ui_lovelace_minimalist/cards/bubble_cards/energy/energy_visualisation_flow_elements.yaml
+
+  # DENNÍ režim, nevyrábí elektřinu, odebírá ze sítě
+  - type: conditional
+    conditions:
+      - entity: sun.sun
+        state: above_horizon
+      - condition: numeric_state
+        entity: sensor.pv_power
+        below: 0.1
+      - condition: numeric_state
+        entity: sensor.active_power
+        below: 0
+    card:
+      type: picture-elements
+      image: http://192.168.4.99:8123/local/community/pictures/white_from_grid_no_PV2.gif
+      card_mod:
+        style: |
+          @keyframes glowPulse {
+            0% { transform: scale(1); opacity: 0.9; }
+            50% { transform: scale(1.02); opacity: 1; }
+            100% { transform: scale(1); opacity: 0.9; }
+          }
+      elements: !include /config/ui_lovelace_minimalist/cards/bubble_cards/energy/energy_visualisation_flow_elements.yaml
+
+  # NOČNÍ režim, vyrábí elektřinu, posílá do sítě
+  - type: conditional
+    conditions:
+      - entity: sun.sun
+        state: below_horizon
+      - condition: numeric_state
+        entity: sensor.pv_power
+        above: 0
+      - condition: numeric_state
+        entity: sensor.active_power
+        above: 0
+    card:
+      type: picture-elements
+      image: http://192.168.4.99:8123/local/community/pictures/dark_to_grid4.gif
+      card_mod:
+        style: |
+          @keyframes glowPulse {
+            0% { transform: scale(1); opacity: 0.9; }
+            50% { transform: scale(1.02); opacity: 1; }
+            100% { transform: scale(1); opacity: 0.9; }
+          }
+      elements: !include /config/ui_lovelace_minimalist/cards/bubble_cards/energy/energy_visualisation_flow_elements.yaml
+
+  # NOČNÍ režim, vyrábí elektřinu, odebírá ze sítě
+  - type: conditional
+    conditions:
+      - entity: sun.sun
+        state: below_horizon
+      - condition: numeric_state
+        entity: sensor.pv_power
+        above: 0
+      - condition: numeric_state
+        entity: sensor.active_power
+        below: 0
+    card:
+      type: picture-elements
+      image: http://192.168.4.99:8123/local/community/pictures/dark_from_grid4.gif
+      card_mod:
+        style: |
+          @keyframes glowPulse {
+            0% { transform: scale(1); opacity: 0.9; }
+            50% { transform: scale(1.02); opacity: 1; }
+            100% { transform: scale(1); opacity: 0.9; }
+          }
+      elements: !include /config/ui_lovelace_minimalist/cards/bubble_cards/energy/energy_visualisation_flow_elements.yaml
+
+  # NOČNÍ režim, nevyrábí elektřinu, odebírá ze sítě
+  - type: conditional
+    conditions:
+      - entity: sun.sun
+        state: below_horizon
+      - condition: numeric_state
+        entity: sensor.pv_power
+        below: 0.1
+      - condition: numeric_state
+        entity: sensor.active_power
+        below: 0
+    card:
+      type: picture-elements
+      image: http://192.168.4.99:8123/local/community/pictures/dark_from_grid_no_PV4.gif
+      card_mod:
+        style: |
+          @keyframes glowPulse {
+            0% { transform: scale(1); opacity: 0.9; }
+            50% { transform: scale(1.02); opacity: 1; }
+            100% { transform: scale(1); opacity: 0.9; }
+          }
+      elements: !include /config/ui_lovelace_minimalist/cards/bubble_cards/energy/energy_visualisation_flow_elements.yaml

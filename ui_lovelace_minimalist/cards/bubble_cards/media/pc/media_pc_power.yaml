@@ -1,0 +1,64 @@
+view_layout:
+  grid-area: "pc_switch"
+type: entities
+show_header_toggle: false
+card_mod:
+  style: |
+    ha-card {
+        background-color: rgba(var(--color-grey),0.1)
+      }
+entities:
+  - type: custom:mushroom-entity-card
+    entity: switch.martin_pc_switch
+    tap_action:
+      action: toggle
+    icon_color: green
+    name: " "
+    icon: "mdi:power"
+    card_mod:
+      style: |
+        ha-card {
+            background-color: rgba(var(--color-background-black),0.3);
+            max-height: 55px !important;
+            max-width: 130px !important;
+          }
+
+  - type: conditional
+    conditions:
+      - entity: sensor.desktopargi
+        state: "on"
+        state_not: "off"
+    row:
+      type: custom:mushroom-entity-card
+      entity: button.martin_pc_sleep
+      icon: "mdi:power-sleep"
+      icon_color: blue
+      secondary_info: none
+      name: "Uspat"
+      card_mod:
+        style: |
+          ha-card {
+              background-color: rgba(var(--color-background-black),0.3);
+              max-height: 55px !important;
+              max-width: 130px !important;
+            }
+
+  - type: conditional
+    conditions:
+      - entity: sensor.desktopargi
+        state: "on"
+        state_not: "off"
+    row:
+      type: custom:mushroom-entity-card
+      entity: button.martin_pc_restart
+      icon: "mdi:restart"
+      icon_color: yellow
+      secondary_info: none
+      name: "Restart"
+      card_mod:
+        style: |
+          ha-card {
+              background-color: rgba(var(--color-background-black),0.3);
+              max-height: 55px !important;
+              max-width: 130px !important;
+            }

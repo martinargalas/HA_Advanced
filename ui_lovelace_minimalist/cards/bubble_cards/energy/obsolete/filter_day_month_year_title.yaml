@@ -1,0 +1,7 @@
+view_layout:
+  grid-area: "energy_export_chart_title"
+type: custom:bubble-card
+card_type: separator
+name: Přetoky do sítě
+icon: mdi:transmission-tower-import
+

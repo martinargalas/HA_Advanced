@@ -1,0 +1,109 @@
+type: custom:bubble-card
+card_type: horizontal-buttons-stack
+width_desktop: 575px
+auto_order: false
+is_sidebar_hidden: true
+highlight_current_view: true
+hide_gradient: true
+
+1_link: '#lights'
+1_name: ''
+1_icon: mdi:lightbulb-group
+2_link: '#blinds'
+2_name: ''
+2_icon: mdi:blinds-horizontal
+3_link: '#media'
+3_name: ''
+3_icon: mdi:music
+4_link: '#weather'
+4_name: ''
+4_icon: mdi:weather-partly-cloudy
+5_link: '#energy'
+5_name: ''
+5_icon: mdi:solar-power-variant
+6_link: '#heating'
+6_name: ''
+6_icon: mdi:radiator
+7_link: '#security'
+7_name: ''
+7_icon: mdi:cctv
+8_link: '#cleaning'
+8_name: ''
+8_icon: mdi:broom
+styles: >
+
+  /* hlavní bubliny: zachovat rozměry a stín, jen barvy */
+  .lights > .bubble-background-color,
+  .blinds > .bubble-background-color,
+  .media > .bubble-background-color,
+  .weather > .bubble-background-color,
+  .energy > .bubble-background-color,
+  .heating > .bubble-background-color,
+  .security > .bubble-background-color,
+  .cleaning > .bubble-background-color {
+    background: var(--button-card-background) !important;
+    border: 1px solid var(--button-card-border) !important;
+    box-shadow:
+      0 10px 25px var(--button-card-shadow) !important,
+      inset 0 1px 1px var(--button-card-inset-shadow) !important;
+    backdrop-filter: blur(35px) saturate(100%) !important;
+    -webkit-backdrop-filter: blur(35px) saturate(100%) !important;
+  }
+
+  /* průhledné pozadí hlavní vrstvy */
+  .lights > .bubble-background,
+  .blinds > .bubble-background,
+  .media > .bubble-background,
+  .weather > .bubble-background,
+  .energy > .bubble-background,
+  .heating > .bubble-background,
+  .security > .bubble-background,
+  .cleaning > .bubble-background {
+    background: rgba(0,0,0,0) !important;
+  }
+
+  /* ikony */
+  .lights > .bubble-icon,
+  .blinds > .bubble-icon,
+  .media > .bubble-icon,
+  .weather > .bubble-icon,
+  .energy > .bubble-icon,
+  .heating > .bubble-icon,
+  .security > .bubble-icon,
+  .cleaning > .bubble-icon {
+    color: var(--button-card-icon) !important;
+    filter: drop-shadow(0 2px 6px var(--button-card-icon-shadow)) !important;
+    transition: color 0.3s ease !important;
+  }
+
+  /* název bubliny */
+  .lights > .bubble-name,
+  .blinds > .bubble-name,
+  .media > .bubble-name,
+  .weather > .bubble-name,
+  .energy > .bubble-name,
+  .heating > .bubble-name,
+  .security > .bubble-name,
+  .cleaning > .bubble-name {
+    color: var(--button-card-name) !important;
+  }
+
+  /* highlight animace + zvýraznění aktivní ikony */
+  .bubble-button.highlight > .bubble-icon {
+    color: var(--button-card-icon-active) !important;
+    filter: drop-shadow(0 4px 4px var(--button-card-icon-shadow)) !important;
+    animation: pulse 1.4s infinite alternate !important;
+  }
+
+  /* highlight aktivní bubliny - barva pozadí + glow */
+  .bubble-button.highlight > .bubble-background-color {
+    background: linear-gradient(
+      120deg,
+      var(--button-card-before-gradient-start),
+      var(--button-card-before-gradient-mid) 30%,
+      var(--button-card-before-gradient-end) 60%
+    ) !important;
+    box-shadow:
+      0 10px 25px var(--button-card-shadow) !important,
+      inset 0 1px 1px var(--button-card-inset-shadow) !important;
+  }

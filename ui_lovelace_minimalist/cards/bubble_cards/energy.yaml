@@ -1,0 +1,386 @@
+title: "Energie"
+path: "energy_mobile"
+icon: "mdi:solar-power-variant-outline"
+cards:
+  - type: vertical-stack
+    cards:
+      - type: horizontal-stack
+        cards:
+        - type: "custom:button-card"
+          template: chip_back
+          variables:
+            ulm_chip_back_path: home
+        - type: "custom:button-card"
+          color_type: blank-card
+        - type: 'custom:button-card'
+          template: chip_icon_label
+          label: Energie
+          icon: "mdi:solar-power-variant-outline"
+
+  - type: vertical-stack
+    cards:
+      - type: custom:weather-card
+        entity: weather.openweathermap
+        current: true
+        details: true
+        forecast: true
+        number_of_forecasts: '5'
+        hourly_forecast: true
+      
+      - type: horizontal-stack
+        cards:
+          - type: 'custom:button-card'
+            template: card_generic
+            entity: sensor.e3_vitocal_energy_consumption_today
+            variables:
+              ulm_card_generic_name: TČ
+              ulm_card_generic_icon: mdi:heat-pump
+              ulm_card_generic_force_background_color: 'red'
+
+          - type: 'custom:button-card'
+            template: card_generic
+            entity: sensor.today_s_pv_generation
+            variables:
+              ulm_card_generic_name: FV
+              ulm_card_generic_icon: mdi:solar-power-variant
+
+          - type: 'custom:button-card'
+            template: card_generic
+            entity: sensor.today_load
+            variables:
+              ulm_card_generic_name: DS
+              ulm_card_generic_icon: mdi:transmission-tower-export
+
+      - type: custom:power-flow-card-plus
+        entities:
+          battery:
+            state_of_charge: sensor.samsung_s23_battery_level
+          grid:
+            entity: sensor.active_power
+            name: Distribuční síť
+            invert_state: true
+          solar:
+            entity: sensor.pv_power
+            display_zero_state: true
+            name: Fotovoltaika
+          home:
+            entity: sensor.house_consumption
+          individual1:
+            name: TČ / den
+            entity: sensor.e3_vitocal_energy_consumption_today
+            icon: mdi:heat-pump-outline
+            secondary_info:
+              unit_of_measurement: kWh
+            unit_of_measurement: Wh
+        clickable_entities: true
+        display_zero_lines:
+          mode: show
+          transparency: 50
+          grey_color:
+            - 189
+            - 189
+            - 189
+        use_new_flow_rate_model: true
+        w_decimals: 0
+        kw_decimals: 1
+        min_flow_rate: 0.75
+        max_flow_rate: 6
+        max_expected_power: 2000
+        min_expected_power: 0.01
+        watt_threshold: 1000
+        transparency_zero_lines: 100
+
+      - type: horizontal-stack
+        cards:
+          - type: custom:apexcharts-card
+            layout: minimal
+            experimental:
+              color_threshold: true
+              brush: false
+            graph_span: 12h
+            update_interval: 1m
+            header:
+              show: true
+              show_states: true
+              colorize_states: true
+            series:
+              - entity: sensor.temperature_sensor_5
+                name: Teplota doma
+                unit: °C
+                type: area
+                curve: smooth
+                stroke_width: 0.1
+                color: grey
+                opacity: 0.8
+                show:
+                  in_brush: true
+                group_by:
+                  duration: 30min
+                  func: max
+                color_threshold:
+                  - value: 21
+                    color: blue
+                  - value: 23
+                    color: rgb(146, 212, 106)
+                  - value: 23.5
+                    color: rgb(252, 214, 124)
+                  - value: 24.5
+                    color: rgb(255, 130, 130)
+            yaxis:
+              - min: auto
+                max: auto
+                decimals: 0
+                apex_config:
+                  tickAmount: 3
+            apex_config:
+              chart:
+                type: area
+              fill:
+                type: gradient
+                gradient:
+                  shadeIntensity: 0.1
+                  opacityFrom: 0.25
+                  opacityTo: 0.8
+                  inverseColors: false
+                  stops:
+                    - 0
+                    - 50
+                    - 100
+
+          - type: custom:apexcharts-card
+            layout: minimal
+            experimental:
+              color_threshold: true
+              brush: false
+            graph_span: 12h
+            update_interval: 1h
+            header:
+              show: true
+              show_states: true
+              colorize_states: true
+            series:
+              - entity: sensor.e3_vitocal_outside_temperature
+                name: Teplota venku
+                unit: °C
+                type: area
+                curve: smooth
+                stroke_width: 0.1
+                color: grey
+                opacity: 0.8
+                show:
+                  in_brush: true
+                group_by:
+                  duration: 30min
+                  func: max
+                color_threshold:
+                  - value: 0
+                    color: blue
+                  - value: 20
+                    color: rgb(146, 212, 106)
+                  - value: 25
+                    color: rgb(252, 214, 124)
+                  - value: 30
+                    color: rgb(255, 130, 130)
+            yaxis:
+              - min: auto
+                max: auto
+                decimals: 0
+                apex_config:
+                  tickAmount: 3
+            apex_config:
+              chart:
+                type: area
+              fill:
+                type: gradient
+                gradient:
+                  shadeIntensity: 0.1
+                  opacityFrom: 0.25
+                  opacityTo: 0.8
+                  inverseColors: false
+                  stops:
+                    - 0
+                    - 50
+                    - 100
+
+      - type: custom:apexcharts-card
+        graph_span: 12h
+        stacked: true
+        update_interval: 1h
+        header:
+          title: Výroba a spotřeba
+          show: true
+          show_states: false
+          colorize_states: true
+        series:
+          - entity: sensor.total_load
+            name: Nákup ze sítě
+            unit: kW
+            transform: return -x
+            type: column
+            color: rgb(255, 130, 130)
+            stroke_width: 1
+            show:
+              legend_value: false
+              name_in_header: false
+            group_by:
+              duration: 1h
+              func: diff
+              start_with_last: true
+          - entity: sensor.today_s_pv_generation
+            name: Výroba
+            unit: kW
+            type: column
+            color: rgb(146, 212, 106)
+            stroke_width: 1
+            show:
+              legend_value: false
+              name_in_header: false
+            group_by:
+              duration: 1h
+              func: diff
+              start_with_last: true
+        apex_config:
+          chart:
+            type: area
+            height: 400
+          fill:
+            type: gradient
+            gradient:
+              shadeIntensity: 0.1
+              opacityFrom: 0.4
+              opacityTo: 0.7
+              inverseColors: true
+              stops:
+                - 0
+                - 50
+                - 100
+        yaxis:
+          - min: auto
+            max: auto
+            decimals: 0
+            apex_config:
+              tickAmount: 5
+
+
+      - type: custom:apexcharts-card
+        graph_span: 12h
+        stacked: false
+        update_interval: 1h
+        header:
+          title: Průměrná výroba, spotřeba a nákup ze sítě
+          show: true
+          show_states: false
+          colorize_states: true
+        series:
+          - entity: sensor.active_power
+            name: Nákup ze sítě
+            unit: kW
+            transform: return x/1000
+            color: rgb(255, 130, 130)
+            type: area
+            curve: smooth
+            stroke_width: 1
+            group_by:
+              duration: 1h
+              func: median
+            show:
+              legend_value: false
+              name_in_header: false
+          - entity: sensor.house_consumption
+            name: Spotřeba
+            unit: kW
+            transform: return x/1000
+            color: rgb(252, 214, 124)
+            type: area
+            curve: smooth
+            stroke_width: 1
+            group_by:
+              duration: 1h
+              func: median
+            show:
+              legend_value: false
+              name_in_header: false
+          - entity: sensor.pv_power
+            name: Výroba
+            unit: kW
+            transform: return x/1000
+            color: rgb(172, 252, 124)
+            type: area
+            curve: smooth
+            stroke_width: 1
+            group_by:
+              duration: 1h
+              func: median
+            show:
+              legend_value: false
+              name_in_header: false
+        apex_config:
+          chart:
+            type: area
+            height: 400
+          fill:
+            type: gradient
+            gradient:
+              shadeIntensity: 0.1
+              opacityFrom: 0.25
+              opacityTo: 0.45
+              inverseColors: true
+              stops:
+                - 0
+                - 50
+                - 100
+        yaxis:
+          - min: auto
+            max: auto
+            decimals: 0
+            apex_config:
+              tickAmount: 4
+      
+
+      - type: custom:apexcharts-card
+        experimental:
+          brush: false
+        graph_span: 12h
+        stacked: false
+        update_interval: 1h
+        header:
+          title: Spotřeba tepelného čerpadla
+          show: true
+          show_states: false
+          colorize_states: true
+        series:
+          - entity: sensor.e3_vitocal_energy_consumption_today
+            name: Spotřeba
+            unit: kW
+            type: column
+            color: rgb(252, 214, 124)
+            stroke_width: 1
+            show:
+              legend_value: false
+              name_in_header: false
+              in_brush: true
+            group_by:
+              duration: 1h
+              func: diff
+              start_with_last: true
+        apex_config:
+          chart:
+            type: area
+          fill:
+            type: gradient
+            gradient:
+              shadeIntensity: 0.1
+              opacityFrom: 0.4
+              opacityTo: 0.7
+              inverseColors: true
+              stops:
+                - 0
+                - 50
+                - 100
+        yaxis:
+          - min: auto
+            max: auto
+            decimals: 1
+            apex_config:
+              tickAmount: 4
+      

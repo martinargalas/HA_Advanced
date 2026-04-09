@@ -1,0 +1,57 @@
+view_layout:
+  grid-area: "person1"
+  place-self: left stretch end
+type: "custom:button-card"
+template: card_person_info
+variables:
+  ulm_card_person_entity: person.home_assistant
+  ulm_card_person_use_entity_picture: true
+  ulm_card_person_zone1: zone.Práce
+  ulm_multiline: false
+  ulm_card_person_battery_entity: sensor.sm_s918b_battery_level
+  ulm_card_person_battery_state_entity: sensor.sm_s918b_battery_state
+styles:
+    name:
+      - display: none
+    label:
+      - display: none
+    card:
+      - border-radius: 26px;
+      - background: transparent
+      - position: relative
+      - overflow: hidden
+      - transition: transform 0.25s ease
+card_mod:
+  style: |       
+    ha-card {
+      left: 200px !important; 
+      top: 15px !important;
+      width: 100px !important;
+    }
+
+    ha-card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: 26px;
+      background: linear-gradient(
+        120deg,
+        var(--button-card-before-gradient-start),
+        var(--button-card-before-gradient-mid) 30%,
+        var(--button-card-before-gradient-end) 60%
+      );
+      opacity: 0.35;
+      pointer-events: none;
+    }
+    ha-card::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: 26px;
+      box-shadow:
+        inset 0 0 0 1.5px var(--button-card-after-border),
+        inset 0 0 20px var(--button-card-after-shadow);
+      pointer-events: none;
+    } 
+
+    

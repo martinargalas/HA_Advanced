@@ -1,0 +1,36 @@
+type: custom:layout-card
+layout_type: custom:grid-layout
+
+layout:
+  grid-template-columns: "1fr 0.1fr 1fr"
+  grid-template-rows: "min-content"
+  grid-template-areas: >
+    "robot_1_title . robot_3_title"
+    "robot_1 . robot_3"
+    "robot_1 . robot_3"
+    "washer_title . robot_3"
+    "washer . robot_3"
+    ". . robot_3"
+
+
+
+
+
+cards:
+# ROOMBA AND BRAAVA TITLE  
+  - !include /config/ui_lovelace_minimalist/cards/bubble_cards/cleaning/robot_1_title.yaml
+
+# LUBA TITLE  
+  - !include /config/ui_lovelace_minimalist/cards/bubble_cards/cleaning/robot_3_title.yaml
+
+# WASHER TITLE  
+  - !include /config/ui_lovelace_minimalist/cards/bubble_cards/cleaning/washer_title.yaml
+
+# ROOMBA AND BRAAVA  
+  - !include /config/ui_lovelace_minimalist/cards/bubble_cards/cleaning/robot_1.yaml
+
+# WASHER   
+  - !include /config/ui_lovelace_minimalist/cards/bubble_cards/cleaning/washer.yaml
+
+# LUBA
+  - !include /config/ui_lovelace_minimalist/cards/bubble_cards/cleaning/robot_3a.yaml

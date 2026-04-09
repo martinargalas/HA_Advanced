@@ -1,0 +1,248 @@
+type: custom:button-card
+name: WC
+icon: mdi:toilet
+show_state: false
+show_label: true
+show_name: false
+tap_action:
+  action: none
+double_tap_action:
+  action: none
+hold_action:
+  action: none
+styles:
+  card:
+    - height: 180px
+    - border-radius: 26px
+    - padding: 20px
+    - position: relative
+    - overflow: hidden
+    - transition: transform 0.25s ease
+  grid:
+    - grid-template-areas: '"i n" "i l"'
+    - grid-template-columns: 60px 1fr
+  icon:
+    - width: 46px
+    - color: var(--button-card-icon)
+    - filter: drop-shadow(0 2px 6px var(--button-card-icon-shadow))
+  name:
+    - font-size: 20px
+    - font-weight: 600
+    - color: var(--button-card-name)
+  label:
+    - font-size: 14px
+    - color: var(--button-card-label)
+      
+  grid:
+    
+    - grid-template-rows: "min-content"
+    - grid-template-columns: 1fr 1fr
+    - grid-template-rows: 1fr 1fr
+    - grid-template-areas: >
+        "i i"
+        "item1 item2 "
+
+  custom_fields:
+    item1:
+      - place-self:  center
+      - justify-self: center
+    item2:
+      - place-self:  center
+      - justify-self: center
+    item3:
+      - place-self:  center
+      - justify-self: center
+    item4:
+      - place-self:  center
+      - justify-self: center
+    divider:
+      - place-self:  center
+      - justify-self: center
+    
+custom_fields:
+  item1:
+    card:
+      type: "custom:button-card"
+      show_name: false
+      show_label: false
+      show_icon: true
+      label: "Světlo"
+      entity: light.wall_switch
+      icon: mdi:lightbulb-outline
+      tap_action:
+        action: toggle
+      state:
+      - value: "on"
+        styles:
+          card:
+            - background: var(--macos-yellow-background)   
+      - value: "off"
+        styles:
+          card:
+            - background: none   
+      styles:
+        card:
+          - border-radius: "42px"       
+          - height: "52px"
+          - width: "52px"
+          - background: var(--button-card-background)
+          - backdrop-filter: blur(20px) saturate(180%)
+          - -webkit-backdrop-filter: blur(20px) saturate(180%)
+          - border: 1px solid var(--button-card-border)
+          - box-shadow:
+              - 0 10px 25px var(--button-card-shadow)
+              - inset 0 1px 1px var(--button-card-inset-shadow)
+          - position: relative
+          - overflow: hidden
+          - transition: transform 0.25s ease
+        icon:
+          - width: 28px
+          - color: var(--button-card-icon)
+          - filter: drop-shadow(0 2px 6px var(--button-card-icon-shadow))
+  item2:
+    card:
+      type: "custom:button-card"
+      show_name: false
+      show_label: false
+      show_icon: true
+      label: "Koupelna obsazena"
+      entity: binary_sensor.zachod_obsazen
+      icon: mdi:minus-circle
+      tap_action:
+        action: none
+      state:
+      - value: "on"
+        styles:
+          card:
+            - background: var(--macos-red-background)   
+      - value: "off"
+        styles:
+          card:
+            - background: none  
+        styles:
+          card:
+            - background: none
+      styles:
+        card:
+          - border-radius: "42px"       
+          - height: "52px"
+          - width: "52px"
+          - background: var(--button-card-background)
+          - backdrop-filter: blur(20px) saturate(180%)
+          - -webkit-backdrop-filter: blur(20px) saturate(180%)
+          - border: 1px solid var(--button-card-border)
+          - box-shadow:
+              - 0 10px 25px var(--button-card-shadow)
+              - inset 0 1px 1px var(--button-card-inset-shadow)
+          - position: relative
+          - overflow: hidden
+          - transition: transform 0.25s ease
+        icon:
+          - width: 28px
+          - color: var(--button-card-icon)
+          - filter: drop-shadow(0 2px 6px var(--button-card-icon-shadow))
+
+  # item3:
+  #   card:
+  #     type: "custom:button-card"
+  #     show_name: false
+  #     show_label: false
+  #     show_icon: true
+  #     label: "Sonos koupelna"
+  #     entity: media_player.bathroom
+  #     icon: mdi:speaker
+  #     tap_action:
+  #       action: toggle
+  #     state:
+  #     - value: "playing"
+  #       styles:
+  #         card:
+  #           - background: var(--macos-blue-background)   
+  #     - value: "off"
+  #       styles:
+  #         card:
+  #           - background: none  
+  #     styles:
+  #       card:
+  #         - border-radius: "42px"       
+  #         - height: "52px"
+  #         - width: "52px"
+  #         - background: var(--button-card-background)
+  #         - backdrop-filter: blur(20px) saturate(180%)
+  #         - -webkit-backdrop-filter: blur(20px) saturate(180%)
+  #         - border: 1px solid var(--button-card-border)
+  #         - box-shadow:
+  #             - 0 10px 25px var(--button-card-shadow)
+  #             - inset 0 1px 1px var(--button-card-inset-shadow)
+  #         - position: relative
+  #         - overflow: hidden
+  #         - transition: transform 0.25s ease
+  #       icon:
+  #         - width: 28px
+  #         - color: var(--button-card-icon)
+  #         - filter: drop-shadow(0 2px 6px var(--button-card-icon-shadow))
+  # item4:
+  #   card:
+  #     type: "custom:button-card"
+  #     show_name: false
+  #     show_label: false
+  #     show_icon: true
+  #     label: "Kiosk"
+  #     entity: switch.zarizeni_tab_a8_uzivatele_martin_screen
+  #     icon: mdi:tablet-dashboard
+  #     state:
+  #     - value: "on"
+  #       styles:
+  #         card:
+  #           - background: var(--macos-blue-background)   
+  #     - value: "off"
+  #       styles:
+  #         card:
+  #           - background: none  
+  #     styles:
+  #       card:
+  #         - border-radius: "42px"       
+  #         - height: "52px"
+  #         - width: "52px"
+  #         - background: var(--button-card-background)
+  #         - backdrop-filter: blur(20px) saturate(180%)
+  #         - -webkit-backdrop-filter: blur(20px) saturate(180%)
+  #         - border: 1px solid var(--button-card-border)
+  #         - box-shadow:
+  #             - 0 10px 25px var(--button-card-shadow)
+  #             - inset 0 1px 1px var(--button-card-inset-shadow)
+  #         - position: relative
+  #         - overflow: hidden
+  #         - transition: transform 0.25s ease
+  #       icon:
+  #         - width: 28px
+  #         - color: var(--button-card-icon)
+  #         - filter: drop-shadow(0 2px 6px var(--button-card-icon-shadow))
+   
+card_mod:
+  style: |
+    ha-card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: 26px;
+      background: linear-gradient(
+        120deg,
+        var(--button-card-before-gradient-start),
+        var(--button-card-before-gradient-mid) 30%,
+        var(--button-card-before-gradient-end) 60%
+      );
+      opacity: 0.35;
+      pointer-events: none;
+    }
+    ha-card::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: 26px;
+      box-shadow:
+        inset 0 0 0 1.5px var(--button-card-after-border),
+        inset 0 0 20px var(--button-card-after-shadow);
+      pointer-events: none;
+    } 
+    

@@ -1,0 +1,14 @@
+view_layout:
+  grid-area: "production_today"
+type: 'custom:button-card'
+card_mod:
+  style: |
+    ha-card {
+        background-color: rgba(var(--color-background-black),0.3) !important;
+        z-index: 10 !important;
+      }
+template: card_generic
+entity: sensor.today_s_pv_generation
+variables:
+  ulm_card_generic_name: Výroba
+  ulm_card_generic_icon: mdi:solar-power-variant

@@ -1,0 +1,41 @@
+view_layout:
+  grid-area: "panel_horizontal"      
+  place-self: left end stretch  
+type: custom:mod-card
+card:
+  !include /config/ui_lovelace_minimalist/cards/chips.yaml
+card_mod:
+  style: |
+    ha-card {
+      z-index: -1;
+      padding-left: 5px !important;
+      padding-top: 5px !important;
+      padding-bottom: 5px !important;
+      padding-right: 15px !important;
+      height: 90px !important;
+     
+      border-radius: 26px;
+      background: var(--mod-card-background);
+      backdrop-filter: blur(35px) saturate(100%);
+      -webkit-backdrop-filter: blur(35px) saturate(200%);
+      border: 1px solid var(--mod-card-border);
+      box-shadow: 
+        0 15px 25px var(--mod-card-shadow), 
+        inset 0 2px 3px var(--mod-card-inset-shadow);
+    }
+
+    ha-card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: 26px;
+      background: linear-gradient(
+        120deg,
+        var(--mod-card-gradient-start),
+        var(--mod-card-gradient-mid) 25%,
+        var(--mod-card-gradient-end) 50%,
+        transparent 70%
+      );
+      opacity: 0.35;
+      pointer-events: none;
+    }

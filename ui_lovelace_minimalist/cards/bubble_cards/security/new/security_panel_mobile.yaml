@@ -1,0 +1,655 @@
+view_layout:
+  grid-area: "security_panel"     
+  place-self: center end stretch
+  justify-self: center
+
+type: custom:vertical-stack-in-card
+card_mod:
+  style: |
+    ha-card {
+      border-radius: 34px;
+      padding: 10px;
+      background: var(--mod-card-background);
+      backdrop-filter: blur(35px) saturate(100%);
+      -webkit-backdrop-filter: blur(35px) saturate(200%);
+      border: 1px solid var(--mod-card-border);
+      box-shadow: 
+        0 15px 25px var(--mod-card-shadow), 
+        inset 0 2px 3px var(--mod-card-inset-shadow);
+    }
+
+    ha-card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: 34px;
+      background: linear-gradient(
+        120deg,
+        var(--mod-card-gradient-start),
+        var(--mod-card-gradient-mid) 25%,
+        var(--mod-card-gradient-end) 50%,
+        transparent 70%
+      );
+      opacity: 0.35;
+      pointer-events: none;
+    }
+cards:
+- type: custom:button-card
+  entity: input_boolean.alarmed_toggle
+  show_icon: false
+  show_label: false
+  show_name: false
+  tap_action:
+    action: none    
+  custom_fields:
+    switch_camera_1:
+      card:
+        type: custom:button-card
+        entity: input_boolean.switch_security_camera_1
+
+        show_name: false
+        show_label: true
+        show_icon: false
+        label: Vchod
+
+        tap_action:
+          action: call-service
+          service: script.multi_tap_action
+          data:
+            actions:
+              - service: input_boolean.turn_off
+                entity_id: input_boolean.switch_security_camera_2
+              - service: input_boolean.turn_on
+                entity_id: input_boolean.switch_security_camera_1
+
+        hold_action:
+          action: none
+
+        double_tap_action:
+          action: none
+        state:
+        - value: "on"
+          styles:
+            card:
+              - background: var(--macos-blue-background)   
+              - backdrop-filter: blur(20px) saturate(180%)
+              - -webkit-backdrop-filter: blur(20px) saturate(180%)
+              - box-shadow:
+                  - 0 10px 25px var(--button-card-shadow)
+                  - inset 0 1px 1px var(--button-card-inset-shadow)
+        - value: "off"
+          styles:
+            card:
+              - background: var(--button-card-background)
+              - backdrop-filter: blur(20px) saturate(180%)
+              - -webkit-backdrop-filter: blur(20px) saturate(180%)
+              - box-shadow:
+                  - 0 10px 25px var(--button-card-shadow)
+                  - inset 0 1px 1px var(--button-card-inset-shadow)
+
+
+        card_mod:
+          style: |
+            @keyframes ping {
+              0% {
+                box-shadow: 0 0 0 0 rgba(var(--color-background-macos-blue), 0.9);
+              }
+              70% {
+                box-shadow: 0 0 0 12px rgba(var(--color-background-macos-blue), 0);
+              }
+              100% {
+                box-shadow: 0 0 0 0 rgba(var(--color-background-macos-blue), 0);
+              }
+            }
+
+            ha-card {
+              z-index: 2 !important;
+            }
+
+        styles:
+          card:
+            - border-radius: 42px
+            - height: 42px
+            - width: 160px
+            - padding: 0
+            - left: 8px
+            - box-shadow: "none"
+            - border: 1px solid var(--mod-card-border);
+            - animation: >-
+                [[[
+                  if (states['input_boolean.switch_security_camera_1'].state == 'on') {
+                    return "ping 0.8s ease-out 1";
+                  }
+                  return "none";
+                ]]]
+
+          label:
+            - justify-self: center
+            - font-size: 14px
+            - font-weight: 430
+            - text-overflow: ellipsis
+            - overflow: hidden
+            - color: var(--text-color)
+            - filter: drop-shadow(0 2px 6px var(--button-card-icon-shadow))
+
+    switch_camera_2:
+      card:
+        type: custom:button-card
+        entity: input_boolean.switch_security_camera_2
+
+        show_name: false
+        show_label: true
+        show_icon: false
+        label: Zahrada
+
+        tap_action:
+          action: call-service
+          service: script.multi_tap_action
+          data:
+            actions:
+              - service: input_boolean.turn_on
+                entity_id: input_boolean.switch_security_camera_2
+              - service: input_boolean.turn_off
+                entity_id: input_boolean.switch_security_camera_1
+
+        hold_action:
+          action: none
+
+        double_tap_action:
+          action: none
+
+        state:
+        - value: "on"
+          styles:
+            card:
+              - background: var(--macos-blue-background)   
+              - backdrop-filter: blur(20px) saturate(180%)
+              - -webkit-backdrop-filter: blur(20px) saturate(180%)
+              - box-shadow:
+                  - 0 10px 25px var(--button-card-shadow)
+                  - inset 0 1px 1px var(--button-card-inset-shadow)
+        - value: "off"
+          styles:
+            card:
+              - background: var(--button-card-background)
+              - backdrop-filter: blur(20px) saturate(180%)
+              - -webkit-backdrop-filter: blur(20px) saturate(180%)
+              - box-shadow:
+                  - 0 10px 25px var(--button-card-shadow)
+                  - inset 0 1px 1px var(--button-card-inset-shadow)
+
+
+        card_mod:
+          style: |
+            @keyframes ping {
+              0% {
+                box-shadow: 0 0 0 0 rgba(var(--color-background-macos-blue), 0.9);
+              }
+              70% {
+                box-shadow: 0 0 0 12px rgba(var(--color-background-macos-blue), 0);
+              }
+              100% {
+                box-shadow: 0 0 0 0 rgba(var(--color-background-macos-blue), 0);
+              }
+            }
+
+            ha-card {
+              z-index: 2 !important;
+            }
+
+        styles:
+          card:
+            - border-radius: 42px
+            - height: 42px
+            - width: 160px
+            - padding: 0
+            - right: 8px
+            - box-shadow: "none"
+            - border: 1px solid var(--mod-card-border);
+
+            - animation: >-
+                [[[
+                  if (states['input_boolean.switch_security_camera_2'].state == 'on') {
+                    return "ping 0.8s ease-out 1";
+                  }
+                  return "none";
+                ]]]
+
+            - background-color: >-
+                [[[
+                  return states['switch.switch_mower_zones'].state == 'on'
+                    ? "rgba(var(--color-background-theme), 0.5)"
+                    : "rgba(var(--color-grey), 0.3)";
+                ]]]
+
+          label:
+            - justify-self: center
+            - font-size: 14px
+            - font-weight: 430
+            - text-overflow: ellipsis
+            - overflow: hidden
+            - color: var(--text-color)
+            - filter: drop-shadow(0 2px 6px var(--button-card-icon-shadow))
+
+  styles:
+    card:
+      - padding: 0px
+      - background: var(--button-card-background)
+      - backdrop-filter: blur(20px) saturate(180%)
+      - -webkit-backdrop-filter: blur(20px) saturate(180%)
+      - border: 1px solid var(--button-card-border)
+      - box-shadow:
+          - 0 10px 25px var(--button-card-shadow)
+          - inset 0 1px 1px var(--button-card-inset-shadow)
+      - position: relative
+      - overflow: hidden
+      - transition: transform 0.25s ease
+    grid:
+      - overflow: hidden
+      - grid-template-areas: 
+          '"switch_camera_1 switch_camera_2"'
+           
+      - grid-template-columns: 1fr 1fr
+      - grid-template-rows: auto
+
+    custom_fields:
+      switch_camera_1:
+        - place-self:  center
+        - justify-self: left
+      switch_camera_2:
+        - place-self:  center
+        - justify-self: right
+        
+      
+  card_mod:
+    style: |
+      ha-card {
+        height: 56px;
+        
+        border-radius: 26px !important;
+        overflow: hidden !important;
+        max-width: 344px !important;
+        
+        background-color: transparent !important;
+        box-shadow: none !important;
+      }
+
+- type: conditional
+  conditions:
+    - condition: state
+      entity: input_boolean.switch_security_camera_1
+      state: "on"
+  card:
+
+    type: custom:button-card
+    entity: input_boolean.alarmed_toggle
+    show_icon: false
+    show_label: false
+    show_name: false
+    tap_action:
+      action: none    
+    custom_fields:
+      camera_live:
+        card: 
+          type: custom:webrtc-camera
+          url:
+            - !secret rtsp_camera_front
+          ui: false
+          background: false
+          poster: http://192.168.4.99:8123/local/community/spotify/camera.jpg
+          style: '.header {top: unset; bottom: -250px}'
+            
+
+      camera_thumbnails:
+        card:
+          type: custom:frigate-card
+          cameras:
+            - camera_entity: camera.frontdoor
+              live_provider: webrtc-card
+          media_viewer:
+            auto_play:
+              - selected
+              - visible
+            auto_pause:
+              - unselected
+              - hidden
+            auto_mute:
+              - unselected
+              - hidden
+            auto_unmute: []
+            lazy_load: true
+            draggable: true
+            zoomable: true
+            snapshot_click_plays_clip: true
+            transition_effect: slide
+            controls:
+              builtin: true
+              next_previous:
+                size: 64
+                style: thumbnails
+              wheel: true
+              ptz:
+                mode: "off"
+                position: bottom-right
+                orientation: horizontal
+                hide_pan_tilt: false
+                hide_zoom: false
+                hide_home: false
+                style:
+                  right: 5%
+              thumbnails:
+                size: 300
+                mode: none
+                show_details: false
+                show_download_control: true
+                show_favorite_control: false
+                show_timeline_control: false
+              timeline:
+                style: ribbon
+                mode: none
+                pan_mode: pan
+                clustering_threshold: 3
+                events_media_type: all
+                show_recordings: true
+                window_seconds: 3600
+                format:
+                  24h: true
+            display:
+              mode: single
+              grid_selected_position: default
+              grid_selected_width_factor: 2
+              grid_max_columns: 3
+          media_gallery:
+            controls:
+              thumbnails:
+                size: 75
+                show_details: false
+                show_favorite_control: false
+                show_timeline_control: false
+                show_download_control: false
+              filter:
+                mode: none
+          live:
+            preload: false
+            draggable: false
+            zoomable: false
+            lazy_load: true
+          view:
+            default: clips
+            default_cycle_camera: false
+            default_reset:
+              after_interaction: true
+              interaction_mode: inactive
+            interaction_seconds: 8
+            view:
+              theme:
+                overrides:
+                  "--advanced-camera-card-background": transparent
+          performance:
+            style:
+              border_radius: false
+              box_shadow: true
+          dimensions:
+            aspect_ratio_mode: static
+            height: "310px"
+            aspect_ratio: "1:3"
+          image: {}
+          menu:
+            style: none
+            buttons:
+              frigate:
+                enabled: true
+              substreams:
+                enabled: false
+              media_player:
+                enabled: false
+              timeline:
+                enabled: false
+
+    styles:
+      card:
+        - padding: 20px
+        - background: var(--button-card-background)
+        - backdrop-filter: blur(20px) saturate(180%)
+        - -webkit-backdrop-filter: blur(20px) saturate(180%)
+        - border: 1px solid var(--button-card-border)
+        - box-shadow:
+            - 0 10px 25px var(--button-card-shadow)
+            - inset 0 1px 1px var(--button-card-inset-shadow)
+        - position: relative
+        - overflow: hidden
+        - transition: transform 0.25s ease
+      grid:
+  
+        - grid-template-areas: 
+            '"camera_live" "." "camera_thumbnails"'
+            
+        - grid-template-columns: 1fr
+        - grid-template-rows: auto 0.05fr 1fr 
+              
+    card_mod:
+      style: |
+        ha-card {
+          border-radius: 26px !important;
+          background: none !important;
+          background-color: transparent !important;
+          box-shadow: none !important;
+        }
+        
+        ha-card::before {
+          content: "";
+          position: absolute;
+          inset: 0;
+          border-radius: 26px;
+          background: linear-gradient(
+            120deg,
+            var(--button-card-before-gradient-start),
+            var(--button-card-before-gradient-mid) 30%,
+            var(--button-card-before-gradient-end) 60%
+          );
+          opacity: 0.35;
+          pointer-events: none;
+        }
+        ha-card::after {
+          content: "";
+          position: absolute;
+          inset: 0;
+          border-radius: 26px;
+          box-shadow:
+            inset 0 0 0 1px var(--button-card-after-border),
+            inset 0 0 20px var(--button-card-after-shadow);
+          pointer-events: none;
+        } 
+
+- type: conditional
+  conditions:
+    - condition: state
+      entity: input_boolean.switch_security_camera_2
+      state: "on"
+  card:
+
+    type: custom:button-card
+    entity: input_boolean.alarmed_toggle
+    show_icon: false
+    show_label: false
+    show_name: false
+    tap_action:
+      action: none    
+    custom_fields:
+      camera_live:
+        card: 
+          type: custom:webrtc-camera
+          url:
+            - !secret rtsp_camera_garden
+          ui: false
+          background: false
+          poster: http://192.168.4.99:8123/local/community/spotify/camera.jpg
+          style: '.header {top: unset; bottom: -250px}'
+          card_mod:
+            style: |
+              ha-card {
+                max-height: 520px !important;
+              }
+            
+
+      camera_thumbnails:
+        card:
+          type: custom:frigate-card
+          cameras:
+            - camera_entity: camera.garden_2
+              live_provider: webrtc-card
+          media_viewer:
+            auto_play:
+              - selected
+              - visible
+            auto_pause:
+              - unselected
+              - hidden
+            auto_mute:
+              - unselected
+              - hidden
+            auto_unmute: []
+            lazy_load: true
+            draggable: true
+            zoomable: true
+            snapshot_click_plays_clip: true
+            transition_effect: slide
+            controls:
+              builtin: true
+              next_previous:
+                size: 64
+                style: thumbnails
+              wheel: true
+              ptz:
+                mode: "off"
+                position: bottom-right
+                orientation: horizontal
+                hide_pan_tilt: false
+                hide_zoom: false
+                hide_home: false
+                style:
+                  right: 5%
+              thumbnails:
+                size: 300
+                mode: none
+                show_details: false
+                show_download_control: true
+                show_favorite_control: false
+                show_timeline_control: false
+              timeline:
+                style: ribbon
+                mode: none
+                pan_mode: pan
+                clustering_threshold: 3
+                events_media_type: all
+                show_recordings: true
+                window_seconds: 3600
+                format:
+                  24h: true
+            display:
+              mode: single
+              grid_selected_position: default
+              grid_selected_width_factor: 2
+              grid_max_columns: 3
+          media_gallery:
+            controls:
+              thumbnails:
+                size: 75
+                show_details: false
+                show_favorite_control: false
+                show_timeline_control: false
+                show_download_control: false
+              filter:
+                mode: none
+          live:
+            preload: false
+            draggable: false
+            zoomable: false
+            lazy_load: true
+          view:
+            default: clips
+            default_cycle_camera: false
+            default_reset:
+              after_interaction: true
+              interaction_mode: inactive
+            interaction_seconds: 8
+            view:
+              theme:
+                overrides:
+                  "--advanced-camera-card-background": transparent
+          performance:
+            style:
+              border_radius: false
+              box_shadow: true
+          dimensions:
+            aspect_ratio_mode: static
+            height: "310px"
+            aspect_ratio: "1:3"
+          image: {}
+          menu:
+            style: none
+            buttons:
+              frigate:
+                enabled: true
+              substreams:
+                enabled: false
+              media_player:
+                enabled: false
+              timeline:
+                enabled: false
+
+    styles:
+      card:
+        - padding: 20px
+        - background: var(--button-card-background)
+        - backdrop-filter: blur(20px) saturate(180%)
+        - -webkit-backdrop-filter: blur(20px) saturate(180%)
+        - border: 1px solid var(--button-card-border)
+        - box-shadow:
+            - 0 10px 25px var(--button-card-shadow)
+            - inset 0 1px 1px var(--button-card-inset-shadow)
+        - position: relative
+        - overflow: hidden
+        - transition: transform 0.25s ease
+      grid:
+  
+        - grid-template-areas: 
+            '"camera_live" "." "camera_thumbnails"'
+            
+        - grid-template-columns: 1fr
+        - grid-template-rows: auto 0.05fr 1fr 
+              
+    card_mod:
+      style: |
+        ha-card {
+          border-radius: 26px !important;
+          background: none !important;
+          background-color: transparent !important;
+          box-shadow: none !important;
+        }
+        
+        ha-card::before {
+          content: "";
+          position: absolute;
+          inset: 0;
+          border-radius: 26px;
+          background: linear-gradient(
+            120deg,
+            var(--button-card-before-gradient-start),
+            var(--button-card-before-gradient-mid) 30%,
+            var(--button-card-before-gradient-end) 60%
+          );
+          opacity: 0.35;
+          pointer-events: none;
+        }
+        ha-card::after {
+          content: "";
+          position: absolute;
+          inset: 0;
+          border-radius: 26px;
+          box-shadow:
+            inset 0 0 0 1px var(--button-card-after-border),
+            inset 0 0 20px var(--button-card-after-shadow);
+          pointer-events: none;
+        } 
+     

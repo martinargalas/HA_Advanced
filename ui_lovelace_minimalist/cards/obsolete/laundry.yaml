@@ -1,0 +1,33 @@
+view_layout:
+  grid-area: "laundry"     
+  place-self: left end stretch
+type: 'custom:button-card'
+template:
+  - card_room
+  - yellow_on
+  - grey_no_state       
+name: Prádelna
+entity: switch.light_laundry
+icon: mdi:washing-machine
+label: >
+  [[[ 
+    if (states["switch.pracka"].state == "on")
+    return "Zbývá: " + states["sensor.washer_remaining_time"].state + ".";
+  ]]]
+tap_action:
+  action: toggle
+variables:
+  label_use_temperature: false
+  label_use_brightness: true
+  entity_1:
+    entity_id: switch.light_laundry
+    templates:
+      - yellow_on
+    tap_action:
+      action: toggle
+  entity_2:
+    entity_id: switch.pracka
+    templates:
+      - blue_on
+    tap_action:
+      action: 

@@ -1,0 +1,221 @@
+type: vertical-stack
+cards:
+  # ROOMBA
+  - view_layout:
+      grid-area: "robot_1_title"
+    type: custom:bubble-card
+    card_type: separator
+    name: Vysávání
+    icon: mdi:robot-vacuum-variant
+
+  - view_layout:
+      grid-area: "robot_1"
+      place-self: center left
+    type: entities
+    show_header_toggle: false
+    card_mod:
+      style: |
+        ha-card {
+            background-color: rgba(var(--color-grey),0.1)
+          }
+    entities:
+      - type: custom:mushroom-vacuum-card
+        template:
+          - green_on
+          - grey_off
+        entity: vacuum.roomba
+        commands:
+          - return_home
+          - start_pause
+          - stop
+        icon_animation: true
+        card_mod:
+          style: |
+            ha-card {
+                background-color: rgba(var(--color-background-black),0.3)
+              }
+
+  - view_layout:
+      grid-area: "robot_2_title"
+    type: custom:bubble-card
+    card_type: separator
+    name: Vytírání
+    icon: mdi:robot-vacuum
+
+  - view_layout:
+      grid-area: "robot_2"
+      place-self: center left
+    type: entities
+    show_header_toggle: false
+    card_mod:
+      style: |
+        ha-card {
+            background-color: rgba(var(--color-grey),0.1)
+          }
+    entities:
+      - type: custom:mushroom-vacuum-card
+        template:
+          - green_on
+          - grey_off
+        entity: vacuum.braava
+        commands:
+          - return_home
+          - start_pause
+          - stop
+        icon_animation: true
+        card_mod:
+          style: |
+            ha-card {
+                background-color: rgba(var(--color-background-black),0.3)
+              }
+
+  # PRAČKA
+  - view_layout:
+      grid-area: "washer_title"
+    type: custom:bubble-card
+    card_type: separator
+    name: Praní
+    icon: mdi:washing-machine
+
+  - view_layout:
+      grid-area: "washer"
+    type: entities
+    show_header_toggle: false
+    card_mod:
+      style: |
+        ha-card {
+            background-color: rgba(var(--color-grey),0.1)
+          }
+    entities:
+      - type: "custom:button-card"
+        template: "custom_card_haven_washer"
+        variables:
+          ulm_custom_card_washer_power: switch.washer_switch
+          ulm_custom_card_washer_remote_control: sensor.washer_remote_control
+          ulm_custom_card_washer_machine_state: sensor.washer_washer_machine_state
+          ulm_custom_card_washer_job_state: sensor.washer_washer_job_state
+          ulm_custom_card_washer_job_states:
+            state1:
+              name: "weightSensing"
+              icon: "mdi:scale"
+            state2:
+              name: "wash"
+              icon: "mdi:waves"
+            state3:
+              name: "rinse"
+              icon: "mdi:water"
+            state4:
+              name: "spin"
+              icon: "mdi:fan"
+          ulm_custom_card_washer_delayed_start: input_boolean.washingmachine_latest_start
+          ulm_custom_card_washer_delayed_starttime: input_datetime.washingmachine_latest_starttime
+          ulm_custom_card_washer_label_idle: >
+            [[[
+              var name = states["sensor.washer_energy"].attributes.friendly_name;
+              var value = states["sensor.washer_energy"].state;
+              var measurement = states["sensor.washer_energy"].attributes.unit_of_measurement;
+              if (states["switch.washer_switch"].state == "on")
+              return "Spuštěno. Program skončí za " + states["sensor.washer_remaining_time"].state + ".";
+              else
+              return "Vypnuto";
+            ]]]
+          ulm_custom_card_washer_label_running: >
+            [[[ 
+                return states["sensor.washer_remaining_time"].state; 
+            ]]]
+          ulm_custom_card_washer_start_action:
+            action: "call-service"
+            service: switch.turn_on
+            service_data:
+              entity_id: switch.washer_run_action
+          ulm_custom_card_washer_pause_action:
+            action: "call-service"
+            service: switch.turn_on
+            service_data:
+              entity_id: switch.washer_pause_action
+          ulm_custom_card_washer_stop_action:
+            action: "call-service"
+            service: switch.turn_on
+            service_data:
+              entity_id: sensor.washer_washer_machine_state
+        card_mod:
+          style: |
+            ha-card {
+                background-color: rgba(var(--color-background-black),0.3)
+              }
+
+  - view_layout:
+      grid-area: "mower_title"
+    type: custom:bubble-card
+    card_type: separator
+    name: Sekání trávy
+    icon: mdi:mower
+
+  - view_layout:
+      grid-area: "robot_3"
+    type: entities
+    show_header_toggle: false
+    card_mod:
+      style: |
+        ha-card {
+            background-color: rgba(var(--color-grey),0.1)
+          }
+    entities:
+      - type: custom:lawn-mower-card
+        entity: lawn_mower.luba_vsqcfhrv
+        battery: sensor.luba_vsqcfhrv_battery
+        image: http://192.168.4.99:8123/local/community/spotify/luba.png
+        show_name: true
+        show_toolbar: false
+        compact_view: true
+        stats:
+          mowing:
+            - entity_id: sensor.lawn_mower_area_mowed
+              subtitle: Area mowed
+              unit: m²
+            - entity_id: sensor.lawn_mower_mwingtime
+              unit: minutes
+              subtitle: Mowing time
+        shortcuts:
+          - name: Spustit
+            service: lawn_mower.start_mowing
+            service_data:
+              entity_id: lawn_mower.luba_vsqcfhrv
+            icon: mdi:play
+          - name: Zastavit
+            service: lawn_mower.pause
+            service_data:
+              entity_id: lawn_mower.luba_vsqcfhrv
+            icon: mdi:stop
+          - name: Vrátit do docku
+            service: lawn_mower.dock
+            service_data:
+              entity_id: lawn_mower.luba_vsqcfhrv
+            icon: mdi:home-map-marker
+        style: |
+          ha-card {
+            --vc-background: #17A8F4;
+            --vc-spacing: 5px;
+          }
+      - type: custom:map-card
+        x: 49.53572888084475
+        y: 18.752901808785474
+        focus_entity: device_tracker.luba_vsqcfhrv_luba_vsqcfhrv
+        tile_layer_url: /local/map/{z}/{x}/{y}.png
+        zoom: 20
+        entities:
+          - entity: device_tracker.luba_vsqcfhrv_luba_vsqcfhrv
+            picture: /local/community/spotify/luba.png
+            size: 25
+            display: marker
+            history_start: 24 hours ago
+            history_line_color: green
+            history_show_dots: false
+        card_size: 6
+        tile_layers:
+          - url: >-
+              https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}
+        default_zoom: 22
+        tile_layer_options:
+          maxZoom: 18
+        theme_mode: auto

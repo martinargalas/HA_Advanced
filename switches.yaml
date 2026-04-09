@@ -1,0 +1,4 @@
+- platform: wake_on_lan
+  mac: F8:E4:3B:8A:3F:3B
+  name: "martin-pc"
+  host: "192.168.4.75"

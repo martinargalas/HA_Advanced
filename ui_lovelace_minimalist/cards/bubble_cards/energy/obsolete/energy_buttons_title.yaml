@@ -1,0 +1,11 @@
+view_layout:
+  grid-area: "buttons_title"
+type: custom:bubble-card
+card_type: separator
+name: "________________________________________"
+card_mod:
+  style: |
+    ha-card {
+        font-color: rgba(var(--color-background-black),0.3) !important;
+        color: transparent !important;
+      }

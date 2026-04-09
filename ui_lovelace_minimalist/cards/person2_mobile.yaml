@@ -1,0 +1,22 @@
+view_layout:
+  grid-area: "person2"
+  place-self: left stretch end
+type: "custom:button-card"
+template: card_person_info
+variables:
+  ulm_card_person_entity: person.kristyna
+  ulm_card_person_use_entity_picture: true
+  ulm_card_person_zone1: zone.Škola
+  ulm_card_person_zone2: zone.Nákupy
+  ulm_multiline: true
+  ulm_card_person_battery_entity: sensor.samsung_s21_battery_level
+  ulm_card_person_battery_state_entity: sensor.samsung_s21_battery_state
+card_mod:
+  style: |       
+    ha-card {
+      box-shadow: none !important; 
+      background-color: transparent !important;
+      max-height: 83px !important;
+    {% if states('sun.sun')|title == 'Above_horizon' %}
+      backdrop-filter: blur(0.5px) !important;
+    {%endif%}

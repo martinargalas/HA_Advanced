@@ -1,0 +1,57 @@
+elektrina_nakup_rok:
+  name: Elektrina Nakup Rok
+  source: sensor.total_energy_sell
+  cron: "0 0 20 6 *"
+  tariffs:
+    - nizky 
+    - vysoky
+
+elektrina_nakup_mesic:
+  name: Elektrina Nakup Mesic
+  source: sensor.total_energy_sell
+  cycle: monthly
+  tariffs:
+    - nizky 
+    - vysoky
+
+elektrina_nakup_den:
+  name: Elektrina Nakup Den
+  source: sensor.total_energy_sell
+  cycle: daily
+  tariffs:
+    - nizky 
+    - vysoky
+
+elektrina_spotreba_rok:
+  name: Elektrina Spotreba Rok
+  source: sensor.total_load
+  cron: "0 0 20 6 *"
+  tariffs:
+    - nizky 
+    - vysoky
+
+elektrina_spotreba_mesic:
+  name: Elektrina Nakup Mesic
+  source: sensor.total_load
+  cycle: monthly
+  tariffs:
+    - nizky 
+    - vysoky
+
+elektrina_spotreba_den:
+  name: Elektrina Nakup Den
+  source: sensor.total_load
+  cycle: daily
+  tariffs:
+    - nizky 
+    - vysoky
+
+energy_cost_year_until_may:
+  name: "Elektrina Spotreba Rok do konce kvetna"
+  source: sensor.elektrina_cena_year
+  cron: "0 0 1 6 *"
+
+energy_virtual_batery_year_until_may:
+  name: "Elektrina Virt. Baterie Rok do konce kvetna"
+  source: sensor.energy_virtual_batery_year
+  cron: "0 0 1 6 *"

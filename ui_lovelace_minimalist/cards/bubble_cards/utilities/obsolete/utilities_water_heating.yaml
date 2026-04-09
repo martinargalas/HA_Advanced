@@ -1,0 +1,52 @@
+view_layout:
+  grid-area: water_heating
+type: custom:mushroom-entity-card
+entity: sensor.water_heating_on
+name: Ohřev TUV
+icon: mdi:shower-head
+primary: Ohřev TUV
+styles:
+  - background: rgba(var(--color-background-black),0.3)
+secondary: ""
+card_mod:
+  style:
+    mushroom-shape-icon$: |
+      ha-icon {
+        {{ '--icon-animation: rotation 1s linear infinite;' if is_state(config.entity, 'on') }}
+        transform-origin: 29% 88%;
+      }
+      @keyframes clip {
+        0% {
+          clip-path: inset(50% 0 0 0);
+        }
+        100% {
+          clip-path: inset(0 0 0 0);
+        }
+      }
+      .shape {
+        {{ '--shape-animation: ping 2s infinite;' if is_state(config.entity, 'on') }}          
+        background-color: 
+          {% if is_state(config.entity, 'on') %}
+            rgba(var(--color-background-red), var(--opacity-bg))
+          {% else %}
+            rgba(var(--color-grey), 0.1)
+          {% endif %} !important; 
+      }
+      :host {
+        {{ '--card-mod-icon-color: rgba(var(--color-red),1);'  if is_state(config.entity, 'on') }}  
+        {{ '--card-mod-icon-color: "rgba(var(--color-grey),1)";'  if is_state(config.entity, 'off') }}
+      }
+
+      @keyframes ping {
+        0% {
+          box-shadow: 0 0 0 0 rgba(var(--color-red),1);
+        }
+        
+        70% {
+          box-shadow: 0 0 0 10px transparent;
+        }
+        
+        100% {
+          box-shadow: 0 0 0 0 transparent;
+        }
+      }

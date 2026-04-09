@@ -1,0 +1,98 @@
+view_layout:
+  grid-area: "alarmclock"     
+  place-self: left end stretch
+type: custom:button-card
+icon: mdi:alarm
+name: Livingroom
+entity: input_boolean.alarmed_toggle
+label: 'Budík'
+show_icon: true
+show_label: false
+show_name: false
+tap_action:
+  action: toggle
+state:
+  - value: 'on'
+    styles:
+      card:
+        - background: transparent
+        - box-shadow: none
+        - max-height: 83px
+  - value: 'off'
+    icon: mdi:alarm-note-off
+    styles:
+      card:
+        - background: >-
+            rgba(var(--color-background-blue), var(--opacity-bg))
+          
+custom_fields:
+  icon: |
+    [[[
+      var state = entity.state;
+      if(state == "on")
+        return '<ha-icon icon="mdi:toggle-switch" style="color: rgba(var(--color-blue), 0.6); width:50px; height: 50px"; justify-self: center>'
+      else
+        return '<ha-icon icon="mdi:toggle-switch-off" style="color: rgba(var(--color-theme),0.2); width:50px; height: 50px"; justify-self: center>'
+    ]]]
+  state: |
+    [[[
+      return helpers.formatTime(states['input_datetime.alarmed'].state)
+    ]]]
+styles:
+  card:
+    - padding: 7px
+    - height: 93px
+    - background-color: "rgba(var(--color-background-blue), var(--opacity-bg))"
+  grid:
+    - grid-template-areas: 
+        '"i icon" 
+         "i icon" 
+         "i state"
+         "i state"'
+    - grid-template-columns: 1fr 1fr
+    - grid-template-rows: 1fr 1fr 1fr 1fr
+  label: 
+    - justify-self: start
+    - font-size: 16px
+    - font-weight: 300
+    - color: |
+        [[[
+          var state = entity.state;
+          if(state == "on")
+            return  'rgba(var(--color-blue-text),1)'
+          else
+            return 'rgba(var(--color-green-text),1)'
+        ]]]
+  img_cell:
+    - width: 51px
+    - height: 51px 
+    - border-radius: "50%"
+    - background-color: |
+        [[[
+          var state = entity.state;
+          if(state == "on")
+            return  'rgba(var(--color-blue), 0.2)'
+          else
+            return 'rgba(var(--color-theme),0.2)'
+        ]]]
+  icon: 
+    - width: 56%
+    - line-height: "0"
+    - color: |
+        [[[
+          var state = entity.state;
+          if(state == "on")
+            return  'rgba(var(--color-blue), 1)'
+          else
+            return 'rgba(var(--color-theme),0.2)'
+        ]]]
+  custom_fields:
+    icon:
+      - place-self:  stretch end
+      - justify-self: center
+    state:
+      - place-self: start
+      - justify-self: center
+      - font-size: 25px
+      - font-weight: 300
+

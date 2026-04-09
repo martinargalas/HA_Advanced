@@ -1,0 +1,10 @@
+view_layout:
+  grid-area: "temperature_setting_title"
+type: custom:bubble-card
+card_type: separator
+name: Nastavení teploty
+icon: mdi:thermometer
+styles: |
+  .bubble-container {
+    color: var(--text-color);
+  }

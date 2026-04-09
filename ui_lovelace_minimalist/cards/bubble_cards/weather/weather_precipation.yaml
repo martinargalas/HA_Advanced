@@ -1,0 +1,129 @@
+view_layout:
+  grid-area: "precipation"  
+type: entities
+show_header_toggle: false
+card_mod:
+  style: |
+    ha-card {
+      border-radius: 34px;
+      padding: 5px;
+      background: var(--mod-card-background);
+      backdrop-filter: blur(35px) saturate(100%);
+      -webkit-backdrop-filter: blur(35px) saturate(200%);
+      border: 1px solid var(--mod-card-border);
+      box-shadow: 
+        0 15px 25px var(--mod-card-shadow), 
+        inset 0 2px 3px var(--mod-card-inset-shadow);
+    }
+
+    ha-card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: 34px;
+      background: linear-gradient(
+        120deg,
+        var(--mod-card-gradient-start),
+        var(--mod-card-gradient-mid) 25%,
+        var(--mod-card-gradient-end) 50%,
+        transparent 70%
+      );
+      opacity: 0.35;
+      pointer-events: none;
+    }
+entities:
+- type: custom:clock-weather-card
+  entity: weather.home
+  sun_entity: sun.sun
+  weather_icon_type: fill
+  animated_icon: true
+  hide_today_section: false
+  hide_forecast_section: true
+  hide_clock: true
+  hide_date: true
+  tap_action:
+    action: none
+  card_mod:
+      style: |
+        ha-card {
+          background-color: rgba(var(--color-black),0.0) !important;
+          box-shadow: none !important;
+          text-shadow: var(--text-shadow) !important;
+          font-weight: 400 !important;
+        }
+        ha-card * {
+          color: var(--text-color) !important;
+          font-family: "Roboto", sans-serif !important;
+          font-weight: 400 !important;
+          text-shadow: var(--text-shadow) !important;
+        }
+- type: custom:clock-weather-card
+  entity: weather.home
+  sun_entity: sun.sun
+  weather_icon_type: fill
+  animated_icon: true
+  forecast_rows: 5
+  hide_today_section: true
+  hide_forecast_section: false
+  hide_clock: true
+  hide_date: true
+  tap_action:
+    action: none
+  hourly_forecast: false
+  card_mod:
+      style: |
+        ha-card {
+          background-color: rgba(var(--color-black),0.0) !important;
+          box-shadow: none !important;
+          text-shadow: var(--text-shadow) !important;
+          font-weight: 400 !important;
+        }
+        ha-card * {
+          color: var(--text-color) !important;
+          font-family: "Roboto", sans-serif !important;
+          font-weight: 400 !important;
+          text-shadow: var(--text-shadow) !important;
+        }
+- type: custom:clock-weather-card
+  entity: weather.home
+  forecast_rows: 4
+  hide_today_section: true
+  hide_forecast_section: false
+  hourly_forecast: true
+  tap_action:
+    action: none
+  card_mod:
+      style: |
+        ha-card {
+          background-color: rgba(var(--color-black),0.0) !important;
+          box-shadow: none !important;
+          text-shadow: var(--text-shadow) !important;
+          font-weight: 400 !important;
+        }
+        ha-card * {
+          color: var(--text-color) !important;
+          font-family: "Roboto", sans-serif !important;
+          font-weight: 400 !important;
+          text-shadow: var(--text-shadow) !important;
+        }
+- type: custom:weather-card
+  entity: weather.home
+  current: false
+  forecast: false
+  hourly_forecast: false
+  tap_action:
+    action: none
+  card_mod:
+      style: |
+        ha-card {
+          background-color: rgba(var(--color-black),0.0) !important;
+          box-shadow: none !important;
+          text-shadow: var(--text-shadow) !important;
+          font-weight: 400 !important;
+        }
+        ha-card * {
+          color: var(--text-color) !important;
+          font-family: "Roboto", sans-serif !important;
+          font-weight: 400 !important;
+          text-shadow: var(--text-shadow) !important;
+        }

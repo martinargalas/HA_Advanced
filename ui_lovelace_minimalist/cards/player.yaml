@@ -1,0 +1,30 @@
+view_layout:
+  grid-area: "player"
+  place-self: left stretch end
+type: "custom:config-template-card"
+entities:
+  - media_player.kitchen_player
+card:
+  type: custom:mini-media-player
+  entity: media_player.kitchen_player
+  
+  name: 'Hudba'
+  icon: mdi:music
+  group: false
+  source: icon
+  artwork: full-cover 
+  sound_mode: full
+  info: short
+  volume_stateless: false
+  hide:
+    volume: false
+    source: true
+    power: true
+    controls: false
+  tap_action:
+      action: navigate
+      navigation_path: '#media'
+  card_mod:
+    style: |
+      ha-card {
+        max-height: 143px !important;

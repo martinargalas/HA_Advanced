@@ -1,0 +1,1201 @@
+- switch:
+    - name: switch_mower_camera
+      turn_on: []
+      turn_off: []
+
+    - name: switch_mower_zones
+      turn_on: []
+      turn_off: []
+
+    - name: garden_camera_switch
+      turn_on: []
+      turn_off: []
+
+    - name: garden_camera_switch
+      turn_on: []
+      turn_off: []
+
+    - name: front_camera_switch
+      turn_on: []
+      turn_off: []
+
+    - name: office_blinds_user_switch
+      turn_on: []
+      turn_off: []
+
+    - name: bedroom_blinds_user_switch
+      turn_on: []
+      turn_off: []
+
+    - name: kids_blinds_user_switch
+      turn_on: []
+      turn_off: []
+    
+    - name: energy_daily_view
+      turn_on:
+        - service: switch.turn_off
+          target:
+            entity_id:
+              - switch.energy_monthly_view
+              - switch.energy_yearly_view
+      turn_off: []
+
+    - name: energy_monthly_view
+      turn_on:
+        - service: switch.turn_off
+          target:
+            entity_id:
+              - switch.energy_daily_view
+              - switch.energy_yearly_view
+      turn_off: []
+
+    - name: energy_yearly_view
+      turn_on:
+        - service: switch.turn_off
+          target:
+            entity_id:
+              - switch.energy_daily_view
+              - switch.energy_monthly_view
+      turn_off: []
+
+    - name: martin_pc_switch
+      unique_id: "1234"
+      state: "{{ is_state('sensor.desktopargi', 'on') }}"
+
+      turn_on:
+        - service: switch.toggle
+          target:
+            entity_id: switch.martin_pc_switch
+
+      turn_off:
+        - service: button.press
+          target:
+            entity_id: button.martin_pc_sleep
+
+    - name: ofice_blinds_close
+      turn_on:
+        - service: cover.toggle
+          target:
+            entity_id: cover.office
+      turn_off:
+        - service: cover.toggle
+          target:
+            entity_id: cover.office
+
+- trigger:
+  - platform: time_pattern
+    minutes: "/1"
+  - platform: state
+    entity_id:
+      - sensor.playstation_5_online_status
+      - image.playstation_5_now_playing
+
+- binary_sensor:
+    - name: kitchen_lights_any_on
+      state: >
+        {{ states('select.wled_preset_2') in [
+          'Horni svetlo',
+          'Horni Svetlo Studena',
+          'Horni Svetlo Tepla',
+          'Horni Svetlo Vlazna',
+          'Spodni svetlo',
+          'Spodni Svetlo Studena',
+          'Spodni Svetlo Tepla',
+          'Spodni Svetlo Vlazna',
+          'Vsechna svetla',
+          'Vsechna Svetla Studena',
+          'Vsechna Svetla Tepla',
+          'Vsechna Svetla Vlazna'
+        ] }}
+    - name: kitchen_lights_horni_on
+      state: >
+        {{ states('select.wled_preset_2') in [
+          'Horni svetlo',
+          'Horni Svetlo Studena',
+          'Horni Svetlo Tepla',
+          'Horni Svetlo Vlazna',
+        ] }}
+    - name: kitchen_lights_spodni_on
+      state: >
+        {{ states('select.wled_preset_2') in [
+          'Spodni svetlo',
+          'Spodni Svetlo Studena',
+          'Spodni Svetlo Tepla',
+          'Spodni Svetlo Vlazna',
+        ] }}
+    - name: kitchen_lights_vsechna_on
+      state: >
+        {{ states('select.wled_preset_2') in [
+          'Vsechna svetla',
+          'Vsechna Svetla Studena',
+          'Vsechna Svetla Tepla',
+          'Vsechna Svetla Vlazna'
+        ] }}
+
+    - name: kitchen_lights_vypnuta_on
+      state: >
+        {{ states('select.wled_preset_2') in [
+          'Svetla Vypnuta',
+          'Svetla Vypnuta Studena',
+          'Svetla Vypnuta Tepla',
+          'Svetla Vypnuta Vlazna'
+        ] }}
+
+    - name: "zachod_obsazen"
+      state: >
+        {{ is_state('binary_sensor.motion_sensor_2', 'on') }}
+      delay_off:
+        seconds: 30
+
+- sensor:
+    - name: "Portainer Containers Status"
+      state: >
+        {% set stopped = state_attr('sensor.portainer_endpoints_local', 'Stoppedcontainercount') | int %}
+        {% set unhealthy = state_attr('sensor.portainer_endpoints_local', 'Unhealthycontainercount') | int %}
+
+        {% if stopped == 0 and unhealthy == 0 %}
+          running
+        {% elif unhealthy > 0 %}
+          unhealthy
+        {% else %}
+          stopped
+        {% endif %}
+
+    - name: Day or Night
+      state: >
+        {% if is_state('sun.sun', 'above_horizon') %}
+          day
+        {% else %}
+          night
+        {% endif %}
+
+    - name: PS5 čas hraní (session celkem)
+      unit_of_measurement: "min"
+      state: >
+        {% set start = states('input_datetime.ps5_play_session_start') %}
+        {% set accumulated = states('input_number.ps5_play_time_today') | float %}
+        {% if start not in ['unknown',''] and is_state('input_boolean.ps5_session_active','on') %}
+          {% set current = (as_timestamp(now()) - as_timestamp(start)) / 60 %}
+          {{ (accumulated + current) | int }}
+        {% else %}
+          {{ accumulated | int }}
+        {% endif %}
+
+    - name: ViewAssist-test
+      state: ""
+      attributes:
+        type: view_audio
+        mic_device: "sensor.tablet_stt"
+        mediaplayer_device: "media_player.tabletkiosk"
+        display_device: "sensor.tabletkiosk_browser_path"
+        browser_id: "TabletKiosk"
+        timer_device: "timer.viewassist_kitchen"
+        view_timeout: "20"
+        mode: "normal"
+        title: ""
+        message: ""
+        message_font_size: "3vw"
+        image: ""
+        timer: ""
+        alarm: "idle"
+        cycle_view: ""
+        do_not_disturb: false
+    
+    - name: virtual_battery_month
+      state: >  
+        {% set startDateForCalculation = now().date() %} 
+        {% set yearForCalculation = now().date().year%}
+        {% set monthForCalculation = now().date().month %}
+        {% set z = state_attr('sensor.pnd_data', 'pnddate') %}
+        {% set x = state_attr('sensor.pnd_data', 'production') | count %}
+        {% set production = state_attr('sensor.pnd_data', 'production') %}
+        {% set consumption = state_attr('sensor.pnd_data', 'consumption') %}
+        {% set result = namespace(production=0, consumption=0) %}
+
+        {% set startDateForCalculation = startDateForCalculation.replace(year=yearForCalculation, month=monthForCalculation, day=1) %}
+        {% set daysInMonth = (startDateForCalculation.replace(month=startDateForCalculation.month % 12 + 1, day=1) - timedelta(days=1)).day%}
+        {% set endDateForCalculation = startDateForCalculation.replace(day=daysInMonth) %}
+
+        {% for i in range(0,x) %}
+          {% if (startDateForCalculation|string) <= z[i] <= (endDateForCalculation|string) %}
+            {% set result.production = result.production + production[i]|float %}
+            {% set result.consumption = result.consumption + consumption[i]|float %}
+          {% endif %}   
+        {% endfor%}
+
+        {{(result.production - result.consumption)|round(1)}}
+
+    - name: virtual_battery_contract
+      state: >  
+        {% set startDateForCalculation = now().date() %} 
+        {% set startDayForCalculation = states['input_datetime.ElectricityContractStart'].attributes.day %}
+        {% set startMonthForCalculation = states['input_datetime.ElectricityContractStart'].attributes.month %} 
+        {% set startYearForCalculation = states['input_datetime.ElectricityContractStart'].attributes.year %}
+        {% set endDayForCalculation = states['input_datetime.ElectricityContractEnd'].attributes.day %}
+        {% set endMonthForCalculation = states['input_datetime.ElectricityContractEnd'].attributes.month %} 
+        {% set endYearForCalculation = states['input_datetime.ElectricityContractEnd'].attributes.year %}
+
+        {% set z = state_attr('sensor.pnd_data', 'pnddate') %}
+        {% set x = state_attr('sensor.pnd_data', 'production') | count %}
+        {% set production = state_attr('sensor.pnd_data', 'production') %}
+        {% set consumption = state_attr('sensor.pnd_data', 'consumption') %}
+        {% set result = namespace(production=0, consumption=0) %}
+
+        {% set startDateForCalculation = startDateForCalculation.replace(year=startYearForCalculation, month=startMonthForCalculation, day=startDayForCalculation) %}   
+        {% set endDateForCalculation = startDateForCalculation.replace(year=endYearForCalculation, month=endMonthForCalculation, day=endDayForCalculation) %}   
+
+        {% for i in range(0,x) %}
+          {% if (startDateForCalculation|string) <= z[i] <= (endDateForCalculation|string) %}
+            {% set result.production = result.production + production[i]|float %}
+            {% set result.consumption = result.consumption + consumption[i]|float %}
+          {% endif %}   
+        {% endfor%}
+
+        {{(result.production - result.consumption)|round(1)}}
+
+
+
+    - name: electricity_statistics
+      state: ""
+      attributes:
+        data: >
+          {% set dayOffset = states['input_number.counter_graph'].state|int %}
+          {% set dayView = states['switch.energy_daily_view'].state %}
+          {% set monthlyView = states['switch.energy_monthly_view'].state %}
+          {% set yearlyView = states['switch.energy_yearly_view'].state %}
+          {% set viewType = "Day" %}
+          {% set startDateForCalculation = now().date() %} 
+          {% set endDateForCalculation = '2025-05-31' | as_datetime %}
+          {% set result = namespace(production=0, consumption=0) %}
+          {% set x = state_attr('sensor.pnd_data', 'production') | count %}
+          {% set production = state_attr('sensor.pnd_data', 'production') %}
+          {% set consumption = state_attr('sensor.pnd_data', 'consumption') %}
+          {% set z = state_attr('sensor.pnd_data', 'pnddate') %}
+
+          {% if dayView == "on" %}
+            {% set viewType = "Day" %}
+          {% elif monthlyView == "on" %}
+            {% set viewType = "Month" %}
+          {% elif yearlyView == "on" %}
+            {% set viewType = "Year" %}
+          {% endif %}
+
+          {% if viewType == "Day"%}
+            {% set startDateForCalculation = now().date() + timedelta(days=states['input_number.counter_graph'].state|int) %}
+            {% set endDateForCalculation = now().date() + timedelta(days=states['input_number.counter_graph'].state|int) %}
+
+          {% elif viewType == "Month" %}
+            {% set monthCurrent = now().date().month%}
+            {% set monthForCalculation = monthCurrent %}
+            {% set tempMonthHelper = monthCurrent %}
+            {% set yearForCalculation = now().date().year%}
+          
+
+            {% if ((monthCurrent) + states['input_number.counter_graph'].state|int) <= 0 %}
+              {% set monthForCalculation = 12 %}
+              {% set tempMonthHelper = 12 %}
+            {% endif %}
+            {%if tempMonthHelper == 12 and (monthForCalculation + monthCurrent <= 12 ) %}
+              {% set monthForCalculation = monthForCalculation + monthCurrent + states['input_number.counter_graph'].state|int%}
+              {% set yearForCalculation = yearForCalculation-1 %}
+              {% set startDateForCalculation = startDateForCalculation.replace(year=yearForCalculation, month=monthForCalculation, day=1) %}
+              {% set daysInMonth = (startDateForCalculation.replace(month=startDateForCalculation.month % 12 + 1, day=1) - timedelta(days=1)).day%}
+              {% set endDateForCalculation = startDateForCalculation.replace(day=daysInMonth) %}
+            {% else %}
+              {% set monthForCalculation = monthForCalculation + states['input_number.counter_graph'].state|int%}
+              {% set startDateForCalculation = startDateForCalculation.replace(year=yearForCalculation, month=monthForCalculation, day=1) %}
+              {% set daysInMonth = (startDateForCalculation.replace(month=startDateForCalculation.month % 12 + 1, day=1) - timedelta(days=1)).day%}
+              {% set endDateForCalculation = startDateForCalculation.replace(day=daysInMonth) %}
+            {% endif %}
+
+          {% elif viewType == "Year" %}
+            {% set yearForCalculation = now().date().year + states['input_number.counter_graph'].state|int %}
+            {% set startDateForCalculation = startDateForCalculation.replace(year=yearForCalculation, month=1, day=1) %}
+            {% set endDateForCalculation = startDateForCalculation.replace(year=yearForCalculation, month=12, day=31) %}
+
+          {% endif %}
+
+          {% for i in range(0,x) %}
+            {% if (startDateForCalculation|string) <= z[i] <= (endDateForCalculation|string) %}
+              {% set result.production = result.production + production[i]|float %}
+              {% set result.consumption = result.consumption + consumption[i]|float %}
+              {% set result.overflow = result.production - result.consumption %}
+              {% set result.gridBuy = result.consumption - result.production %}
+            {% endif %}   
+          {% endfor%}
+          {% if result.gridBuy <= 0 %}
+            {% set result.gridBuy = 0 %}
+          {% endif %}  
+          {% if result.overflow <= 0 %}
+            {% set result.overflow = 0 %}
+          {% endif %}  
+          {% set output = ({"Production": result.production|round(2),
+                            "Consumption": result.consumption|round(2),
+                            "Overflow": result.overflow|round(2),
+                            "GridBuy": result.gridBuy|round(2)})%}
+          {{output}}
+
+    - name: "current_water_temp_color"
+      state: >-
+        {% if states('sun.sun') == 'above_horizon' %}
+          rgb(255,115,20)
+        {% else %}
+          rgb(0,140,255)
+        {% endif %}
+
+    - name: "water_temp_color"
+      state: >-
+        {% if states('sun.sun') == 'above_horizon' %}
+          rgb(255,40,40)
+        {% else %}
+          rgb(120,120,255)
+        {% endif %}
+
+    - name: "teplota_soustavy_color"
+      state: >-
+        {% set t = states('sensor.temperature_sensor_5') | float(0) %}
+        {% if t < 16 %}
+          rgb(0,140,255)
+        {% elif t < 18 %}
+          rgb(255,210,40)
+        {% elif t < 20 %}
+          rgb(255,150,40)
+        {% elif t < 23.5 %}
+          rgb(255,115,20)
+        {% else %}
+          rgb(255,40,40)
+        {% endif %}
+
+    - name: "dhw_temp_5min"
+      state: >-
+        {% set entity = 'sensor.e3_vitocal_dhw_storage_temperature' %}
+        {% set history = state_attr('sensor.dhw_temp_5min', 'buffer') | default([], true) %}
+        {% set new = (history + [ states(entity) | float(0) ])[-5:] %}
+        {{ new[0] }}
+      attributes:
+        buffer: >-
+          {% set entity = 'sensor.e3_vitocal_dhw_storage_temperature' %}
+          {% set history = state_attr('sensor.dhw_temp_5min', 'buffer') | default([], true) %}
+          {{ (history + [ states(entity) | float(0) ])[-5:] }}
+      unit_of_measurement: "°C"
+
+    - name: "lightalarm_time_start"
+      state: >-
+        {{ (strptime(states("input_datetime.lightalarm_time"), "%H:%M:%S") - timedelta(minutes=(states("input_number.lightalarm_duration") | int) )).strftime("%H:%M") }}
+
+    - name: "day_month_name_shifted"
+      state: >-
+        {% set date = now().date() %} 
+        {% set offset = (states['input_number.counter_graph'].state)|int %}
+        {% set dayView = states['switch.energy_daily_view'].state %}
+        {% set monthlyView = states['switch.energy_monthly_view'].state %}
+        {% set yearlyView = states['switch.energy_yearly_view'].state %}
+        {% set startDateForCalculation = now().date() %} 
+
+        {% set viewType = "" %}
+
+        {% set dayName = as_datetime(date).strftime('%a') %}
+        {% set result = "" %}
+
+        {% if dayView == "on" %}
+          {% set viewType = "Day" %}
+        {% elif monthlyView == "on" %}
+          {% set viewType = "Month" %}
+        {% elif yearlyView == "on" %}
+          {% set viewType = "Year" %}
+        {% endif %}
+
+        {% if viewType == "Day"%}
+          {% set date =  date + timedelta(days=offset)%}
+          {% set dateOriginal = date.strftime('%d.%m.') %}
+          {% set day = ["Neděle", "Pondělí", "Úterý", "Středa", "Čtvrtek", "Pátek", "Sobota"] %}
+          {% set result = (day[as_timestamp(date) | timestamp_custom('%w', true) | int ])+ " " + dateOriginal  %}
+        {% elif viewType == "Month" %}
+          {% set monthCurrent = now().date().month%}
+          {% set monthForCalculation = monthCurrent %}
+          {% set tempMonthHelper = monthCurrent %}
+          {% set yearForCalculation = now().date().year%}
+
+          {% if ((monthCurrent) + states['input_number.counter_graph'].state|int) <= 0 %}
+            {% set monthForCalculation = 12 %}
+            {% set tempMonthHelper = 12 %}
+          {% endif %}
+          {%if tempMonthHelper == 12 and (monthForCalculation + monthCurrent <= 12 )%}
+            {% set monthForCalculation = monthForCalculation + monthCurrent + states['input_number.counter_graph'].state|int %}
+            {% set yearForCalculation = yearForCalculation-1 %}
+            {% set startDateForCalculation = startDateForCalculation.replace(year=yearForCalculation, month=monthForCalculation, day=1) %}
+            {% set daysInMonth = (startDateForCalculation.replace(month=startDateForCalculation.month % 12 + 1, day=1) - timedelta(days=1)).day%}
+
+          {% else %}
+            {% set monthForCalculation = monthForCalculation + states['input_number.counter_graph'].state|int %}
+            {% set startDateForCalculation = startDateForCalculation.replace(year=yearForCalculation, month=monthForCalculation, day=1) %}
+            {% set daysInMonth = (startDateForCalculation.replace(month=startDateForCalculation.month % 12 + 1, day=1) - timedelta(days=1)).day%}
+
+          {% endif %}
+
+          {% set date = date.replace(day=daysInMonth) %}
+          {% set date = date.replace(month=monthForCalculation) %}
+          {% set month = ["Prosinec","Leden", "Únor", "Březen", "Duben", "Květen", "Červen", "Červenec", "Srpen", "Září", "Říjen", "Listopad", "Prosinec"] %}
+          {% set result = month[as_timestamp(date) | timestamp_custom('%m', false) | int ] %}
+
+        {% elif viewType == "Year" %}
+          {% set result = now().date().year + states['input_number.counter_graph'].state|int %}
+        {% endif %}
+        {{result}}
+
+    - name: "grid_consumption_non_negative"
+      state: >-
+        {% set value = states('sensor.active_power')| int %}
+        {% if value > 0 | int %}
+          {%set current = 0 | int %}
+        {%endif%}
+        {{value}}
+      unit_of_measurement: "W"
+
+    - name: "power_buy"
+      state: >-
+        {% set l1 = states('sensor.meter_active_power_l1')|float(default = 0) %}
+        {% set l2 = states('sensor.meter_active_power_l2')|float(default = 0) %}
+        {% set l3 = states('sensor.meter_active_power_l3')|float(default = 0) %}
+        {{ '%i'|format( iif(l1 < 0, 0, l1) + iif(l2 < 0, 0, l2) + iif(l3 < 0, 0, l3) ) }}
+      device_class: power
+      unit_of_measurement: "W"
+
+    - name: "power_buy2"
+      state: >-
+        {% set l1 = states('sensor.meter_active_power_l1')|float(default = 0) %}
+        {% set l2 = states('sensor.meter_active_power_l2')|float(default = 0) %}
+        {% set l3 = states('sensor.meter_active_power_l3')|float(default = 0) %}
+        {% if states('sensor.on_grid_mode') == 'Exporting' %}
+          {{ '%i'|format( iif(l1 < 0, 0, l1) + iif(l2 < 0, 0, l2) + iif(l3 < 0, 0, l3) ) }}
+        {% else %}
+          0
+        {% endif %}
+      device_class: power
+      unit_of_measurement: "W"
+
+    - name: "power_sell"
+      state: >-
+        {% set l1 = states('sensor.meter_active_power_l1')|float(default=0) %}
+        {% set l2 = states('sensor.meter_active_power_l2')|float(default=0) %}
+        {% set l3 = states('sensor.meter_active_power_l3')|float(default=0) %}
+        {% if states('sensor.on_grid_mode') == 'Importing' %}
+          {{ '%i'|format( -1 * (l1 if l1 < 0 else 0 + l2 if l2 < 0 else 0 + l3 if l3 < 0 else 0) ) }}
+        {% else %}
+          0
+        {% endif %}
+      device_class: power
+      unit_of_measurement: "W"
+
+    - name: "house_consumption_0floor"
+      state: >-
+        {{ states('sensor.load_l1') | float | abs }}
+      unit_of_measurement: "W"
+
+    - name: "house_consumption_rest"
+      state: >-
+        {{ states('sensor.load_l2') | float | abs }}
+      unit_of_measurement: "W"
+
+    - name: "house_consumption_1floor"
+      state: >-
+        {{ states('sensor.load_l3') | float | abs }}
+      unit_of_measurement: "W"
+
+    - name: "elektrina_const_obchod"
+      state: >-
+        {{ "3980.90" | float | round(2) }}
+      unit_of_measurement: "Kč"
+
+    - name: "elektrina_const_distribuce_vysoky"
+      state: >-
+        {{ "784.83" | float | round(2) }}
+      unit_of_measurement: "Kč"
+
+    - name: "elektrina_const_distribuce_nizky"
+      state: >-
+        {{ "530.09" | float | round(2) }}
+      unit_of_measurement: "Kč"
+
+    - name: "elektrina_const_dan_z_elektriny"
+      state: >-
+        {{ "34.24" | float | round(2) }}
+      unit_of_measurement: "Kč"
+
+    - name: "elektrina_const_systemove_sluzby"
+      state: >-
+        {{ "257.51" | float | round(2) }}
+      unit_of_measurement: "Kč"
+
+    - name: "elektrina_const_cinnost_ote"
+      state: >-
+        {{ "5.01" | float | round(2) }}
+      unit_of_measurement: "Kč"
+
+    - name: "elektrina_const_jistic_3x40"
+      state: >-
+        {{ "756.25" | float | round(2) }}
+      unit_of_measurement: "Kč"
+
+    - name: "elektrina_const_poze"
+      state: >-
+        {% set value = "102.49" | float | round(2) %}
+        {{ value * 40 * 3 }}
+      unit_of_measurement: "Kč"
+
+    - name: "elektrina_const_poze_spotreba"
+      state: >-
+        {{ "598.95" | float | round(2) }}
+      unit_of_measurement: "Kč"
+
+    - name: "energy_real_consumption_monthly"
+      state: >-
+        {% set totalPower = states('sensor.energy_consumption_monthly')|float %}
+        {% set totalBuy = states('sensor.energy_sell_monthly')|float %}
+        {{ ((totalPower - totalBuy) | float | round(1) | abs) }}
+      unit_of_measurement: "kWh"
+
+    - name: "energy_real_consumption_yearly"
+      state: >-
+        {% set totalPower = states('sensor.energy_consumption_yearly')|float %}
+        {% set totalBuy = states('sensor.energy_sell_yearly')|float %}
+        {{ ((totalPower - totalBuy) | float | round(1) | abs) }}
+      unit_of_measurement: "kWh"
+
+    - name: elektrina_cena_dan_z_elektriny_day
+      state: >
+        {% set distributionLow = (states('sensor.elektrina_nakup_den_nizky') | float / 1000) %}
+        {% set distributionHigh = (states('sensor.elektrina_nakup_den_vysoky') | float / 1000) %}
+        {% set constDanZElektriny = states('sensor.elektrina_const_dan_z_elektriny') | float %}
+        {% set price = (((distributionLow + distributionHigh) * constDanZElektriny) | float | round(2))%}
+        {{price}}
+      unit_of_measurement: "Kč"
+
+    - name: "elektrina_smlouva_mesic"
+      state: >-
+        {% set currentMonth = now().month %}
+        {% if 1 <= currentMonth <= 5 %}
+          {{ currentMonth + 7 }}
+        {% else %}
+          {{ currentMonth - 5 }}
+        {% endif %}
+      unit_of_measurement: "month"
+
+    - name: "elektrina_cena_day"
+      state: >-
+        {% set costDistribution = states('sensor.elektrina_cena_distribution_day') | float %}
+        {% set costMarket = states('sensor.elektrina_cena_market_day') | float %}
+        {% set costJistic = states('sensor.elektrina_cena_jistic_day') | float %}
+        {% set costDanZElektriny = states('sensor.elektrina_cena_dan_z_elektriny_day') | float %}
+        {% set costSystemoveSluzby = states('sensor.elektrina_cena_systemove_sluzby_day') | float %}
+        {% set costOte = states('sensor.elektrina_cena_ote_day') | float %}
+        {% set costPoze = states('sensor.elektrina_cena_poze_day') | float %}
+        {{ (costDistribution + costMarket + costJistic + costDanZElektriny + costSystemoveSluzby + costOte + costPoze) | float | round(1) }}
+      unit_of_measurement: "Kč"
+
+    - name: "elektrina_cena_month"
+      state: >-
+        {% set costDistribution = states('sensor.elektrina_cena_distribution_month') | float %}
+        {% set costMarket = states('sensor.elektrina_cena_market_month') | float %}
+        {% set costJistic = states('sensor.elektrina_cena_jistic_month') | float %}
+        {% set costDanZElektriny = states('sensor.elektrina_cena_dan_z_elektriny_month') | float %}
+        {% set costSystemoveSluzby = states('sensor.elektrina_cena_systemove_sluzby_month') | float %}
+        {% set costOte = states('sensor.elektrina_cena_ote_month') | float %}
+        {% set costPoze = states('sensor.elektrina_cena_poze_month') | float %}
+        {{ (costDistribution + costMarket + costJistic + costDanZElektriny + costSystemoveSluzby + costOte + costPoze) | float | round(1) }}
+      unit_of_measurement: "Kč"
+
+    - name: "elektrina_cena_year"
+      state: >-
+        {% set costDistribution = states('sensor.elektrina_cena_distribution_year') | float %}
+        {% set costMarket = states('sensor.elektrina_cena_market_year') | float %}
+        {% set costJistic = states('sensor.elektrina_cena_jistic_year') | float %}
+        {% set costDanZElektriny = states('sensor.elektrina_cena_dan_z_elektriny_year') | float %}
+        {% set costSystemoveSluzby = states('sensor.elektrina_cena_systemove_sluzby_year') | float %}
+        {% set costOte = states('sensor.elektrina_cena_ote_year') | float %}
+        {% set costPoze = states('sensor.elektrina_cena_poze_year') | float %}
+        {{ (costDistribution + costMarket + costJistic + costDanZElektriny + costSystemoveSluzby + costOte + costPoze) | float | round(1) }}
+      unit_of_measurement: "Kč"
+
+    - name: "elektrina_cena_market_day"
+      state: >-
+        {% set batteryDay = states('sensor.energy_virtual_batery_day') | float %}
+        {% set price = 0 %}
+        {% if batteryDay <= 0 %}
+          {% set price = ((batteryDay | abs / 1000) * states('sensor.elektrina_const_obchod') | float | round(2)) %}
+        {% endif %}
+        {{ price }}
+      unit_of_measurement: "Kč"
+
+    - name: "elektrina_cena_market_month"
+      state: >-
+        {% set batteryYear = states('sensor.energy_virtual_batery_year') | float %}
+        {% set batteryMonth = states('sensor.energy_virtual_batery_month') | float %}
+        {% set price = 0 %}
+        {% if batteryYear <= 0 %}
+          {% set price = ((batteryMonth | abs / 1000) * states('sensor.elektrina_const_obchod') | float | round(2)) %}
+        {% endif %}
+        {{ price }}
+      unit_of_measurement: "Kč"
+
+    - name: "elektrina_cena_market_year"
+      state: >-
+        {% set batteryYear = states('sensor.energy_virtual_batery_year') | float %}
+        {% set price = 0 %}
+        {% if batteryYear <= 0 %}
+          {% set price = ((batteryYear | abs / 1000) * states('sensor.elektrina_const_obchod') | float | round(2)) %}
+        {% endif %}
+        {{ price }}
+      unit_of_measurement: "Kč"
+
+    - name: "elektrina_cena_market"
+      state: >-
+        {% set price = 0 %}
+        {% if is_state('switch.energy_daily_view', 'on') %}
+          {% set batteryYear = states('sensor.energy_virtual_batery_year') | float %}
+          {% set batteryDay = states('sensor.energy_virtual_batery_day') | float %}
+          {% if batteryYear <= 0 %}
+            {% set price = ((batteryDay | abs / 1000) * states('sensor.elektrina_const_obchod') | float | round(2)) %}
+          {% endif %}
+        {% elif is_state('switch.energy_monthly_view', 'on') %}
+          {% set batteryYear = states('sensor.energy_virtual_batery_year') | float %}
+          {% set batteryMonth = states('sensor.energy_virtual_batery_month') | float %}
+          {% if batteryYear <= 0 %}
+            {% set price = ((batteryMonth | abs / 1000) * states('sensor.elektrina_const_obchod') | float | round(2)) %}
+          {% endif %}
+        {% elif is_state('switch.energy_yearly_view', 'on') %}
+          {% set batteryYear = states('sensor.energy_virtual_batery_year') | float %}
+          {% if batteryYear <= 0 %}
+            {% set price = ((batteryYear | abs / 1000) * states('sensor.elektrina_const_obchod') | float | round(2)) %}
+          {% endif %}
+        {% endif %}
+        {{ price }}
+      unit_of_measurement: "Kč"
+
+    - name: "elektrina_cena_distribution_day"
+      state: >-
+        {% set costDistributionLow = ((states('sensor.elektrina_nakup_den_nizky') | float / 1000) * states('sensor.elektrina_const_distribuce_nizky') | float) %}
+        {% set costDistributionHigh = ((states('sensor.elektrina_nakup_den_vysoky') | float / 1000) * states('sensor.elektrina_const_distribuce_vysoky') | float) %}
+        {{ (costDistributionLow + costDistributionHigh) | float | round(2) }}
+      unit_of_measurement: "Kč"
+
+    - name: "elektrina_cena_distribution_month"
+      state: >-
+        {% set costDistributionLow = ((states('sensor.elektrina_nakup_mesic_nizky') | float / 1000) * states('sensor.elektrina_const_distribuce_nizky') | float) %}
+        {% set costDistributionHigh = ((states('sensor.elektrina_nakup_mesic_vysoky') | float / 1000) * states('sensor.elektrina_const_distribuce_vysoky') | float) %}
+        {{ (costDistributionLow + costDistributionHigh) | float | round(2) }}
+      unit_of_measurement: "Kč"
+
+    - name: "elektrina_cena_distribution_year"
+      state: >-
+        {% set costDistributionLow = (((states('sensor.elektrina_nakup_rok_nizky') | float + 629.0) / 1000) * states('sensor.elektrina_const_distribuce_nizky') | float) %}
+        {% set costDistributionHigh = (((states('sensor.elektrina_nakup_rok_vysoky') | float + 47.0) / 1000) * states('sensor.elektrina_const_distribuce_vysoky') | float) %}
+        {{ (costDistributionLow + costDistributionHigh) | float | round(2) }}
+      unit_of_measurement: "Kč"
+
+    - name: "elektrina_cena_dan_z_elektriny_month"
+      state: >-
+        {% set distributionLow = (states('sensor.elektrina_nakup_mesic_nizky') | float / 1000) %}
+        {% set distributionHigh = (states('sensor.elektrina_nakup_mesic_vysoky') | float / 1000) %}
+        {% set constDanZElektriny = states('sensor.elektrina_const_dan_z_elektriny') | float %}
+        {{ ((distributionLow + distributionHigh) * constDanZElektriny) | float | round(2) }}
+      unit_of_measurement: "Kč"
+
+    - name: "elektrina_cena_dan_z_elektriny_year"
+      state: >-
+        {% set distributionLow = ((states('sensor.elektrina_nakup_rok_nizky') | float + 629.0) / 1000) %}
+        {% set distributionHigh = ((states('sensor.elektrina_nakup_rok_vysoky') | float + 47.0) / 1000) %}
+        {% set constDanZElektriny = states('sensor.elektrina_const_dan_z_elektriny') | float %}
+        {{ ((distributionLow + distributionHigh) * constDanZElektriny) | float | round(2) }}
+      unit_of_measurement: "Kč"
+
+    - name: "elektrina_cena_dan_z_elektriny"
+      state: >-
+        {% set price = 0 %}
+        {% if is_state('switch.energy_daily_view', 'on') %}
+          {% set distributionLow = (states('sensor.elektrina_nakup_den_nizky') | float / 1000) %}
+          {% set distributionHigh = (states('sensor.elektrina_nakup_den_vysoky') | float / 1000) %}
+          {% set constDanZElektriny = states('sensor.elektrina_const_dan_z_elektriny') | float %}
+          {% set price = (distributionLow + distributionHigh) * constDanZElektriny %}
+        {% elif is_state('switch.energy_monthly_view', 'on') %}
+          {% set distributionLow = (states('sensor.elektrina_nakup_mesic_nizky') | float / 1000) %}
+          {% set distributionHigh = (states('sensor.elektrina_nakup_mesic_vysoky') | float / 1000) %}
+          {% set constDanZElektriny = states('sensor.elektrina_const_dan_z_elektriny') | float %}
+          {% set price = (distributionLow + distributionHigh) * constDanZElektriny %}
+        {% elif is_state('switch.energy_yearly_view', 'on') %}
+          {% set distributionLow = ((states('sensor.elektrina_nakup_rok_nizky') | float + 629.0) / 1000) %}
+          {% set distributionHigh = ((states('sensor.elektrina_nakup_rok_vysoky') | float + 47.0) / 1000) %}
+          {% set constDanZElektriny = states('sensor.elektrina_const_dan_z_elektriny') | float %}
+          {% set price = (distributionLow + distributionHigh) * constDanZElektriny %}
+        {% endif %}
+        {{ price | float | round(2) }}
+      unit_of_measurement: "Kč"
+
+    - name: "elektrina_cena_systemove_sluzby_day"
+      state: >-
+        {% set distributionLow = (states('sensor.elektrina_nakup_den_nizky') | float / 1000) %}
+        {% set distributionHigh = (states('sensor.elektrina_nakup_den_vysoky') | float / 1000) %}
+        {% set constSystemoveSluzby = states('sensor.elektrina_const_systemove_sluzby') | float %}
+        {{ ((distributionLow + distributionHigh) * constSystemoveSluzby) | float | round(2) }}
+      unit_of_measurement: "Kč"
+
+    - name: "elektrina_cena_systemove_sluzby_month"
+      state: >-
+        {% set distributionLow = (states('sensor.elektrina_nakup_mesic_nizky') | float / 1000) %}
+        {% set distributionHigh = (states('sensor.elektrina_nakup_mesic_vysoky') | float / 1000) %}
+        {% set constSystemoveSluzby = states('sensor.elektrina_const_systemove_sluzby') | float %}
+        {{ ((distributionLow + distributionHigh) * constSystemoveSluzby) | float | round(2) }}
+      unit_of_measurement: "Kč"
+
+    - name: "elektrina_cena_systemove_sluzby_year"
+      state: >-
+        {% set distributionLow = ((states('sensor.elektrina_nakup_rok_nizky') | float + 629.0) / 1000) %}
+        {% set distributionHigh = ((states('sensor.elektrina_nakup_rok_vysoky') | float + 47.0) / 1000) %}
+        {% set constSystemoveSluzby = states('sensor.elektrina_const_systemove_sluzby') | float %}
+        {{ ((distributionLow + distributionHigh) * constSystemoveSluzby) | float | round(2) }}
+      unit_of_measurement: "Kč"
+
+    - name: "elektrina_cena_systemove_sluzby"
+      state: >-
+        {% set price = 0 %}
+        {% if is_state('switch.energy_daily_view', 'on') %}
+          {% set distributionLow = (states('sensor.elektrina_nakup_den_nizky') | float / 1000) %}
+          {% set distributionHigh = (states('sensor.elektrina_nakup_den_vysoky') | float / 1000) %}
+          {% set constSystemoveSluzby = states('sensor.elektrina_const_systemove_sluzby') | float %}
+          {% set price = (distributionLow + distributionHigh) * constSystemoveSluzby %}
+        {% elif is_state('switch.energy_monthly_view', 'on') %}
+          {% set distributionLow = (states('sensor.elektrina_nakup_mesic_nizky') | float / 1000) %}
+          {% set distributionHigh = (states('sensor.elektrina_nakup_mesic_vysoky') | float / 1000) %}
+          {% set constSystemoveSluzby = states('sensor.elektrina_const_systemove_sluzby') | float %}
+          {% set price = (distributionLow + distributionHigh) * constSystemoveSluzby %}
+        {% elif is_state('switch.energy_yearly_view', 'on') %}
+          {% set distributionLow = ((states('sensor.elektrina_nakup_rok_nizky') | float + 629.0) / 1000) %}
+          {% set distributionHigh = ((states('sensor.elektrina_nakup_rok_vysoky') | float + 47.0) / 1000) %}
+          {% set constSystemoveSluzby = states('sensor.elektrina_const_systemove_sluzby') | float %}
+          {% set price = (distributionLow + distributionHigh) * constSystemoveSluzby %}
+        {% endif %}
+        {{ price | float | round(2) }}
+      unit_of_measurement: "Kč"
+
+    - name: "elektrina_cena_ote_day"
+      state: >-
+        {% set constOte = states('sensor.elektrina_const_cinnost_ote') | float %}
+        {{ (constOte / ((now().replace(day=1) + timedelta(days=32)).replace(day=1) - timedelta(days=1)).day) | float | round(2) }}
+      unit_of_measurement: "Kč"
+
+    - name: "elektrina_cena_ote_month"
+      state: >-
+        {{ states('sensor.elektrina_const_cinnost_ote') | float }}
+      unit_of_measurement: "Kč"
+
+    - name: "elektrina_cena_ote_year"
+      state: >-
+        {% set constOte = states('sensor.elektrina_const_cinnost_ote') | float %}
+        {% set contractMonth = states('sensor.elektrina_smlouva_mesic') | int %}
+        {{ (constOte * contractMonth) | float | round(2) }}
+      unit_of_measurement: "Kč"
+
+    - name: "elektrina_cena_jistic_day"
+      state: >-
+        {% set constJistic = states('sensor.elektrina_const_jistic_3x40') | float %}
+        {{ (constJistic / ((now().replace(day=1) + timedelta(days=32)).replace(day=1) - timedelta(days=1)).day) | float | round(2) }}
+      unit_of_measurement: "Kč"
+
+    - name: "elektrina_cena_jistic_month"
+      state: >-
+        {{ states('sensor.elektrina_const_jistic_3x40') | float }}
+      unit_of_measurement: "Kč"
+
+    - name: "elektrina_cena_jistic_year"
+      state: >-
+        {% set constJistic = states('sensor.elektrina_const_jistic_3x40') | float %}
+        {% set contractMonth = states('sensor.elektrina_smlouva_mesic') | int %}
+        {{ (constJistic * contractMonth) | float | round(2) }}
+      unit_of_measurement: "Kč"
+
+    - name: "elektrina_cena_jistic"
+      state: >-
+        {% set price = 0 %}
+        {% if is_state('switch.energy_daily_view', 'on') %}
+          {% set constJistic = states('sensor.elektrina_const_jistic_3x40') | float %}
+          {% set price = constJistic / ((now().replace(day=1) + timedelta(days=32)).replace(day=1) - timedelta(days=1)).day %}
+        {% elif is_state('switch.energy_monthly_view', 'on') %}
+          {% set price = states('sensor.elektrina_const_jistic_3x40') | float %}
+        {% elif is_state('switch.energy_yearly_view', 'on') %}
+          {% set constJistic = states('sensor.elektrina_const_jistic_3x40') | float %}
+          {% set contractMonth = states('sensor.elektrina_smlouva_mesic') | int %}
+          {% set price = constJistic * contractMonth %}
+        {% endif %}
+        {{ price | float | round(2) }}
+      unit_of_measurement: "Kč"
+
+    - name: "elektrina_cena_poze_day"
+      state: >-
+        {% set distributionLow = states('sensor.elektrina_nakup_den_nizky') | float / 1000 %}
+        {% set distributionHigh = states('sensor.elektrina_nakup_den_vysoky') | float / 1000 %}
+        {% set constPoze = states('sensor.elektrina_const_poze_spotreba') | float %}
+        {{ ((distributionLow + distributionHigh) * constPoze) | float | round(2) }}
+      unit_of_measurement: "Kč"
+
+    - name: "elektrina_cena_poze_month"
+      state: >-
+        {% set distributionLow = states('sensor.elektrina_nakup_mesic_nizky') | float / 1000 %}
+        {% set distributionHigh = states('sensor.elektrina_nakup_mesic_vysoky') | float / 1000 %}
+        {% set constPoze = states('sensor.elektrina_const_poze_spotreba') | float %}
+        {{ ((distributionLow + distributionHigh) * constPoze) | float | round(2) }}
+      unit_of_measurement: "Kč"
+
+    - name: "elektrina_cena_poze_year"
+      state: >-
+        {% set distributionLow = (states('sensor.elektrina_nakup_rok_nizky') | float + 629.0) / 1000 %}
+        {% set distributionHigh = (states('sensor.elektrina_nakup_rok_vysoky') | float + 47.0) / 1000 %}
+        {% set constPoze = states('sensor.elektrina_const_poze_spotreba') | float %}
+        {{ ((distributionLow + distributionHigh) * constPoze) | float | round(2) }}
+      unit_of_measurement: "Kč"
+
+
+    # --- VIRTUAL BATTERY ---
+
+    - name: "energy_virtual_batery_day"
+      state: >-
+        {{ (states('sensor.energy_buy_daily') | float
+            - states('sensor.energy_sell_daily') | float) | round(1) }}
+      unit_of_measurement: "kWh"
+
+    - name: "energy_virtual_batery_month"
+      state: >-
+        {{ (states('sensor.energy_buy_monthly') | float
+            - states('sensor.energy_sell_monthly') | float) | round(1) }}
+      unit_of_measurement: "kWh"
+
+    - name: "energy_virtual_batery_year"
+      state: >-
+        {{ (states('sensor.energy_buy_yearly') | float
+            - states('sensor.energy_sell_yearly') | float) | round(1) }}
+      unit_of_measurement: "kWh"
+
+    - name: "energy_virtual_batery2"
+      state: >-
+        {% set value = 0 %}
+        {% if is_state('switch.energy_daily_view', 'on') %}
+          {% set value = 1 - ((states('sensor.energy_sell_daily') | float | abs)
+                              - states('sensor.energy_buy_daily') | float) %}
+        {% elif is_state('switch.energy_monthly_view', 'on') %}
+          {% set value = 1 - ((states('sensor.energy_sell_monthly') | float | abs)
+                              - states('sensor.energy_buy_monthly') | float) %}
+        {% elif is_state('switch.energy_yearly_view', 'on') %}
+          {% set value = (states('sensor.energy_sell_yearly') | float - 931)
+                        - (states('sensor.energy_buy_yearly') | float - 1361) %}
+        {% endif %}
+        {{ value }}
+      unit_of_measurement: "kWh"
+
+    - name: "energy_effectivity"
+      state: >-
+        {% set value = 0 %}
+        {% if is_state('switch.energy_daily_view', 'on') %}
+          {% set value = (1 - (states('sensor.energy_sell_daily') | float | abs
+                              / states('sensor.energy_consumption_daily') | float)) * 100 %}
+        {% elif is_state('switch.energy_monthly_view', 'on') %}
+          {% set value = (1 - (states('sensor.energy_sell_monthly') | float | abs
+                              / states('sensor.energy_consumption_monthly') | float)) * 100 %}
+        {% elif is_state('switch.energy_yearly_view', 'on') %}
+          {% set value = (1 - (states('sensor.energy_sell_yearly') | float | abs
+                              / states('sensor.energy_consumption_yearly') | float)) * 100 %}
+        {% endif %}
+        {{ value | int }}
+      unit_of_measurement: "%"
+
+
+    # --- SANKEY ---
+
+    - name: "consumption_inverter"
+      state: >-
+        {% set total = states('sensor.house_consumption') | float %}
+        {% set l1 = states('sensor.load_l1') | float %}
+        {% set l2 = states('sensor.load_l2') | float %}
+        {% set l3 = states('sensor.load_l3') | float %}
+        {{ (total - l1 - l2 - l3) | abs }}
+      unit_of_measurement: "W"
+
+    - name: "grid_consumption_absolute"
+      state: >-
+        {{ states('sensor.active_power') | int | abs }}
+      unit_of_measurement: "W"
+
+    - name: "grid_consumption"
+      state: >-
+        {{ states('sensor.active_power') | int * -1 }}
+      unit_of_measurement: "W"
+
+    - name: "house_consumption_1floor_other"
+      state: >-
+        {{ (states('sensor.load_l3') | int | abs
+            - states('sensor.smart_plug_3_power') | int
+            - states('sensor.smart_plug_office_power') | int) }}
+      unit_of_measurement: "W"
+
+
+    # --- BLINDS ---
+
+    - name: "blinds_tilt_determine_max_low"
+      state: >-
+        {% if 6 <= now().month <= 11 %}0{% else %}47{% endif %}
+
+    - name: "blinds_tilt_determine_max_high"
+      state: >-
+        {% if 6 <= now().month <= 11 %}0{% else %}53{% endif %}
+
+    - name: "blinds_tilt_determine_max"
+      state: >-
+        {% if 6 <= now().month <= 11 %}0{% else %}50{% endif %}
+
+    - name: "blinds_tilt_determine_mid_low"
+      state: >-
+        {% if 6 <= now().month <= 11 %}35{% else %}55{% endif %}
+
+    - name: "blinds_tilt_determine_mid_high"
+      state: >-
+        {% if 6 <= now().month <= 11 %}45{% else %}65{% endif %}
+
+    - name: "blinds_tilt_determine_mid"
+      state: >-
+        {% if 6 <= now().month <= 11 %}40{% else %}60{% endif %}
+
+    - name: "blinds_tilt_determine_min_low"
+      state: >-
+        {% if 6 <= now().month <= 11 %}75{% else %}95{% endif %}
+
+    - name: "blinds_tilt_determine_min_high"
+      state: >-
+        {% if 6 <= now().month <= 11 %}85{% else %}100{% endif %}
+
+    - name: "blinds_tilt_determine_min"
+      state: >-
+        {% if 6 <= now().month <= 11 %}80{% else %}100{% endif %}
+
+
+    # --- COVER STATES ---
+
+    - name: "office_cover_state"
+      state: >-
+        {% set s = states('cover.office') | title %}
+        {% if s == 'Closing' %}Zavírání žaluzií...
+        {% elif s == 'Opening' %}Otevírání žaluzií...
+        {% endif %}
+
+    - name: "kids_cover_state"
+      state: >-
+        {% set s = states('cover.kids_room') | title %}
+        {% if s == 'Closing' %}Zavírání žaluzií...
+        {% elif s == 'Opening' %}Otevírání žaluzií...
+        {% endif %}
+
+    - name: "bedroom_cover_state"
+      state: >-
+        {% set s = states('cover.kids_room') | title %}
+        {% if s == 'Closing' %}Zavírání žaluzií...
+        {% elif s == 'Opening' %}Otevírání žaluzií...
+        {% endif %}
+
+    - name: "heating_on"
+      state: >-
+        {% set current = states('sensor.e3_tcu10_x07_supply_temperature') %}
+        {% set heating = state_attr('climate.e3_tcu10_x07_heating', 'hvac_action') %}
+        {% if heating == 'heating' %}
+          {{ current }}
+        {% else %}
+          {{ '' }}
+        {% endif %}
+
+    - name: "water_heating_on"
+      state: >-
+        {% set current = states('sensor.e3_vitocal_dhw_storage_temperature') | float(0) %}
+        {% set minBack = states('sensor.dhw_temp_5min') | float(0) %}
+        {% if current > minBack %}
+          on
+        {% else %}
+          off
+        {% endif %}
+
+    - name: "current_water_temperature"
+      unit_of_measurement: "°C"
+      state: >-
+        {{ state_attr('water_heater.e3_tcu10_x07_domestic_hot_water', 'current_temperature') }}
+
+    - name: "water_temperature"
+      state: >-
+        {{ state_attr('water_heater.e3_tcu10_x07_domestic_hot_water', 'temperature') }}
+
+    # =====================
+    # MOWER
+    # =====================
+
+    - name: "mow_other_button_enabled"
+      state: >-
+        {% set s = [
+          states('switch.luba_vsqcfhrv_louka'),
+          states('switch.luba_vsqcfhrv_horni'),
+          states('switch.luba_vsqcfhrv_slepice'),
+          states('switch.luba_vsqcfhrv_u_silnice')
+        ] %}
+        {% if 'on' in s %} on {% endif %}
+
+    - name: "mow_horni_button_enabled"
+      state: >-
+        {% set s = [
+          states('switch.luba_vsqcfhrv_louka'),
+          states('switch.luba_vsqcfhrv_spodni'),
+          states('switch.luba_vsqcfhrv_prostredni'),
+          states('switch.luba_vsqcfhrv_skalka'),
+          states('switch.luba_vsqcfhrv_predzahradka'),
+          states('switch.luba_vsqcfhrv_slepice'),
+          states('switch.luba_vsqcfhrv_u_cesty_1'),
+          states('switch.luba_vsqcfhrv_u_silnice')
+        ] %}
+        {% if 'on' in s %} on {% endif %}
+
+    - name: "mow_silnice_button_enabled"
+      state: >-
+        {% set s = [
+          states('switch.luba_vsqcfhrv_louka'),
+          states('switch.luba_vsqcfhrv_horni'),
+          states('switch.luba_vsqcfhrv_spodni'),
+          states('switch.luba_vsqcfhrv_prostredni'),
+          states('switch.luba_vsqcfhrv_skalka'),
+          states('switch.luba_vsqcfhrv_predzahradka'),
+          states('switch.luba_vsqcfhrv_slepice'),
+          states('switch.luba_vsqcfhrv_u_cesty_1')
+        ] %}
+        {% if 'on' in s %} on {% endif %}
+
+    - name: "mow_slepice_button_enabled"
+      state: >-
+        {% set s = [
+          states('switch.luba_vsqcfhrv_louka'),
+          states('switch.luba_vsqcfhrv_horni'),
+          states('switch.luba_vsqcfhrv_spodni'),
+          states('switch.luba_vsqcfhrv_prostredni'),
+          states('switch.luba_vsqcfhrv_skalka'),
+          states('switch.luba_vsqcfhrv_predzahradka'),
+          states('switch.luba_vsqcfhrv_u_cesty_1'),
+          states('switch.luba_vsqcfhrv_u_silnice')
+        ] %}
+        {% if 'on' in s %} on {% endif %}
+
+    - name: "mow_louka_button_enabled"
+      state: >-
+        {% set s = [
+          states('switch.luba_vsqcfhrv_horni'),
+          states('switch.luba_vsqcfhrv_spodni'),
+          states('switch.luba_vsqcfhrv_prostredni'),
+          states('switch.luba_vsqcfhrv_skalka'),
+          states('switch.luba_vsqcfhrv_predzahradka'),
+          states('switch.luba_vsqcfhrv_slepice'),
+          states('switch.luba_vsqcfhrv_u_cesty_1'),
+          states('switch.luba_vsqcfhrv_u_silnice')
+        ] %}
+        {% if 'on' in s %} on {% endif %}
+
+    # =====================
+    # OTHER
+    # =====================
+
+    - name: "apex_chart_color"
+      state: >-
+        {% if states('sun.sun') == 'above_horizon' %}
+          rgb(128, 201, 148)
+        {% elif states('sun.sun') == 'below_horizon' %}
+          rgb(252, 214, 124)
+        {% endif %}
+
+    - name: "music_playing_bathroom"
+      state: >-
+        {% if states('media_player.bathroom') == 'playing' %}
+          on
+        {% else %}
+          off
+        {% endif %}
+
+    - name: "something_playing_living_room"
+      state: >-
+        {% set app = state_attr('media_player.apple_tv_4k', 'app_name') %}
+        {% set valid = [
+          'Netflix',
+          'YouTube',
+          'Plex',
+          'SledovaniTV',
+          'overseerrTV'
+        ] %}
+        {% if app in valid %}
+          on
+        {% else %}
+          off
+        {% endif %}
+
+    - name: "nameday"
+      state: >-
+        {{ state_attr('calendar.ceska_jmena', 'message') }}
+
+    - name: "washer_remaining_time"
+      state: >-
+        {% set diff = as_timestamp(states('sensor.pracka_washer_completion_time')) - as_timestamp(now()) %}
+        {% set h = (diff // 3600) | int %}
+        {% set m = ((diff % 3600) // 60) | int %}
+        {% if h == 1 %}
+          {{ h }} hodina a {{ m }} minut
+        {% elif h > 1 %}
+          {{ h }} hodiny a {{ m }} minut
+        {% else %}
+          {{ m }} minut
+        {% endif %}
+
+    - name: "forecast_today"
+      state: >-
+        {{ state_attr('weather.forecast_domov', 'forecast')
+           | selectattr('datetime', 'lt', now().replace(hour=11, minute=59).isoformat())
+           | map(attribute='temperature')
+           | list | max | round | int }}
+
+    - name: "random_good_day"
+      state: >-
+        {{ ["Ať se vám dnes daří!", "Mějte úspěšný den!"] | random }}
+
+    - name: "welcome_time_of_day"
+      state: >-
+        {% set h = now().hour + 2 %}
+        {% if h < 12 %} Dobré ráno.
+        {% elif h < 18 %} Dobré odpoledne.
+        {% else %} Dobrý večer.
+        {% endif %}
+
+    - name: "day_in_week"
+      state: >-
+        {{ now().day }}
+
+    - name: "month_number"
+      state: >-
+        {{ now().month }}
+
+    - name: "day_in_week_name"
+      state: >-
+        {{ ["Pondělí","Úterý","Středa","Čtvrtek","Pátek","Sobota","Neděle"][now().weekday()] }}
+
+    - name: "month_name"
+      state: >-
+        {{ ["leden","únor","březen","duben","květen","červen","červenec","srpen","září","říjen","listopad","prosinec"][now().month-1] }}
+
+    - name: "desktopargi"
+      state: >-
+        {% if states('binary_sensor.martin_pc_power_martin_pc_power_status') == 'on' %}
+          on
+        {% else %}
+          off
+        {% endif %}
+
+
+
+
+
+
+        

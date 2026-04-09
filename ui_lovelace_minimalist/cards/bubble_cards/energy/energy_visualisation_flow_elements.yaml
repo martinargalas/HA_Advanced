@@ -1,0 +1,1379 @@
+
+######################
+# Levý rámeček
+######################
+- type: custom:button-card
+  name: ""
+  show_name: false
+  show_icon: false
+  tap_action: none
+  hold_action: none
+  styles:
+    card:
+      - width: 170px
+      - height: 56px
+      - border-radius: 29px
+      - background-color: rgba(var(--color-background-black), 0.3)
+      - box-shadow: none
+      - border: none
+  style:
+    top: 40px
+    left: 12px
+    transform: translateY(-50%)
+  card_mod:
+    style: |
+      ha-card::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        border-radius: 26px;
+        background: linear-gradient(
+          120deg,
+          var(--button-card-before-gradient-start),
+          var(--button-card-before-gradient-mid) 30%,
+          var(--button-card-before-gradient-end) 60%
+        );
+        opacity: 0.35;
+        pointer-events: none;
+      }
+      ha-card::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        border-radius: 26px;
+        box-shadow:
+          inset 0 0 0 1px var(--button-card-after-border),
+          inset 0 0 20px var(--button-card-after-shadow);
+        pointer-events: none;
+      }
+      ha-card:active {
+        transform: scale(0.97);
+      }
+
+- type: custom:button-card
+  entity: sensor.pv_power
+  name: ""
+  show_name: false
+  show_icon: true
+  icon: mdi:solar-power
+  tap_action: none
+  hold_action: none
+  styles:
+    card:
+      - width: 48px
+      - height: 48px
+      - border-radius: 50%
+      - background-color: rgba(var(--color-background-theme),0.2)
+      - padding: 0
+    icon:
+      - width: 28px
+      - height: 28px
+      - margin: auto
+      - color: rgba(var(--color-background-theme),1)
+      - filter: drop-shadow(0 0 4px rgba(var(--color-background-theme),0.4))
+      - animation: glowPulse 4s infinite
+  style:
+    top: 40px
+    left: 16px
+    transform: translateY(-50%)
+
+- type: state-label
+  entity: sensor.pv_power
+  style:
+    top: 12px
+    left: 72px
+    transform: translateY(-50%)
+    color: var(--primary-text-color);
+    font-size: 24px
+    font-weight: bold
+    text-shadow: 0 0 2px rgba(var(--color-background-theme-secondary),0.8)
+    animation: glowPulse 4s infinite
+
+######################
+# Střední rámeček
+######################
+- type: custom:button-card
+  name: ""
+  show_name: false
+  show_icon: false
+  tap_action: none
+  hold_action: none
+  styles:
+    card:
+      - width: 170px
+      - height: 56px
+      - border-radius: 29px
+      - background-color: rgba(var(--color-background-black), 0.3)
+      - box-shadow: none
+      - border: none
+  style:
+    top: 40px
+    left: 50%
+    transform: translate(-50%, -50%)
+  card_mod:
+    style: |
+      ha-card::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        border-radius: 26px;
+        background: linear-gradient(
+          120deg,
+          var(--button-card-before-gradient-start),
+          var(--button-card-before-gradient-mid) 30%,
+          var(--button-card-before-gradient-end) 60%
+        );
+        opacity: 0.35;
+        pointer-events: none;
+      }
+      ha-card::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        border-radius: 26px;
+        box-shadow:
+          inset 0 0 0 1px var(--button-card-after-border),
+          inset 0 0 20px var(--button-card-after-shadow);
+        pointer-events: none;
+      }
+      ha-card:active {
+        transform: scale(0.97);
+      }
+
+- type: custom:button-card
+  entity: sensor.house_consumption
+  name: ""
+  show_name: false
+  show_icon: true
+  icon: mdi:home-lightning-bolt
+  tap_action: none
+  hold_action: none
+  styles:
+    card:
+      - width: 48px
+      - height: 48px
+      - border-radius: 50%
+      - background-color: rgba(var(--color-background-theme),0.2)
+      - padding: 0
+    icon:
+      - width: 28px
+      - height: 28px
+      - margin: auto
+      - color: rgba(var(--color-background-theme),1)
+      - filter: drop-shadow(0 0 4px rgba(var(--color-background-theme),0.4))
+      - animation: glowPulse 4s infinite
+  style:
+    top: 40px
+    left: calc(50% - 85px + 4px)
+    transform: translateY(-50%)
+
+- type: state-label
+  entity: sensor.house_consumption
+  style:
+    top: 12px
+    left: calc(50% - 98px + 72px)
+    transform: translateY(-50%)
+    color: var(--primary-text-color);
+    font-size: 24px
+    font-weight: bold
+    text-shadow: 0 0 2px rgba(var(--color-background-theme-secondary),0.8)
+    animation: glowPulse 4s infinite
+
+######################
+# Pravý rámeček
+######################
+- type: custom:button-card
+  name: ""
+  show_name: false
+  show_icon: false
+  tap_action: none
+  hold_action: none
+  styles:
+    card:
+      - width: 170px
+      - height: 56px
+      - border-radius: 29px
+      - background-color: rgba(var(--color-background-black), 0.3)
+      - box-shadow: none
+      - border: none
+  style:
+    top: 40px
+    right: 12px
+    transform: translateY(-50%)
+  card_mod:
+    style: |
+      ha-card::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        border-radius: 26px;
+        background: linear-gradient(
+          120deg,
+          var(--button-card-before-gradient-start),
+          var(--button-card-before-gradient-mid) 30%,
+          var(--button-card-before-gradient-end) 60%
+        );
+        opacity: 0.35;
+        pointer-events: none;
+      }
+      ha-card::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        border-radius: 26px;
+        box-shadow:
+          inset 0 0 0 1px var(--button-card-after-border),
+          inset 0 0 20px var(--button-card-after-shadow);
+        pointer-events: none;
+      }
+      ha-card:active {
+        transform: scale(0.97);
+      }
+
+- type: custom:button-card
+  entity: sensor.active_power
+  name: ""
+  show_name: false
+  show_icon: true
+  icon: mdi:transmission-tower
+  tap_action: none
+  hold_action: none
+  styles:
+    card:
+      - width: 48px
+      - height: 48px
+      - border-radius: 50%
+      - background-color: rgba(var(--color-background-theme),0.2)
+      - padding: 0
+    icon:
+      - width: 28px
+      - height: 28px
+      - margin: auto
+      - color: rgba(var(--color-background-theme),1)
+      - filter: drop-shadow(0 0 4px rgba(var(--color-background-theme),0.4))
+      - animation: glowPulse 4s infinite
+  style:
+    top: 40px
+    left: calc(100% - 182px + 4px)
+    transform: translateY(-50%)
+
+- type: state-label
+  entity: sensor.active_power
+  style:
+    top: 12px
+    left: calc(100% - 202px + 72px)
+    transform: translateY(-50%)
+    color: var(--primary-text-color);
+    font-size: 24px
+    font-weight: bold
+    text-shadow: 0 0 2px rgba(var(--color-background-theme-secondary),0.8)
+    animation: glowPulse 4s infinite
+
+
+
+
+# EXPORT
+
+- type: custom:button-card
+  entity: input_boolean.alarmed_toggle
+  show_icon: false
+  show_label: false
+  show_name: false
+  tap_action:
+    action: none    
+  custom_fields:
+    icon:
+      card:
+        type: "custom:button-card"
+        tap_action:
+          action: none    
+        show_name: false
+        show_label: false
+        show_icon: true
+        entity: input_number.counter_graph
+        icon: mdi:transmission-tower-import
+        card_mod:
+          style: |
+            ha-card {
+              border-radius: 42px !important;
+            }
+        styles:
+          card:
+            - box-shadow: "none"
+            - border-radius: "42px"
+            - background-color: rgba(var(--color-background-theme),0.2)          
+            - height: "38px"
+            - width: "38px"
+            - padding: "0px"
+            - margin-left: "2px"
+            - z-index: 5
+          icon:
+            - justify-self: "start"
+            - line-height: "0"
+            - height: "70%"
+            - width: "70%"
+            - color: rgba(var(--color-background-theme),1) 
+    name:
+      card:
+        type: "custom:button-card"
+        tap_action:
+          action: none   
+        show_name: false
+        show_label: true
+        show_icon: false
+        label: "Přetoky"
+        entity: input_number.counter_graph
+        styles:
+          card:
+            - box-shadow: "none"
+            - background-color: "transparent"      
+            - height: "21px"
+            - width: "60px"
+            - padding: "0px"
+          label:
+            - justify-self: "start"
+            - font-size: "14px"
+            - font-weight: 430
+            
+            - margin-top: "5%"
+            - text-overflow: "ellipsis"
+            - overflow: "hidden"
+
+    label:
+      card:
+        type: "custom:button-card"
+        tap_action:
+          action: none   
+        show_name: false
+        show_label: true
+        show_icon: false
+        label: >- 
+          [[[
+            if (states['switch.energy_daily_view'].state === "on") 
+            {
+              if (states['input_number.counter_graph'].state == 0)
+              {
+                return states['sensor.energy_buy_daily'].state + " kWh";
+              }
+              else
+              {
+                return (states['sensor.electricity_statistics']).attributes.data['Production'] + " kWh"
+              }
+            }
+            if (states['switch.energy_monthly_view'].state === "on") 
+            {
+              return (states['sensor.electricity_statistics']).attributes.data['Production'] + " kWh"
+            }
+            if (states['switch.energy_yearly_view'].state === "on") 
+            {
+              return (states['sensor.electricity_statistics']).attributes.data['Production'] + " kWh"
+            }
+          ]]]
+        entity: input_number.counter_graph
+        styles:
+          card:
+            - box-shadow: "none"
+            - background-color: "transparent"      
+            - height: "21px"
+            - width: "75px"
+            - padding: "0px"
+          label:
+            - justify-self: "start"
+            - font-size: "12px"     
+            - margin-top: "-5%"
+            - text-overflow: "ellipsis"
+            - overflow: "hidden"
+
+  styles:
+    card:
+      - padding: 0px
+      - height: "42px"
+      - box-shadow: "var(--box-shadow)"
+      - background-color: rgba(var(--color-background-black),0.3);
+      - border-radius: "42px"
+    grid:
+      - grid-template-areas: >
+          "icon . name name"
+          "icon . label label"
+      - grid-template-columns: 1.3fr 0.1fr 1fr 1fr
+      - grid-template-rows: 1fr 1fr
+
+    custom_fields:
+      icon:
+        - place-self:  center
+        - justify-self: left
+      name:
+        - place-self:  stretch end
+        - justify-self: left
+      label:
+        - place-self:  stretch end
+        - justify-self: left
+
+  style:
+    bottom: calc(16px + 16px + 38px)
+    left: 16px
+    transform: translate(0,0)
+
+# CONSUMPTION
+- type: custom:button-card
+  entity: input_boolean.alarmed_toggle
+  show_icon: false
+  show_label: false
+  show_name: false
+  tap_action:
+    action: none    
+  custom_fields:
+    icon:
+      card:
+        type: "custom:button-card"
+        tap_action:
+          action: none   
+        show_name: false
+        show_label: false
+        show_icon: true
+        entity: input_number.counter_graph
+        icon: mdi:home-import-outline
+        card_mod:
+          style: |
+            ha-card {
+              border-radius: 42px !important;
+            }
+        styles:
+          card:
+            - box-shadow: "none"
+            - border-radius: "42px"
+            - background-color: rgba(var(--color-background-theme),0.2)         
+            - height: "38px"
+            - width: "38px"
+            - padding: "0px"
+            - margin-left: "2px"
+            - z-index: 5
+          icon:
+            - justify-self: "start"
+            - line-height: "0"
+            - height: "70%"
+            - width: "70%"
+            - color: rgba(var(--color-background-theme),1)
+    name:
+      card:
+        type: "custom:button-card"
+        tap_action:
+          action: none   
+        show_name: false
+        show_label: true
+        show_icon: false
+        label: "Spotřeba"
+        entity: input_number.counter_graph
+        styles:
+          card:
+            - box-shadow: "none"
+            - background-color: "transparent"      
+            - height: "21px"
+            - width: "60px"
+            - padding: "0px"
+          label:
+            - justify-self: "start"
+            - font-size: "14px"
+            - font-weight: 430
+            - margin-top: "5%"
+            - text-overflow: "ellipsis"
+            - overflow: "hidden"
+
+    label:
+      card:
+        type: "custom:button-card"
+        tap_action:
+          action: none   
+        show_name: false
+        show_label: true
+        show_icon: false
+        label: >- 
+          [[[
+            if (states['switch.energy_daily_view'].state === "on") 
+            {
+              if (states['input_number.counter_graph'].state == 0)
+              {
+                return states['sensor.energy_consumption_daily'].state + " kWh";
+              }
+              else
+              {
+                return (states['sensor.electricity_statistics']).attributes.data['Consumption'] + " kWh"
+              }
+            }
+            if (states['switch.energy_monthly_view'].state === "on") 
+            {
+              return (states['sensor.electricity_statistics']).attributes.data['Consumption'] + " kWh"
+            }
+            if (states['switch.energy_yearly_view'].state === "on") 
+            {
+              return (states['sensor.electricity_statistics']).attributes.data['Consumption'] + " kWh"
+            }
+          ]]]
+        entity: input_number.counter_graph
+        styles:
+          card:
+            - box-shadow: "none"
+            - background-color: "transparent"      
+            - height: "21px"
+            - width: "75px"
+            - padding: "0px"
+          label:
+            - justify-self: "start"
+            - font-size: "12px"
+            - margin-top: "-5%"
+            - text-overflow: "ellipsis"
+            - overflow: "hidden"
+
+  styles:
+    card:
+      - padding: 0px
+      - height: "42px"
+      - box-shadow: "var(--box-shadow)"
+      - background-color: rgba(var(--color-background-black),0.3);
+      - border-radius: "42px"
+    grid:
+      - grid-template-areas: >
+          "icon . name name"
+          "icon . label label"
+      - grid-template-columns: 1.3fr 0.1fr 1fr 1fr
+      - grid-template-rows: 1fr 1fr
+
+    custom_fields:
+      icon:
+        - place-self:  center
+        - justify-self: left
+      name:
+        - place-self:  stretch end
+        - justify-self: left
+      label:
+        - place-self:  stretch end
+        - justify-self: left
+  style:
+    bottom: calc(16px + 16px + 38px)
+    left: calc(25% + 10px)
+    transform: translate(0,0)
+
+# IMPORT
+- type: custom:button-card
+  entity: input_boolean.alarmed_toggle
+  show_icon: false
+  show_label: false
+  show_name: false
+  tap_action:
+    action: none    
+  custom_fields:
+    icon:
+      card:
+        type: "custom:button-card"
+        tap_action:
+          action: none   
+        show_name: false
+        show_label: false
+        show_icon: true
+        entity: input_number.counter_graph
+        icon: mdi:transmission-tower-export
+        card_mod:
+          style: |
+            ha-card {
+              border-radius: 42px !important;
+            }
+        styles:
+          card:
+            - box-shadow: "none"
+            - border-radius: "42px"
+            - background-color: rgba(var(--color-background-theme),0.2)         
+            - height: "38px"
+            - width: "38px"
+            - padding: "0px"
+            - margin-left: "2px"
+            - z-index: 5
+          icon:
+            - justify-self: "start"
+            - line-height: "0"
+            - height: "70%"
+            - width: "70%"
+            - color: rgba(var(--color-background-theme),1)
+    name:
+      card:
+        type: "custom:button-card"
+        tap_action:
+          action: none   
+        show_name: false
+        show_label: true
+        show_icon: false
+        label: "Nákup"
+        entity: input_number.counter_graph
+        styles:
+          card:
+            - box-shadow: "none"
+            - background-color: "transparent"      
+            - height: "21px"
+            - width: "60px"
+            - padding: "0px"
+          label:
+            - justify-self: "start"
+            - font-size: "14px"
+            - font-weight: 430
+            - margin-top: "5%"
+            - text-overflow: "ellipsis"
+            - overflow: "hidden"
+
+    label:
+      card:
+        type: "custom:button-card"
+        tap_action:
+          action: none   
+        show_name: false
+        show_label: true
+        show_icon: false
+        label: >- 
+          [[[
+            if (states['switch.energy_daily_view'].state === "on") 
+            {
+              if (states['input_number.counter_graph'].state == 0)
+              {
+                return states['sensor.energy_sell_daily'].state + " kWh";
+              }
+              else 
+              {
+                return (states['sensor.electricity_statistics']).attributes.data['GridBuy'] + " kWh"
+              }
+            }
+            if (states['switch.energy_monthly_view'].state === "on") 
+            {
+              return (states['sensor.electricity_statistics']).attributes.data['GridBuy'] + " kWh"
+            }
+            if (states['switch.energy_yearly_view'].state === "on") 
+            {
+              return (states['sensor.electricity_statistics']).attributes.data['GridBuy'] + " kWh"
+            }
+          ]]]
+        entity: input_number.counter_graph
+        styles:
+          card:
+            - box-shadow: "none"
+            - background-color: "transparent"      
+            - height: "21px"
+            - width: "75px"
+            - padding: "0px"
+          label:
+            - justify-self: "start"
+            - font-size: "12px"
+            - margin-top: "-5%"
+            - text-overflow: "ellipsis"
+            - overflow: "hidden"
+
+  styles:
+    card:
+      - padding: 0px
+      - height: "42px"
+      - box-shadow: "var(--box-shadow)"
+      - background-color: rgba(var(--color-background-black),0.3);
+      - border-radius: "42px"
+    grid:
+      - grid-template-areas: >
+          "icon . name name"
+          "icon . label label"
+      - grid-template-columns: 1.3fr 0.1fr 1fr 1fr
+      - grid-template-rows: 1fr 1fr
+
+    custom_fields:
+      icon:
+        - place-self:  center
+        - justify-self: left
+      name:
+        - place-self:  stretch end
+        - justify-self: left
+      label:
+        - place-self:  stretch end
+        - justify-self: left
+  style:
+    bottom: 16px
+    left: 16px
+    transform: translate(0,0)
+
+# PRODUCTION
+- type: custom:button-card
+  entity: input_boolean.alarmed_toggle
+  show_icon: false
+  show_label: false
+  show_name: false
+  tap_action:
+    action: none    
+  custom_fields:
+    icon:
+      card:
+        type: "custom:button-card"
+        tap_action:
+          action: none   
+        show_name: false
+        show_label: false
+        show_icon: true
+        entity: input_number.counter_graph
+        icon: mdi:solar-power-variant-outline
+        card_mod:
+          style: |
+            ha-card {
+              border-radius: 42px !important;
+            }
+        styles:
+          card:
+            - box-shadow: "none"
+            - border-radius: "42px"
+            - background-color: rgba(var(--color-background-theme),0.2)         
+            - height: "38px"
+            - width: "38px"
+            - padding: "0px"
+            - margin-left: "2px"
+            - z-index: 5
+          icon:
+            - justify-self: "start"
+            - line-height: "0"
+            - height: "70%"
+            - width: "70%"
+            - color: rgba(var(--color-background-theme),1)
+    name:
+      card:
+        type: "custom:button-card"
+        tap_action:
+          action: none   
+        show_name: false
+        show_label: true
+        show_icon: false
+        label: "Výroba"
+        entity: input_number.counter_graph
+        styles:
+          card:
+            - box-shadow: "none"
+            - background-color: "transparent"      
+            - height: "21px"
+            - width: "60px"
+            - padding: "0px"
+          label:
+            - justify-self: "start"
+            - font-size: "14px"
+            - font-weight: 430
+            - margin-top: "5%"
+            - text-overflow: "ellipsis"
+            - overflow: "hidden"
+
+    label:
+      card:
+        type: "custom:button-card"
+        tap_action:
+          action: none   
+        show_name: false
+        show_label: true
+        show_icon: false
+        label: >- 
+          [[[
+            if (states['switch.energy_daily_view'].state === "on") 
+            {
+              return states['sensor.energy_generation_daily'].state + " kWh";
+            }
+            if (states['switch.energy_monthly_view'].state === "on") 
+            {
+              return states['sensor.energy_generation_monthly'].state + " kWh";
+            }
+            if (states['switch.energy_yearly_view'].state === "on") 
+            {
+              return states['sensor.energy_generation_yearly'].state + " kWh";
+            }
+          ]]]
+        entity: input_number.counter_graph
+        styles:
+          card:
+            - box-shadow: "none"
+            - background-color: "transparent"      
+            - height: "21px"
+            - width: "75px"
+            - padding: "0px"
+          label:
+            - justify-self: "start"
+            - font-size: "12px"
+            - margin-top: "-5%"
+            - text-overflow: "ellipsis"
+            - overflow: "hidden"
+
+  styles:
+    card:
+      - padding: 0px
+      - height: "42px"
+      - box-shadow: "var(--box-shadow)"
+      - background-color: rgba(var(--color-background-black),0.3);
+      - border-radius: "42px"
+    grid:
+      - grid-template-areas: >
+          "icon . name name"
+          "icon . label label"
+      - grid-template-columns: 1.3fr 0.1fr 1fr 1fr
+      - grid-template-rows: 1fr 1fr
+
+    custom_fields:
+      icon:
+        - place-self:  center
+        - justify-self: left
+      name:
+        - place-self:  stretch end
+        - justify-self: left
+      label:
+        - place-self:  stretch end
+        - justify-self: left
+  style:
+    bottom: 16px
+    left: calc(25% + 10px)
+    transform: translate(0,0)
+
+# VIRTUAL BATTERY
+- type: custom:swipe-card
+  style:
+    bottom: 12px
+    left: calc(50%)
+    width: 300px
+    height: 100px
+    transform: translate(0,0)
+  parameters:
+    effect: 'cube'
+    speed: 500
+    slideShadows: false
+    autoplay:
+      delay: 10000
+      disableOnInteraction: false
+    cubeEffect:
+      slideShadows: false
+      shadow: false
+  cards:
+  # BATTERY
+  - type: custom:button-card
+    entity: input_boolean.alarmed_toggle
+    show_icon: false
+    show_label: false
+    show_name: false
+    tap_action:
+      action: none    
+    custom_fields:
+      labelyear1:
+        card:
+          type: "custom:button-card"
+          tap_action:
+            action: none   
+          show_name: false
+          show_label: true
+          show_icon: false
+          label: "Celkem"
+          entity: sensor.virtual_battery_contract
+          styles:
+            card:
+              - box-shadow: "none"
+              - background-color: "transparent"      
+              - height: "21px"
+              - width: "70px"
+              - padding: "0px"
+            label:
+              - justify-self: "start"
+              - font-size: "14px"
+              - font-weight: 430
+              - text-overflow: "ellipsis"
+              - overflow: "hidden"
+              - margin-top: "5%"
+              - margin-left: "20%"
+      labelyear2:
+        card:
+          type: "custom:button-card"
+          tap_action:
+            action: none   
+          show_name: false
+          show_label: true
+          show_icon: false
+          label: >-
+            [[[
+              return states['sensor.virtual_battery_contract'].state + " kWh";
+            ]]]
+          entity: sensor.virtual_battery_contract
+          styles:
+            card:
+              - box-shadow: "none"
+              - background-color: "transparent"      
+              - height: "21px"
+              - width: "70px"
+              - padding: "0px"
+              - margin-left: "20%"
+            label:
+              - justify-self: "start"
+              - font-size: "13px"
+              - font-weight: 330
+              - text-overflow: "ellipsis"
+              - overflow: "hidden"
+      labelmonth1:
+        card:
+          type: "custom:button-card"
+          tap_action:
+            action: none   
+          show_name: false
+          show_label: true
+          show_icon: false
+          label: "Měsíc"
+          entity: sensor.virtual_battery_month
+          styles:
+            card:
+              - box-shadow: "none"
+              - background-color: "transparent"      
+              - height: "21px"
+              - width: "70px"
+              - padding: "0px"
+            label:
+              - justify-self: "center"
+              - font-size: "14px"
+              - font-weight: 430
+              - text-overflow: "ellipsis"
+              - overflow: "hidden"
+              - margin-top: "5%"
+              - margin-left: "20%"
+      labelmonth2:
+        card:
+          type: "custom:button-card"
+          tap_action:
+            action: none   
+          show_name: false
+          show_label: true
+          show_icon: false
+          label: >-
+            [[[
+              return states['sensor.virtual_battery_month'].state + " kWh";
+            ]]]
+          entity: sensor.virtual_battery_month
+          styles:
+            card:
+              - box-shadow: "none"
+              - background-color: "transparent"      
+              - height: "21px"
+              - width: "70px"
+              - padding: "0px"
+              - margin-left: "15%"
+            label:
+              - justify-self: "center"
+              - font-size: "13px"
+              - font-weight: 330
+              - text-overflow: "ellipsis"
+              - overflow: "hidden"
+      labelday1:
+        card:
+          type: "custom:button-card"
+          tap_action:
+            action: none   
+          show_name: false
+          show_label: true
+          show_icon: false
+          label: "Dnes"
+          entity: sensor.energy_virtual_batery_day
+          styles:
+            card:
+              - box-shadow: "none"
+              - background-color: "transparent"      
+              - height: "21px"
+              - width: "70px"
+              - padding: "0px"
+            label:
+              - justify-self: "start"
+              - font-size: "14px"
+              - font-weight: 430
+              - text-overflow: "ellipsis"
+              - overflow: "hidden"
+              - margin-top: "5%"
+      labelday2:
+        card:
+          type: "custom:button-card"
+          tap_action:
+            action: none   
+          show_name: false
+          show_label: true
+          show_icon: false
+          label: >-
+            [[[
+              return states['sensor.energy_virtual_batery_day'].state + " kWh";
+            ]]]
+          entity: sensor.energy_virtual_batery_day
+          styles:
+            card:
+              - box-shadow: "none"
+              - background-color: "transparent"      
+              - height: "21px"
+              - width: "70px"
+              - padding: "0px"
+            label:
+              - justify-self: "start"
+              - font-size: "13px"
+              - font-weight: 330
+              - text-overflow: "ellipsis"
+              - overflow: "hidden"
+      graph:
+        card:
+          type: custom:mini-graph-card
+          entities:
+            - sensor.energy_virtual_batery_day
+          hours_to_show: 24
+          line_width: 4
+          decimals: 1
+          tap_action:
+            action: none
+
+          line_color: var(--graph-color)
+
+          show:
+            name: false
+            icon: false
+            state: false
+            labels: false
+            legend: false
+
+          card_mod:
+            style: |
+              {% set rgb = 'var(--color-background-theme-secondary)' %}
+
+              ha-card {
+                --graph-color: rgb({{ rgb }});
+                background: none;
+                box-shadow: none;
+                border: none;
+                opacity: 90%;
+                width: 100%;
+
+                mask-image: linear-gradient(
+                  to right,
+                  rgba(0,0,0,0) 0%,
+                  rgba(0,0,0,0) 3%,
+                  rgba(0,0,0,1) 10%,
+                  rgba(0,0,0,1) 80%,
+                  rgba(0,0,0,0) 95%,
+                  rgba(0,0,0,0) 100%
+                );
+              }
+
+              ha-card {
+                filter:
+                  drop-shadow(0 0 4px rgba({{ rgb }},0.35))
+                  drop-shadow(0 0 6px rgba({{ rgb }},0.18));
+              }
+
+              ha-card .state {
+                font-size: 0.7rem;
+                font-weight: 700;
+                right: -61px !important;
+                top: -21px !important;
+                left: auto !important;
+                text-align: right;
+              }
+
+              .name {
+                color: rgba(var(--primary-text-color),0.7);
+                font-size: 14px;
+                font-weight: 700;
+              }
+
+              .graph__container__svg {
+                margin-top: -16px !important;
+              }
+
+
+    styles:
+      card:
+        - padding: 0px
+        - box-shadow: none;
+        - background-color: transparent;
+        - border-radius: "21px"
+        - height: 96px
+      grid:
+        - grid-template-areas: >
+            "labelyear1 labelmonth1 labelday1"
+            "labelyear2 labelmonth2 labelday2"
+            "graph graph graph"
+        - grid-template-columns: 1fr 1fr 1fr
+        - grid-template-rows: 1fr 1fr 2fr
+
+      custom_fields:
+        labelyear1:
+          - place-self:  center
+          - justify-self: left
+        labelyear2:
+          - place-self:  center
+          - justify-self: left
+        labelmonth1:
+          - place-self:  center
+          - justify-self: left
+        labelmonth2:
+          - place-self:  center
+          - justify-self: left
+        labelday1:
+          - place-self:  center
+          - justify-self: right
+        labelday2:
+          - place-self:  center
+          - justify-self: right
+        graph:
+          - place-self:  center
+          - justify-self: stretch
+
+
+
+
+
+
+
+
+
+
+
+  # PRICE
+  - type: custom:button-card
+    entity: input_boolean.alarmed_toggle
+    show_icon: false
+    show_label: false
+    show_name: false
+    tap_action:
+      action: none    
+    custom_fields:
+      labelyear1:
+        card:
+          type: "custom:button-card"
+          tap_action:
+            action: none   
+          show_name: false
+          show_label: true
+          show_icon: false
+          label: "Celkem"
+          entity: sensor.energy_virtual_batery_year
+          styles:
+            card:
+              - box-shadow: "none"
+              - background-color: "transparent"      
+              - height: "21px"
+              - width: "70px"
+              - padding: "0px"
+            label:
+              - justify-self: "start"
+              - font-size: "14px"
+              - font-weight: 430
+              - text-overflow: "ellipsis"
+              - overflow: "hidden"
+              - margin-top: "5%"
+              - margin-left: "20%"
+      labelyear2:
+        card:
+          type: "custom:button-card"
+          tap_action:
+            action: none   
+          show_name: false
+          show_label: true
+          show_icon: false
+          label: >-
+            [[[
+              return states['sensor.elektrina_cena_year'].state + " Kč";
+            ]]]
+          entity: sensor.elektrina_cena_year
+          styles:
+            card:
+              - box-shadow: "none"
+              - background-color: "transparent"      
+              - height: "21px"
+              - width: "70px"
+              - padding: "0px"
+              - margin-left: "20%"
+            label:
+              - justify-self: "start"
+              - font-size: "13px"
+              - font-weight: 330
+              - text-overflow: "ellipsis"
+              - overflow: "hidden"
+      labelmonth1:
+        card:
+          type: "custom:button-card"
+          tap_action:
+            action: none   
+          show_name: false
+          show_label: true
+          show_icon: false
+          label: "Měsíc"
+          entity: sensor.elektrina_cena_month
+          styles:
+            card:
+              - box-shadow: "none"
+              - background-color: "transparent"      
+              - height: "21px"
+              - width: "70px"
+              - padding: "0px"
+            label:
+              - justify-self: "center"
+              - font-size: "14px"
+              - font-weight: 430
+              - text-overflow: "ellipsis"
+              - overflow: "hidden"
+              - margin-top: "5%"
+              - margin-left: "20%"
+      labelmonth2:
+        card:
+          type: "custom:button-card"
+          tap_action:
+            action: none   
+          show_name: false
+          show_label: true
+          show_icon: false
+          label: >-
+            [[[
+              return states['sensor.elektrina_cena_month'].state + " Kč";
+            ]]]
+          entity: sensor.elektrina_cena_month
+          styles:
+            card:
+              - box-shadow: "none"
+              - background-color: "transparent"      
+              - height: "21px"
+              - width: "70px"
+              - padding: "0px"
+              - margin-left: "15%"
+            label:
+              - justify-self: "center"
+              - font-size: "13px"
+              - font-weight: 330
+              - text-overflow: "ellipsis"
+              - overflow: "hidden"
+      labelday1:
+        card:
+          type: "custom:button-card"
+          tap_action:
+            action: none   
+          show_name: false
+          show_label: true
+          show_icon: false
+          label: "Dnes"
+          entity: sensor.elektrina_cena_day
+          styles:
+            card:
+              - box-shadow: "none"
+              - background-color: "transparent"      
+              - height: "21px"
+              - width: "70px"
+              - padding: "0px"
+            label:
+              - justify-self: "start"
+              - font-size: "14px"
+              - font-weight: 430
+              - text-overflow: "ellipsis"
+              - overflow: "hidden"
+              - margin-top: "5%"
+      labelday2:
+        card:
+          type: "custom:button-card"
+          tap_action:
+            action: none   
+          show_name: false
+          show_label: true
+          show_icon: false
+          label: >-
+            [[[
+              return states['sensor.elektrina_cena_day'].state + " Kč";
+            ]]]
+          entity: sensor.elektrina_cena_day
+          styles:
+            card:
+              - box-shadow: "none"
+              - background-color: "transparent"      
+              - height: "21px"
+              - width: "70px"
+              - padding: "0px"
+            label:
+              - justify-self: "start"
+              - font-size: "13px"
+              - font-weight: 330
+              - text-overflow: "ellipsis"
+              - overflow: "hidden"
+      graph:
+        card:
+          type: custom:mini-graph-card
+          entities:
+            - sensor.elektrina_cena_day
+
+          hours_to_show: 24
+          line_width: 4
+          decimals: 1
+          tap_action:
+            action: none
+
+          line_color: var(--graph-color)
+
+          show:
+            name: false
+            icon: false
+            state: false
+            labels: false
+            legend: false
+
+          card_mod:
+            style: |
+              {% set rgb = 'var(--color-background-theme-secondary)' %}
+
+              ha-card {
+                --graph-color: rgb({{ rgb }});
+                background: none;
+                box-shadow: none;
+                border: none;
+                opacity: 90%;
+                width: 100%;
+
+                mask-image: linear-gradient(
+                  to right,
+                  rgba(0,0,0,0) 0%,
+                  rgba(0,0,0,0) 3%,
+                  rgba(0,0,0,1) 10%,
+                  rgba(0,0,0,1) 80%,
+                  rgba(0,0,0,0) 95%,
+                  rgba(0,0,0,0) 100%
+                );
+              }
+
+              ha-card {
+                filter:
+                  drop-shadow(0 0 4px rgba({{ rgb }},0.35))
+                  drop-shadow(0 0 6px rgba({{ rgb }},0.18));
+              }
+
+              .graph__container__svg {
+                margin-top: -16px !important;
+              }
+
+    styles:
+      card:
+        - padding: 0px
+        - box-shadow: none;
+        - background-color: transparent;
+        - border-radius: "21px"
+        - height: 96px
+      grid:
+        - grid-template-areas: >
+            "labelyear1 labelmonth1 labelday1"
+            "labelyear2 labelmonth2 labelday2"
+            "graph graph graph"
+        - grid-template-columns: 1fr 1fr 1fr
+        - grid-template-rows: 1fr 1fr 2fr
+
+      custom_fields:
+        labelyear1:
+          - place-self:  center
+          - justify-self: left
+        labelyear2:
+          - place-self:  center
+          - justify-self: left
+        labelmonth1:
+          - place-self:  center
+          - justify-self: left
+        labelmonth2:
+          - place-self:  center
+          - justify-self: left
+        labelday1:
+          - place-self:  center
+          - justify-self: right
+        labelday2:
+          - place-self:  center
+          - justify-self: right
+        graph:
+          - place-self:  center
+          - justify-self: stretch

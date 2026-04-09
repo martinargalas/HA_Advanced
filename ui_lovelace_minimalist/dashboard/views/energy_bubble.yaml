@@ -1,0 +1,241 @@
+type: custom:layout-card
+layout_type: custom:grid-layout
+
+layout:
+  grid-template-columns: "1fr 1fr"
+  grid-template-rows: "min-content"
+  grid-template-areas: >
+    
+    "statistics statistics"
+    "flow_sankey_card_title flow_sankey_card_title"
+    "flow_sankey_card_mobile flow_sankey_card_mobile"
+    "prod_cons_chart_title prod_cons_chart_title"
+    "virtual_baterry1 virtual_baterry1"
+    "statistics_export statistics_consumption"
+    "statistics_import statistics_production"
+    "overview_big_mobile overview_big_mobile" 
+    "day_month_year_filter day_month_year_filter"
+    
+cards:
+
+  # DAY MONTH YEAR FILTER
+  ############################################################
+  # DEN – sun above horizon (oranžová / theme)
+  ############################################################
+  - view_layout:
+      grid-area: day_month_year_filter
+    type: conditional
+    conditions:
+      - condition: state
+        entity: sun.sun
+        state: "above_horizon"
+    card:
+      type: custom:bubble-card
+      card_type: select
+      name: ' '
+      show_state: false
+      show_icon: false
+      entity: input_select.graph_day_month_year
+      icon: mdi:calendar-filter-outline
+      tap_action:
+        action: none
+      styles: | 
+        ha-card {
+          --bubble-select-list-item-accent-color: rgba(var(--color-background-theme),0.8) !important;
+          --bubble-select-list-background-color: rgba(var(--color-black),0.4) !important;
+          --bubble-select-icon-background-color: rgba(var(--color-background-theme),0.25) !important;
+        }
+
+        .bubble-select-background {
+          opacity: 10 !important;
+          background-color: rgba(var(--color-background-theme),0.12) !important;
+        }
+
+        .bubble-select-card-container {
+          background: none !important;
+          opacity: 10 !important;
+          height: 56px !important;
+          top: -590px !important;
+          left: 194px !important;
+          z-index: 5;
+        }
+
+        .card-content {
+          width: 44%;
+          margin: 0 !important;
+        }
+
+        .bubble-icon-container {
+          background: transparent !important;
+        }
+
+        .bubble-dropdown-container {
+          background-color: transparent !important;
+        }
+
+        .bubble-dropdown-arrow {
+          width: 48px !important;
+          height: 48px !important;
+          border-radius: 50% !important;
+          overflow: hidden !important;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          background-color: rgba(var(--color-background-grey),0.2) !important;
+        }
+
+        .bubble-select-background {
+          color: var(--rgb-primary-text-color) !important;
+          background: none !important;
+        }
+
+        .mwc-list-item {
+          background-color: rgba(var(--color-background-theme),0.15) !important;
+          background: none !important;
+        }
+
+        * { 
+          font-size: 14px !important;
+          font-weight: 600 !important;
+          color: var(--rgb-primary-text-color) !important;
+        }
+
+        .bubble-name-container {
+          color: var(--rgb-primary-text-color) !important;
+        }
+
+        .bubble-icon-container {
+          color: var(--rgb-primary-text-color) !important;
+        }
+
+  ############################################################
+  # NOC – sun below horizon (původní barvy)
+  ############################################################
+  - view_layout:
+      grid-area: day_month_year_filter
+    type: conditional
+    conditions:
+      - condition: state
+        entity: sun.sun
+        state: "below_horizon"
+    card:
+      type: custom:bubble-card
+      card_type: select
+      name: ' '
+      show_state: false
+      show_icon: false
+      entity: input_select.graph_day_month_year
+      icon: mdi:calendar-filter-outline
+      tap_action:
+        action: none
+      styles: | 
+        ha-card {
+          --bubble-select-list-item-accent-color: rgba(var(--color-blue),0.7) !important;
+          --bubble-select-list-background-color: rgba(var(--color-black),0.4) !important;
+          --bubble-select-icon-background-color: rgba(var(--color-black),0.4) !important;
+        }
+
+        .bubble-select-background {
+          opacity: 10 !important;
+          background-color: rgba(var(--color-grey),0.1) !important;
+        }
+
+        .bubble-select-card-container {
+          background: none !important;
+          opacity: 10 !important;
+          height: 56px !important;
+          top: -590px !important;
+          left: 194px !important;
+          z-index: 5;
+        }
+
+        .card-content {
+          width: 44%;
+          margin: 0 !important;
+        }
+
+        .bubble-icon-container {
+          background: transparent !important;
+        }
+
+        .bubble-dropdown-container {
+          background-color: transparent !important;
+        }
+
+        .bubble-dropdown-arrow {
+          width: 48px !important;
+          height: 48px !important;
+          border-radius: 50% !important;
+          overflow: hidden !important;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          background-color: rgba(var(--color-background-grey),0.2) !important;
+        }
+
+        .bubble-select-background {
+          color: var(--rgb-primary-text-color) !important;
+          background: none !important;
+        }
+
+        .mwc-list-item {
+          background-color: rgba(var(--rgb-primary-text-color),0.1) !important;
+          background: none !important;
+        }
+
+        * { 
+          font-size: 14px !important;
+          font-weight: 600 !important;
+          color: var(--rgb-primary-text-color) !important;
+        }
+
+        .bubble-name-container {
+          color: var(--rgb-primary-text-color) !important;
+        }
+
+        .bubble-icon-container {
+          color: var(--rgb-primary-text-color) !important;
+        }
+
+      
+# VIRTUAL BATTERY\
+  - !include /config/ui_lovelace_minimalist/cards/bubble_cards/energy/virtual_baterry_mobile.yaml
+
+# STATISTICS
+  - !include /config/ui_lovelace_minimalist/cards/bubble_cards/energy/statistics_export.yaml
+  - !include /config/ui_lovelace_minimalist/cards/bubble_cards/energy/statistics_import.yaml
+  - !include /config/ui_lovelace_minimalist/cards/bubble_cards/energy/statistics_production.yaml
+  - !include /config/ui_lovelace_minimalist/cards/bubble_cards/energy/statistics_consumption.yaml
+
+# FLOW SANKEY CARD TITLE
+  - !include /config/ui_lovelace_minimalist/cards/bubble_cards/energy/flow_sankey_card_title.yaml
+
+# FLOW SANKEY CARD
+  - !include /config/ui_lovelace_minimalist/cards/bubble_cards/energy/flow_sankey_card_mobile.yaml
+
+# OVERVIEW BIG MOBILE
+  - !include /config/ui_lovelace_minimalist/cards/bubble_cards/energy/mobile/overview_big_mobile.yaml
+
+# PRODUCTION CONSUMPTION CHART TITLE
+  # - !include /config/ui_lovelace_minimalist/cards/bubble_cards/energy/prod_cons_chart_title.yaml
+
+# PRODUCTION CONSUMPTION CHART
+  # - !include /config/ui_lovelace_minimalist/cards/bubble_cards/energy/prod_cons_chart_day.yaml
+  # - !include /config/ui_lovelace_minimalist/cards/bubble_cards/energy/prod_cons_chart_month.yaml
+  # - !include /config/ui_lovelace_minimalist/cards/bubble_cards/energy/prod_cons_chart_year.yaml
+
+# HEAT PUMP PRODUCTION CONSUMPTION CHART TITLE
+  # - !include /config/ui_lovelace_minimalist/cards/bubble_cards/energy/heat_pump_cons_chart_title.yaml
+
+# HEAT PUMP PRODUCTION CONSUMPTION CHART
+  # - !include /config/ui_lovelace_minimalist/cards/bubble_cards/energy/heat_pump_cons_chart_day.yaml
+  # - !include /config/ui_lovelace_minimalist/cards/bubble_cards/energy/heat_pump_cons_chart_month.yaml
+  # - !include /config/ui_lovelace_minimalist/cards/bubble_cards/energy/heat_pump_cons_chart_year.yaml
+
+# ENERGY EXPORT GRAPH TITLE
+  # - !include /config/ui_lovelace_minimalist/cards/bubble_cards/energy/energy_export_chart_title.yaml
+
+# ENERGY EXPORT GRAPH
+  # - !include /config/ui_lovelace_minimalist/cards/bubble_cards/energy/energy_export_chart_day.yaml
+  # - !include /config/ui_lovelace_minimalist/cards/bubble_cards/energy/energy_export_chart_month.yaml
+  # - !include /config/ui_lovelace_minimalist/cards/bubble_cards/energy/energy_export_chart_year.yaml

@@ -1,0 +1,5 @@
+view_layout:
+type: custom:bubble-card
+card_type: separator
+name: Ovládání
+icon: mdi:arrow-all

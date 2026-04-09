@@ -1,0 +1,483 @@
+type: custom:swipe-card
+parameters:
+  effect: 'cube'
+  speed: 500
+  slideShadows: false
+  cubeEffect:
+    slideShadows: false
+    shadow: false
+cards:
+  - type: custom:button-card
+    name: Dětský pokoj
+    icon: mdi:teddy-bear
+    show_state: false
+    show_label: false
+    show_name: false
+    tap_action:
+      action: none
+    double_tap_action:
+      action: none
+    hold_action:
+      action: none
+    styles:
+      card:
+        - height: 120px
+        - border-radius: 26px
+        - padding: 7px
+        - position: relative
+        - overflow: hidden
+        - transition: transform 0.25s ease
+      icon:
+        - width: 42px
+        - color: var(--button-card-icon)
+        - filter: drop-shadow(0 2px 6px var(--button-card-icon-shadow))
+      name:
+        - font-size: 20px
+        - font-weight: 600
+        - color: var(--button-card-name)
+      label:
+        - font-size: 14px
+        - color: var(--button-card-label)
+          
+      grid:
+        
+        - grid-template-rows: "min-content"
+        - grid-template-columns: 1fr 1fr 1fr 
+        - grid-template-rows: 1fr 1fr
+        - grid-template-areas: >
+            "i i i"
+            "item1 item2 item3"
+
+      custom_fields:
+        item1:
+          - place-self:  center
+          - justify-self: center
+        item2:
+          - place-self:  center
+          - justify-self: center
+        item3:
+          - place-self:  center
+          - justify-self: center
+        item4:
+          - place-self:  center
+          - justify-self: center
+        
+    custom_fields:
+      item1:
+        card:
+          type: "custom:button-card"
+          show_name: false
+          show_label: false
+          show_icon: true
+          label: "Světla"
+          entity: input_boolean.star_projector
+          icon: mdi:projector
+          tap_action:
+            action: toggle
+          state:
+            - value: 'on'
+              styles:
+                card:
+                  - background: var(--macos-blue-background) 
+            - value: 'off'
+              styles:
+                card:
+                  - background: none 
+          styles:
+            card:
+              - border-radius: "42px"       
+              - height: "52px"
+              - width: "52px"
+              - background: var(--button-card-background)
+              - backdrop-filter: blur(20px) saturate(180%)
+              - -webkit-backdrop-filter: blur(20px) saturate(180%)
+              - border: 1px solid var(--button-card-border)
+              - box-shadow:
+                  - 0 10px 25px var(--button-card-shadow)
+                  - inset 0 1px 1px var(--button-card-inset-shadow)
+              - position: relative
+              - overflow: hidden
+              - transition: transform 0.25s ease
+            icon:
+              - width: 28px
+              - color: var(--button-card-icon)
+              - filter: drop-shadow(0 2px 6px var(--button-card-icon-shadow))
+      item2:
+        card:
+          type: "custom:button-card"
+          show_name: false
+          show_label: false
+          show_icon: true
+          label: "Žaluzie"
+          entity: cover.kids_room
+          icon: mdi:blinds-horizontal
+          state:
+          - value: "open"
+            icon: mdi:blinds-horizontal
+            styles:
+              card:
+                - background: none  
+          - value: "closed"
+            icon: mdi:blinds-horizontal-closed
+            styles:
+              card:
+                - background: var(--macos-blue-background)   
+          styles:
+            card:
+              - border-radius: "42px"       
+              - height: "52px"
+              - width: "52px"
+              - background: var(--button-card-background)
+              - backdrop-filter: blur(20px) saturate(180%)
+              - -webkit-backdrop-filter: blur(20px) saturate(180%)
+              - border: 1px solid var(--button-card-border)
+              - box-shadow:
+                  - 0 10px 25px var(--button-card-shadow)
+                  - inset 0 1px 1px var(--button-card-inset-shadow)
+              - position: relative
+              - overflow: hidden
+              - transition: transform 0.25s ease
+            icon:
+              - width: 28px
+              - color: var(--button-card-icon)
+              - filter: drop-shadow(0 2px 6px var(--button-card-icon-shadow))
+              
+          tap_action:
+            action: call-service
+            service: honeycomb   
+            entity: cover.kids_room
+            service_data:
+              entity_id: entity
+              animation_speed: 25
+              buttons:
+                - icon: mdi:numeric-1-box
+                  active: >
+                    [[[
+                      return (states['cover.kids_room'].attributes.current_tilt_position <= states['sensor.blinds_tilt_determine_min_high'].state 
+                      && states['cover.kids_room'].attributes.current_tilt_position >= states['sensor.blinds_tilt_determine_min_low'].state) 
+                      && states['cover.kids_room'].state == "closed"
+                      ? "True" : "1" == "1"
+                    ]]]
+                  tap_action:
+                    action: call-service
+                    service: script.tilt_blinds_kids_min
+                - icon: mdi:numeric-2-box
+                  active: >
+                    [[[
+                      return (states['cover.kids_room'].attributes.current_tilt_position <= states['sensor.blinds_tilt_determine_mid_high'].state 
+                      && states['cover.kids_room'].attributes.current_tilt_position >= states['sensor.blinds_tilt_determine_mid_low'].state) 
+                      && states['cover.kids_room'].state == "closed"
+                      ? "True" : "1" == "1"
+                    ]]]
+                  tap_action:
+                    action: call-service
+                    service: script.tilt_blinds_kids_mid
+                - icon: mdi:numeric-3-box
+                  active: >
+                    [[[
+                      return (states['cover.kids_room'].attributes.current_tilt_position <= states['sensor.blinds_tilt_determine_max_high'].state 
+                      && states['cover.kids_room'].attributes.current_tilt_position >= states['sensor.blinds_tilt_determine_max_low'].state)
+                      && states['cover.kids_room'].state == "closed" 
+                      ? "True" : "1" == "1"
+                    ]]]
+                  tap_action:
+                    action: call-service
+                    service: script.tilt_blinds_kids_max
+                - icon: mdi:window-shutter-open
+                  active: >
+                    [[[
+                      return (states['cover.kids_room'].state == "open") ? "True" : "1" == "1"
+                    ]]]
+                  tap_action:
+                    action: call-service
+                    service: script.open_blinds_kids
+                - icon: mdi:window-shutter
+                  active: >
+                    [[[
+                      return (states['cover.kids_room'].attributes.current_tilt_position == 0 && states['cover.kids_room'].state == "closed") ? "True" : "1" == "1"
+                    ]]]
+                  tap_action:
+                    action: call-service
+                    service: script.close_blinds_kids
+                - show: false
+
+      item3:
+        card:
+          type: "custom:button-card"
+          show_name: false
+          show_label: false
+          show_icon: true
+          label: "Hub"
+          entity: input_boolean.kids_radio
+          icon: mdi:tablet
+          tap_action:
+            action: call-service
+            service: script.kids_radio_button_toggle
+          state:
+            - value: 'on'
+              styles:
+                card:
+                  - background: var(--macos-blue-background) 
+            - value: 'off'
+              styles:
+                card:
+                  - background: none 
+          styles:
+            card:
+              - border-radius: "42px"       
+              - height: "52px"
+              - width: "52px"
+              - background: var(--button-card-background)
+              - backdrop-filter: blur(20px) saturate(180%)
+              - -webkit-backdrop-filter: blur(20px) saturate(180%)
+              - border: 1px solid var(--button-card-border)
+              - box-shadow:
+                  - 0 10px 25px var(--button-card-shadow)
+                  - inset 0 1px 1px var(--button-card-inset-shadow)
+              - position: relative
+              - overflow: hidden
+              - transition: transform 0.25s ease
+            icon:
+              - width: 28px
+              - color: var(--button-card-icon)
+              - filter: drop-shadow(0 2px 6px var(--button-card-icon-shadow))
+      # item4:
+      #   card:
+      #     type: "custom:button-card"
+      #     show_name: false
+      #     show_label: false
+      #     show_icon: true
+      #     label: "Server"
+      #     entity: input_number.counter_graph
+      #     icon: mdi:server-outline
+      #     styles:
+      #       card:
+      #         - border-radius: "42px"       
+      #         - height: "52px"
+      #         - width: "52px"
+      #         - background: var(--button-card-background)
+      #         - backdrop-filter: blur(20px) saturate(180%)
+      #         - -webkit-backdrop-filter: blur(20px) saturate(180%)
+      #         - border: 1px solid var(--button-card-border)
+      #         - box-shadow:
+      #             - 0 10px 25px var(--button-card-shadow)
+      #             - inset 0 1px 1px var(--button-card-inset-shadow)
+      #         - position: relative
+      #         - overflow: hidden
+      #         - transition: transform 0.25s ease
+      #       icon:
+      #         - width: 28px
+      #         - color: var(--button-card-icon)
+      #         - filter: drop-shadow(0 2px 6px var(--button-card-icon-shadow))
+  - type: custom:mod-card
+    card_mod:
+      style: |
+        ha-card {
+          z-index: 3 !important;
+          border-radius: 26px;
+          padding: 10px;
+          height: 120px !important;
+          max-height: 120px !important;
+          background: var(--button-card-background) !important;
+        }
+
+        ha-card::before {
+          content: "";
+          position: absolute;
+          inset: 0;
+          border-radius: 26px;
+          background: linear-gradient(
+            120deg,
+            var(--button-card-before-gradient-start),
+            var(--button-card-before-gradient-mid) 30%,
+            var(--button-card-before-gradient-end) 60%
+          );
+          opacity: 0.35;
+          pointer-events: none;
+        }
+        ha-card::after {
+          content: "";
+          position: absolute;
+          inset: 0;
+          border-radius: 26px;
+          box-shadow:
+            inset 0 0 0 1.5px var(--button-card-after-border),
+            inset 0 0 20px var(--button-card-after-shadow);
+          pointer-events: none;
+        } 
+    card:
+      type: grid
+      columns: 1
+      square: false
+      cards:
+      - type: horizontal-stack
+        cards:
+        - type: custom:button-card
+          icon: mdi:alarm-note
+          show_state: false
+          show_label: false
+          show_name: false
+          entity: input_boolean.alarmed_toggle
+          tap_action:
+            action: toggle
+          double_tap_action:
+            action: none
+          hold_action:
+            action: none
+          state:
+          - value: 'on'
+            icon: mdi:alarm-note
+          - value: 'off'
+            icon: mdi:alarm-note-off
+            
+          styles:
+            card:
+              - background: transparent
+              - height: 52px
+              - box-shadow: none
+              - border-radius: 26px
+              - padding: 0px
+              - top: 0px
+              - left: -10px
+            icon:
+              - width: 42px
+              - color: var(--button-card-icon)
+              - filter: drop-shadow(0 2px 6px var(--button-card-icon-shadow))
+
+        - type: custom:lightalarm-card
+          time_entity: input_datetime.lightalarm_time
+          mode_entity: input_select.lightalarm_mode
+          duration_entity: input_number.lightalarm_duration
+          card_mod:
+            style: |
+              ha-card {
+                z-index: 3 !important;
+                top: 2px !important;
+                left: -45px !important;
+                box-shadow: none;
+                background: transparent;
+                color: var(--text-color) !important;
+                font-family: "Roboto", sans-serif !important;
+                filter: drop-shadow(0 2px 6px var(--button-card-icon-shadow))
+              }
+              .alarm-properties-wrap, .alarm-duration, .alarm-mode, .alarm-time-decorator {
+                display: none;
+              }
+              .alarm-time-wrap {
+                font-size: 30px !important;
+                font-weight: 400 !important;
+              }
+
+      - type: custom:bubble-card
+        place-self: left end stretch
+        card_type: select
+        entity: input_select.lightalarm_mode
+        show_state: true
+        show_icon: false
+        styles: | 
+          ha-card {
+            --bubble-select-list-item-accent-color: rgba(var(--color-background-macos-blue),0.8) !important;
+            --bubble-select-list-background-color: rgba(var(--color-background-black),0.3) !important;
+            --bubble-select-icon-background-color: rgba(var(--color-background-macos-blue),0.25) !important;
+            top: -5px !important;
+          }
+
+          .bubble-select-background {
+            opacity: 10 !important;
+            background-color: rgba(var(--color-background-macos-blue),1) !important;
+          }
+
+          .bubble-select-card-container {
+            height: 46px !important;
+            background: var(--button-card-background) !important;
+            backdrop-filter: blur(20px) saturate(180%) !important;
+            -webkit-backdrop-filter: blur(20px) saturate(180%) !important;
+            border: 1px solid var(--button-card-border) !important;
+            box-shadow:
+              inset 0 0 0 1px var(--button-card-after-border),
+              inset 0 0 20px var(--button-card-after-shadow) !important;
+          }
+
+          .bubble-select-card-container * {
+            color: var(--text-color) !important;
+            text-shadow: 0 0 6px var(--button-card-after-shadow) !important;
+          }
+
+          .card-content {
+            margin: 0 !important;
+
+          }
+
+          .bubble-icon-container {
+            background: transparent !important;
+            color: var(--text-color) !important;
+
+          }
+
+          .bubble-dropdown-container {
+            background-color: transparent !important; 
+
+          }
+
+          .bubble-dropdown-arrow {
+            width: 40px !important;
+            height: 40px !important;
+            right: -5px !important;
+            border-radius: 50% !important;
+            overflow: hidden !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            
+            background: linear-gradient(
+                120deg,
+                var(--button-card-before-gradient-start),
+                var(--button-card-before-gradient-mid) 60%,
+                var(--button-card-before-gradient-end) 90%
+              ) !important;
+            background-color: rgba(var(--color-background-black), 0.3) !important;
+            box-shadow:
+              inset 0 0 0 1px var(--button-card-after-border),
+              inset 0 0 20px var(--button-card-after-shadow) !important;
+
+          }
+
+          .mwc-list-item {
+            background-color: rgba(var(--color-background-macos-blue),0.15) !important;
+          }
+
+          * { 
+            font-size: 14px !important;
+            font-weight: 600 !important;
+            color: var(--text-color) !important;
+          }
+
+          .bubble-name-container {
+            color: var(--text-color) !important;
+          }
+card_mod:
+  style: |
+    ha-card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: 26px;
+      background: linear-gradient(
+        120deg,
+        var(--button-card-before-gradient-start),
+        var(--button-card-before-gradient-mid) 30%,
+        var(--button-card-before-gradient-end) 60%
+      );
+      opacity: 0.35;
+      pointer-events: none;
+    }
+    ha-card::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: 26px;
+      box-shadow:
+        inset 0 0 0 1.5px var(--button-card-after-border),
+        inset 0 0 20px var(--button-card-after-shadow);
+      pointer-events: none;
+    } 

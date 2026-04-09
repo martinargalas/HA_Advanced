@@ -1,0 +1,32 @@
+view_layout:
+  grid-area: "kitchen"     
+  place-self: left end stretch
+type: 'custom:button-card'
+template:
+  - card_room
+  - yellow_on
+  - grey_no_state      
+name: Kuchyně
+entity: light.kitchen
+icon: mdi:countertop
+tap_action:
+  action: toggle
+variables:
+  label_use_temperature: false
+  label_use_brightness: true
+  entity_1:
+    entity_id: light.kitchen
+    templates:
+      - yellow_on
+    tap_action:
+      action: toggle
+  entity_2:
+    entity_id: media_player.office
+    templates:
+      - blue_on
+    tap_action:
+      action: toggle
+label: >
+    [[[
+      return "🌡️" + Math.round((states['sensor.temperature_sensor_4'].state) * 100) / 100 + " °C" + "💧" + states['sensor.temperature_sensor_humidity_sensor_4'].state + " %"
+    ]]]
