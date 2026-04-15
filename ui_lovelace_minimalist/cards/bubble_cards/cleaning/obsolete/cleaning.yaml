@@ -164,7 +164,7 @@ cards:
       - type: custom:lawn-mower-card
         entity: lawn_mower.luba_vsqcfhrv
         battery: sensor.luba_vsqcfhrv_battery
-        image: http://192.168.4.99:8123/local/community/spotify/luba.png
+        image: http://192.168.4.24:8123/local/community/spotify/luba.png
         show_name: true
         show_toolbar: false
         compact_view: true

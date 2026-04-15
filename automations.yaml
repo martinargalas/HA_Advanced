@@ -50,7 +50,7 @@
       volume_level: 0
   - data:
       media:
-        media_content_id: http://192.168.4.99:8123/local/community/spotify/alarm_birds_sound.mp3
+        media_content_id: http://192.168.4.24:8123/local/community/spotify/alarm_birds_sound.mp3
         media_content_type: music
         metadata: {}
     target:
@@ -1526,7 +1526,7 @@
       ip: 192.168.4.39
       title: Home Assistant
       message: Pračka doprala prádlo
-      url: http://192.168.4.99:8123/local/community/spotify/washer2.jpg
+      url: http://192.168.4.24:8123/local/community/spotify/washer2.jpg
     action: rest_command.pipup_image_on_tv
   - action: media_player.volume_set
     metadata: {}

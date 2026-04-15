@@ -296,7 +296,7 @@ cards:
             - !secret rtsp_camera_front
           ui: false
           background: false
-          poster: http://192.168.4.99:8123/local/community/spotify/camera.jpg
+          poster: http://192.168.4.24:8123/local/community/spotify/camera.jpg
           style: '.header {top: unset; bottom: -250px}'
             
 
@@ -482,7 +482,7 @@ cards:
             - !secret rtsp_camera_garden
           ui: false
           background: false
-          poster: http://192.168.4.99:8123/local/community/spotify/camera.jpg
+          poster: http://192.168.4.24:8123/local/community/spotify/camera.jpg
           style: '.header {top: unset; bottom: -250px}'
           card_mod:
             style: |

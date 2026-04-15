@@ -20,7 +20,7 @@ cards:
         above: 0
     card:
       type: picture-elements
-      image: http://192.168.4.99:8123/local/community/pictures/white_to_grid2.gif
+      image: http://192.168.4.24:8123/local/community/pictures/white_to_grid2.gif
       card_mod:
         style: |
           @keyframes glowPulse {
@@ -43,7 +43,7 @@ cards:
         below: 0
     card:
       type: picture-elements
-      image: 'http://192.168.4.99:8123/local/community/pictures/white_from_grid3.gif'
+      image: 'http://192.168.4.24:8123/local/community/pictures/white_from_grid3.gif'
       card_mod:
         style: |
           @keyframes glowPulse {
@@ -66,7 +66,7 @@ cards:
         below: 0
     card:
       type: picture-elements
-      image: http://192.168.4.99:8123/local/community/pictures/white_from_grid_no_PV2.gif
+      image: http://192.168.4.24:8123/local/community/pictures/white_from_grid_no_PV2.gif
       card_mod:
         style: |
           @keyframes glowPulse {
@@ -89,7 +89,7 @@ cards:
         above: 0
     card:
       type: picture-elements
-      image: http://192.168.4.99:8123/local/community/pictures/dark_to_grid4.gif
+      image: http://192.168.4.24:8123/local/community/pictures/dark_to_grid4.gif
       card_mod:
         style: |
           @keyframes glowPulse {
@@ -112,7 +112,7 @@ cards:
         below: 0
     card:
       type: picture-elements
-      image: http://192.168.4.99:8123/local/community/pictures/dark_from_grid4.gif
+      image: http://192.168.4.24:8123/local/community/pictures/dark_from_grid4.gif
       card_mod:
         style: |
           @keyframes glowPulse {
@@ -135,7 +135,7 @@ cards:
         below: 0
     card:
       type: picture-elements
-      image: http://192.168.4.99:8123/local/community/pictures/dark_from_grid_no_PV4.gif
+      image: http://192.168.4.24:8123/local/community/pictures/dark_from_grid_no_PV4.gif
       card_mod:
         style: |
           @keyframes glowPulse {

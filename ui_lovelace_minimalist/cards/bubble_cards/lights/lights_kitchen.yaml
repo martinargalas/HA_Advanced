@@ -93,27 +93,27 @@ cards:
             service: scene.turn_on
             service_data:
               entity_id: scene.kitchen_relax
-            icon_color: center/120% url('http://192.168.4.99:8123/local/community/spotify/Relax.png')
+            icon_color: center/120% url('http://192.168.4.24:8123/local/community/spotify/Relax.png')
           - type: call-service
             service: scene.turn_on
             service_data:
               entity_id: scene.kitchen_concentrate
-            icon_color: center/120% url('http://192.168.4.99:8123/local/community/spotify/Concentrate.png')
+            icon_color: center/120% url('http://192.168.4.24:8123/local/community/spotify/Concentrate.png')
           - type: call-service
             service: scene.turn_on
             service_data:
               entity_id: scene.kitchen_read
-            icon_color: center/120% url('http://192.168.4.99:8123/local/community/spotify/Read.png')
+            icon_color: center/120% url('http://192.168.4.24:8123/local/community/spotify/Read.png')
           - type: call-service
             service: scene.turn_on
             service_data:
               entity_id: scene.kitchen_nightlight
-            icon_color: center/120% url('http://192.168.4.99:8123/local/community/spotify/Night.png')
+            icon_color: center/120% url('http://192.168.4.24:8123/local/community/spotify/Night.png')
           - type: call-service
             service: scene.turn_on
             service_data:
               entity_id: scene.kitchen_natural_light
-            icon_color: center/120% url('http://192.168.4.99:8123/local/community/spotify/Natural.png')
+            icon_color: center/120% url('http://192.168.4.24:8123/local/community/spotify/Natural.png')
   
   - type: entities
     show_header_toggle: false
