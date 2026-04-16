@@ -4,426 +4,365 @@ type: custom:vertical-stack-in-card
 card_mod:
   style: |
     ha-card {
-        background-color: rgba(var(--color-background-black),0.3)
-      }
+      border-radius: 34px;
+      background: none;
+      backdrop-filter: blur(35px) saturate(100%);
+      -webkit-backdrop-filter: blur(35px) saturate(100%);
+      border: 1px solid var(--mod-card-border);
+      box-shadow: 
+        0 15px 25px var(--mod-card-shadow), 
+        inset 0 2px 3px var(--mod-card-inset-shadow);
+    }
+    
+    ha-card::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: 26px;
+      box-shadow:
+        inset 0 0 0 1px var(--button-card-after-border),
+        inset 0 0 20px var(--button-card-after-shadow);
+      pointer-events: none;
+    }
       
 cards:
-  - type: horizontal-stack
-    card_mod:
-      style: |
-        ha-card {
-            background-color: transparent;
-          }
-    cards:
-    - type: custom:mushroom-template-card
-      entity: binary_sensor.e3_tcu10_x07_compressor
-      name: " "
-      icon: mdi:heat-pump
-      primary: "Kompresor"
-      secondary: " "
-      card_mod:
-        style:
-          mushroom-state-info$: |
-            .container {
-              --card-primary-color: rgba(var(--primary-text-color),0.7);
-              --card-secondary-color: rgba(var(--primary-text-color),0.7);
-            }
+  - !include /config/ui_lovelace_minimalist/cards/bubble_cards/utilities/mobile/utilities_heat_pump_stats.yaml
 
-            .primary {
-              background: rgba(var(--color-background-black),0.3) !important;
-              color: white;
+  # - type: horizontal-stack
+  #   card_mod:
+  #     style: |
+  #       ha-card {
+  #           background-color: transparent;
+  #         }
+  #   cards:
+  #   - type: custom:mushroom-template-card
+  #     entity: binary_sensor.e3_tcu10_x07_compressor
+  #     name: " "
+  #     icon: mdi:heat-pump
+  #     primary: " "
+  #     secondary: " "
+  #     card_mod:
+  #       style:
+  #         mushroom-state-info$: |
+  #           .container {
+  #             --card-primary-color: rgba(var(--primary-text-color),0.7);
+  #             --card-secondary-color: rgba(var(--primary-text-color),0.7);
+  #           }
+  #           .primary {
+  #             background: rgba(var(--color-background-black),0.3) !important;
+  #             color: white;
 
-              margin-left: -74px !important;
-              margin-top: 0px !important;
-              margin-right: 10px !important;
-              border-radius: 32px;
-              height: 56px !important;
+  #             margin-left: -74px !important;
+  #             margin-top: 0px !important;
+  #             margin-right: 10px !important;
+  #             border-radius: 32px;
 
-              display: inline-flex;
-              justify-content: left;
-              align-items: center;
-              font-size: 14px !important;
-              font-weight: 600;
-              line-height: 1;
+  #             height: 56px !important;
+  #             width: 56px !important;
 
-              transform: translate(12px, 6px);
-              box-shadow: 0 2px 6px rgba(0,0,0,0.15);
-              pointer-events: none;
-              padding-left: 60px;
-            }
+  #             display: inline-flex;
+  #             justify-content: left;
+  #             align-items: center;
+  #             font-size: 14px !important;
+  #             font-weight: 600;
+  #             line-height: 1;
 
-          mushroom-shape-icon$: |
-            ha-icon {
-              {% if is_state(config.entity, 'on') %}
-                --icon-animation: rotation 1s linear infinite;
-              {% endif %}
-              transform-origin: 29% 88%;
-            }
+  #             transform: translate(12px, 6px);
+  #             box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+  #             pointer-events: none;
+  #           }
 
-            .shape {
-              position: relative;
-              z-index: 3;
-              border-radius: 50%;
+  #         mushroom-shape-icon$: |
+  #           {% set sun_state = states('sun.sun') %}
+  #           {% set glow_color = 'var(--color-background-theme)' %}
+  #           ha-icon {
+  #             {{ '--icon-animation: rotation 1s linear infinite;' if is_state(config.entity, 'on') }}
+  #             transform-origin: 29% 88%;
+  #           }
+  #           .shape {
+  #             {{ '--shape-animation: ping 2s infinite;' if is_state(config.entity, 'on') }}
+  #             background-color: 
+  #               {% if is_state(config.entity, 'on') %}
+  #                 rgba({{ glow_color }},0.15) !important;
+  #               {% else %}
+  #                 rgba(var(--color-grey),0.1) !important;
+  #               {% endif %};
+  #             position: relative;
+  #             z-index: 3;   /* ikona bude nad vším */
+  #           }
+  #           :host {
+  #             {% if is_state(config.entity, 'on') %}
+  #               --card-mod-icon-color: rgb({{ glow_color }});   # ikona kopíruje den/noc
+  #             {% else %}
+  #               --card-mod-icon-color: rgba(var(--color-grey),1);
+  #             {% endif %}
+  #           }
 
-              {% if is_state(config.entity, 'on') %}
-                --shape-animation: ping 2s infinite;
-                background-color: rgba(var(--color-background-theme), 0.18) !important;
-                box-shadow:
-                  0 0 18px rgba(var(--color-background-theme),0.35),
-                  0 0 40px rgba(var(--color-background-theme),0.25);
-              {% else %}
-                background-color: rgba(var(--color-grey),0.25) !important;
-                border: 1px solid rgba(var(--color-grey),0.8);
-                box-shadow: 0 0 6px rgba(0,0,0,0.3);
-              {% endif %}
-            }
+  #           @keyframes ping {
+  #             0% { box-shadow: 0 0 0 0 rgba({{ glow_color }},1); }
+  #             70% { box-shadow: 0 0 0 10px transparent; }
+  #             100% { box-shadow: 0 0 0 0 transparent; }
+  #           }
 
-            :host {
-              {% if is_state(config.entity, 'on') %}
-                --card-mod-icon-color: rgba(var(--color-background-theme),1);
-              {% else %}
-                --card-mod-icon-color: rgba(var(--color-grey),1);
-              {% endif %}
-            }
+  #         .: |
+  #           mushroom-shape-icon {
+  #             --icon-size: 48px;
+  #             margin-top: 12px !important;
+  #             display: flex;
 
-            @keyframes ping {
-              0% {
-                box-shadow:
-                  0 0 0 0 rgba(var(--color-background-theme),0.6);
-              }
-              70% {
-                box-shadow:
-                  0 0 0 14px rgba(var(--color-background-theme),0);
-              }
-              100% {
-                box-shadow:
-                  0 0 0 0 rgba(var(--color-background-theme),0);
-              }
-            }
-
-          .: |
-            mushroom-shape-icon {
-              --icon-size: 48px;
-              margin-top: 12px !important;
-              display: flex;
-            }
-
-            ha-card {
-              clip-path: inset(0 0 0 0 round var(--ha-card-border-radius, 12px));
-              background: none !important;
-              margin-top: -10px !important;
-            }
-
-
-
-     
-
-          mushroom-shape-icon$: |
-            ha-icon {
-              {{ '--icon-animation: rotation 1s linear infinite;' if is_state(config.entity, 'on') }}
-              transform-origin: 29% 88%;
-            }
-            @keyframes clip {
-              0% {
-                clip-path: inset(50% 0 0 0);
-              }
-              100% {
-                clip-path: inset(0 0 0 0);
-              }
-            }
-            .shape {
-              {{ '--shape-animation: ping 2s infinite;' if is_state(config.entity, 'on') }}  
-              background-color: 
-                {% if is_state(config.entity, 'on') %}
-                  rgba(var(--color-green), 0.1)
-                {% else %}
-                  rgba(var(--color-grey), 0.1)
-                {% endif %} !important; 
-              height: 20px
-            }
-            :host {
-              {{ '--card-mod-icon-color: rgba(var(--color-green),1);'  if is_state(config.entity, 'on') }}  
-              {{ '--card-mod-icon-color: "rgba(var(--color-grey),1)";'  if is_state(config.entity, 'off') }}
-            }
-
-            @keyframes ping {
-              0% {
-                box-shadow: 0 0 0 0 rgba(var(--rgb-green), 0.7);
-              }
+  #           }
+  #           ha-card {
+  #             clip-path: inset(0 0 0 0 round var(--ha-card-border-radius, 12px));
+  #             background: none !important;
+  #             margin-top: -10px !important;
               
-              70% {
-                box-shadow: 0 0 0 10px transparent;
-              }
+  #           }
+
+  #   - type: custom:mushroom-template-card
+  #     entity: sensor.water_heating_on
+  #     icon: mdi:shower-head
+  #     name: " "
+  #     primary: " "
+  #     secondary: " "
+  #     card_mod:
+  #       style:
+  #         mushroom-state-info$: |
+  #           .container {
+  #             --card-primary-color: rgba(var(--primary-text-color),0.7);
+  #             --card-secondary-color: rgba(var(--primary-text-color),0.7);
+  #           }
+  #           .primary {
+  #             background: rgba(var(--color-background-black),0.3) !important;
+  #             color: white;
+
+  #             margin-left: -74px !important;
+  #             margin-top: 0px !important;
+  #             margin-right: 10px !important;
+  #             border-radius: 32px;
+
+  #             height: 56px !important;
+  #             width: 56px !important;
+
+  #             display: inline-flex;
+  #             justify-content: left;
+  #             align-items: center;
+  #             font-size: 14px !important;
+  #             font-weight: 600;
+  #             line-height: 1;
+
+  #             transform: translate(12px, 6px);
+  #             box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+  #             pointer-events: none;
+  #           }
+
+  #         mushroom-shape-icon$: |
+  #           {% set sun_state = states('sun.sun') %}
+  #           {% set glow_color = 'var(--color-background-theme)' %}
+  #           ha-icon {
+  #             {{ '--icon-animation: rotation 1s linear infinite;' if is_state(config.entity, 'on') }}
+  #             transform-origin: 29% 88%;
+  #           }
+  #           .shape {
+  #             {{ '--shape-animation: ping 2s infinite;' if is_state(config.entity, 'on') }}
+  #             background-color: 
+  #               {% if is_state(config.entity, 'on') %}
+  #                 rgba({{ glow_color }},0.15) !important;
+  #               {% else %}
+  #                 rgba(var(--color-grey),0.1) !important;
+  #               {% endif %};
+  #             position: relative;
+  #             z-index: 3;   /* ikona bude nad vším */
+  #           }
+  #           :host {
+  #             {% if is_state(config.entity, 'on') %}
+  #               --card-mod-icon-color: rgb({{ glow_color }});   # ikona kopíruje den/noc
+  #             {% else %}
+  #               --card-mod-icon-color: rgba(var(--color-grey),1);
+  #             {% endif %}
+  #           }
+
+  #           @keyframes ping {
+  #             0% { box-shadow: 0 0 0 0 rgba({{ glow_color }},1); }
+  #             70% { box-shadow: 0 0 0 10px transparent; }
+  #             100% { box-shadow: 0 0 0 0 transparent; }
+  #           }
+
+  #         .: |
+  #           mushroom-shape-icon {
+  #             --icon-size: 48px;
+  #             margin-top: 12px !important;
+  #             display: flex;
+
+  #           }
+  #           ha-card {
+  #             clip-path: inset(0 0 0 0 round var(--ha-card-border-radius, 12px));
+  #             background: none !important;
+  #             margin-top: -10px !important;
               
-              100% {
-                box-shadow: 0 0 0 0 transparent;
-              }
-            }
-          .: |
-            mushroom-shape-icon {
-              --icon-size: 48px;
-              margin-top: 12px !important;
-              display: flex;
-              
-            }
-            ha-card {
-              clip-path: inset(0 0 0 0 round var(--ha-card-border-radius, 12px));
-              background: none !important;
-              margin-top: -10px !important;
-            }
+  #             }
 
-    - type: custom:mushroom-template-card
-      entity: sensor.water_heating_on
-      icon: mdi:shower-head
-      name: " "
-      primary: "Ohřev vody"
-      secondary: " "
-      card_mod:
-        style:
-          mushroom-state-info$: |
-            .container {
-              --card-primary-color: rgba(var(--primary-text-color),0.7);
-              --card-secondary-color: rgba(var(--primary-text-color),0.7);
-            }
-            .primary {
-              background: rgba(var(--color-background-black),0.3) !important;
-              color: white;
+  #   - type: custom:mushroom-template-card
+  #     entity: binary_sensor.e3_tcu10_x07_frost_protection
+  #     primary: "Ochrana"
+  #     secondary: ' '
+  #     icon: mdi:snowflake
+  #     card_mod:
+  #       style:
+  #         mushroom-state-info$: |
+  #           .container {
+  #             --card-primary-color: rgba(var(--primary-text-color),0.7);
+  #             --card-secondary-color: rgba(var(--primary-text-color),0.7);
+  #           }
+  #           .primary {
+  #             background: rgba(var(--color-background-black),0.3) !important;
+  #             color: white;
 
-              margin-left: -74px !important;
-              margin-top: 0px !important;
-              margin-right: 10px !important;
-              border-radius: 32px;
+  #             margin-left: -74px !important;
+  #             margin-top: -4px !important;
+  #             margin-right: 10px !important;
+  #             border-radius: 32px;
 
-              height: 56px !important;
+  #             height: 56px !important;
 
-              display: inline-flex;
-              justify-content: left;
-              align-items: center;
-              font-size: 14px !important;
-              font-weight: 600;
-              line-height: 1;
+  #             display: inline-flex;
+  #             justify-content: left;
+  #             align-items: center;
+  #             font-size: 14px !important;
+  #             font-weight: 600;
+  #             line-height: 1;
 
-              transform: translate(12px, 6px);
-              box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
-              pointer-events: none;
-              padding-left: 60px; 
-            }
+  #             transform: translate(12px, 6px);
+  #             box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+  #             pointer-events: none;
+  #             padding-left: 60px; 
+  #           }
 
-          mushroom-shape-icon$: |
-            {% set sun_state = states('sun.sun') %}
-            {% set glow_color = 'var(--color-background-theme)' %}
-            ha-icon {
-              {{ '--icon-animation: rotation 1s linear infinite;' if is_state(config.entity, 'on') }}
-              transform-origin: 29% 88%;
-            }
-            .shape {
-              {{ '--shape-animation: ping 2s infinite;' if is_state(config.entity, 'on') }}
-              background-color: 
-                {% if is_state(config.entity, 'on') %}
-                  rgba({{ glow_color }},0.15) !important;
-                {% else %}
-                  rgba(var(--color-grey),0.1) !important;
-                {% endif %};
-              position: relative;
-              z-index: 3;   /* ikona bude nad vším */
-            }
-            :host {
-              {% if is_state(config.entity, 'on') %}
-                --card-mod-icon-color: rgb({{ glow_color }});   # ikona kopíruje den/noc
-              {% else %}
-                --card-mod-icon-color: rgba(var(--color-grey),1);
-              {% endif %}
-            }
+  #         mushroom-shape-icon$: |
+  #           {% set sun_state = states('sun.sun') %}
+  #           {% set glow_color = 'var(--color-background-theme)' %}
+  #           ha-icon {
+  #             {{ '--icon-animation: rotation 1s linear infinite;' if is_state(config.entity, 'on') }}
+  #             transform-origin: 29% 88%;
+  #           }
+  #           .shape {
+  #             {{ '--shape-animation: ping 2s infinite;' if is_state(config.entity, 'on') }}
+  #             background-color: 
+  #               {% if is_state(config.entity, 'on') %}
+  #                 rgba({{ glow_color }},0.15) !important;
+  #               {% else %}
+  #                 rgba(var(--color-grey),0.1) !important;
+  #               {% endif %};
+  #             position: relative;
+  #             z-index: 3;   /* ikona bude nad vším */
+  #           }
+  #           :host {
+  #             {% if is_state(config.entity, 'on') %}
+  #               --card-mod-icon-color: rgb({{ glow_color }});   # ikona kopíruje den/noc
+  #             {% else %}
+  #               --card-mod-icon-color: rgba(var(--color-grey),1);
+  #             {% endif %}
+  #           }
 
-            @keyframes ping {
-              0% { box-shadow: 0 0 0 0 rgba({{ glow_color }},1); }
-              70% { box-shadow: 0 0 0 10px transparent; }
-              100% { box-shadow: 0 0 0 0 transparent; }
-            }
+  #           @keyframes ping {
+  #             0% { box-shadow: 0 0 0 0 rgba({{ glow_color }},1); }
+  #             70% { box-shadow: 0 0 0 10px transparent; }
+  #             100% { box-shadow: 0 0 0 0 transparent; }
+  #           }
 
-          .: |
-            mushroom-shape-icon {
-              --icon-size: 48px;
-              margin-top: 12px !important;
-              display: flex;
-            }
-            ha-card {
-              clip-path: inset(0 0 0 0 round var(--ha-card-border-radius, 12px));
-              background: none !important;
-              margin-top: -10px !important;
-            }
-
-
-  - type: horizontal-stack
-    card_mod:
-      style: |
-        ha-card {
-            background-color: transparent;
-            box-shadow: none;
-          }
-    cards:
-    - type: custom:mushroom-template-card
-      entity: binary_sensor.e3_tcu10_x07_frost_protection
-      primary: "Ochrana"
-      secondary: ' '
-      icon: mdi:snowflake
-      card_mod:
-        style:
-          mushroom-state-info$: |
-            .container {
-              --card-primary-color: rgba(var(--primary-text-color),0.7);
-              --card-secondary-color: rgba(var(--primary-text-color),0.7);
-            }
-            .primary {
-              background: rgba(var(--color-background-black),0.3) !important;
-              color: white;
-
-              margin-left: -74px !important;
-              margin-top: -4px !important;
-              margin-right: 10px !important;
-              border-radius: 32px;
-
-              height: 56px !important;
-
-              display: inline-flex;
-              justify-content: left;
-              align-items: center;
-              font-size: 14px !important;
-              font-weight: 600;
-              line-height: 1;
-
-              transform: translate(12px, 6px);
-              box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
-              pointer-events: none;
-              padding-left: 60px; 
-            }
-
-          mushroom-shape-icon$: |
-            {% set sun_state = states('sun.sun') %}
-            {% set glow_color = 'var(--color-background-theme)' %}
-            ha-icon {
-              {{ '--icon-animation: rotation 1s linear infinite;' if is_state(config.entity, 'on') }}
-              transform-origin: 29% 88%;
-            }
-            .shape {
-              {{ '--shape-animation: ping 2s infinite;' if is_state(config.entity, 'on') }}
-              background-color: 
-                {% if is_state(config.entity, 'on') %}
-                  rgba({{ glow_color }},0.15) !important;
-                {% else %}
-                  rgba(var(--color-grey),0.1) !important;
-                {% endif %};
-              position: relative;
-              z-index: 3;   /* ikona bude nad vším */
-            }
-            :host {
-              {% if is_state(config.entity, 'on') %}
-                --card-mod-icon-color: rgb({{ glow_color }});   # ikona kopíruje den/noc
-              {% else %}
-                --card-mod-icon-color: rgba(var(--color-grey),1);
-              {% endif %}
-            }
-
-            @keyframes ping {
-              0% { box-shadow: 0 0 0 0 rgba({{ glow_color }},1); }
-              70% { box-shadow: 0 0 0 10px transparent; }
-              100% { box-shadow: 0 0 0 0 transparent; }
-            }
-
-          .: |
-            mushroom-shape-icon {
-              --icon-size: 48px;
-              margin-top: 7px !important;
-              display: flex;
-            }
-            ha-card {
-              clip-path: inset(0 0 0 0 round var(--ha-card-border-radius, 12px));
-              background: none !important;
-              margin-top: -10px !important;
-              margin-bottom: 10px !important;
-            }
+  #         .: |
+  #           mushroom-shape-icon {
+  #             --icon-size: 48px;
+  #             margin-top: 7px !important;
+  #             display: flex;
+  #           }
+  #           ha-card {
+  #             clip-path: inset(0 0 0 0 round var(--ha-card-border-radius, 12px));
+  #             background: none !important;
+  #             margin-top: -10px !important;
+  #             margin-bottom: 10px !important;
+  #           }
 
 
 
 
-    - type: custom:mushroom-template-card
-      entity: binary_sensor.e3_tcu10_x07_circulation_pump
-      icon: mdi:pump
-      layout: horizontal
-      name: Čerpadlo
-      primary: "Čerpadlo"
-      secondary: " "
-      card_mod:
-        style:
-          mushroom-state-info$: |
-            .container {
-              --card-primary-color: rgba(var(--primary-text-color),0.7);
-              --card-secondary-color: rgba(var(--primary-text-color),0.7);
-            }
-            .primary {
-              background: rgba(var(--color-background-black),0.3) !important;
+  #   - type: custom:mushroom-template-card
+  #     entity: binary_sensor.e3_tcu10_x07_circulation_pump
+  #     icon: mdi:pump
+  #     layout: horizontal
+  #     name: Čerpadlo
+  #     primary: "Čerpadlo"
+  #     secondary: " "
+  #     card_mod:
+  #       style:
+  #         mushroom-state-info$: |
+  #           .container {
+  #             --card-primary-color: rgba(var(--primary-text-color),0.7);
+  #             --card-secondary-color: rgba(var(--primary-text-color),0.7);
+  #           }
+  #           .primary {
+  #             background: rgba(var(--color-background-black),0.3) !important;
 
-              margin-left: -74px !important;
-              margin-top: -4px !important;
-              margin-right: 10px !important;
-              border-radius: 32px;
-              height: 56px !important;
+  #             margin-left: -74px !important;
+  #             margin-top: -4px !important;
+  #             margin-right: 10px !important;
+  #             border-radius: 32px;
+  #             height: 56px !important;
 
-              display: inline-flex;
-              justify-content: left;
-              align-items: center;
-              font-size: 14px !important;
-              font-weight: 600;
-              line-height: 1;
+  #             display: inline-flex;
+  #             justify-content: left;
+  #             align-items: center;
+  #             font-size: 14px !important;
+  #             font-weight: 600;
+  #             line-height: 1;
 
-              transform: translate(12px, 6px);
-              box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
-              pointer-events: none;
-              padding-left: 60px;
-            }
+  #             transform: translate(12px, 6px);
+  #             box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+  #             pointer-events: none;
+  #             padding-left: 60px;
+  #           }
 
-          mushroom-shape-icon$: |
-            ha-icon {
-              {% if is_state(config.entity, 'on') %}
-                --icon-animation: spin 0.5s linear infinite reverse;
-              {% endif %}
-            }
+  #         mushroom-shape-icon$: |
+  #           ha-icon {
+  #             {% if is_state(config.entity, 'on') %}
+  #               --icon-animation: spin 0.5s linear infinite reverse;
+  #             {% endif %}
+  #           }
 
-            .shape {
-              shape-color: none;
-              position: relative;
-              z-index: 3;
+  #           .shape {
+  #             shape-color: none;
+  #             position: relative;
+  #             z-index: 3;
 
-              {% if is_state(config.entity, 'on') %}
-                --shape-animation: spin 2s linear infinite;
-                background-color: rgba(var(--color-background-theme), 0.12) !important;
-              {% else %}
-                border: 2px dashed rgba(var(--color-grey),1);
-                background-color: rgba(var(--color-grey),0.1) !important;
-              {% endif %}
-            }
+  #             {% if is_state(config.entity, 'on') %}
+  #               --shape-animation: spin 2s linear infinite;
+  #               background-color: rgba(var(--color-background-theme), 0.12) !important;
+  #             {% else %}
+  #               border: 2px dashed rgba(var(--color-grey),1);
+  #               background-color: rgba(var(--color-grey),0.1) !important;
+  #             {% endif %}
+  #           }
 
-            :host {
-              {% if is_state(config.entity, 'on') %}
-                --card-mod-icon-color: rgba(var(--color-background-theme), 1);
-              {% else %}
-                --card-mod-icon-color: rgba(var(--color-grey), 1);
-              {% endif %}
-            }
+  #           :host {
+  #             {% if is_state(config.entity, 'on') %}
+  #               --card-mod-icon-color: rgba(var(--color-background-theme), 1);
+  #             {% else %}
+  #               --card-mod-icon-color: rgba(var(--color-grey), 1);
+  #             {% endif %}
+  #           }
 
-          .: |
-            mushroom-shape-icon {
-              --icon-size: 48px;
-              margin-top: 7px !important;
-              display: flex;
-            }
+  #         .: |
+  #           mushroom-shape-icon {
+  #             --icon-size: 48px;
+  #             margin-top: 7px !important;
+  #             display: flex;
+  #           }
 
-            ha-card {
-              clip-path: inset(0 0 0 0 round var(--ha-card-border-radius, 12px));
-              background: none !important;
-              margin-top: -10px !important;
-              margin-bottom: 10px !important;
-            }
+  #           ha-card {
+  #             clip-path: inset(0 0 0 0 round var(--ha-card-border-radius, 12px));
+  #             background: none !important;
+  #             margin-top: -10px !important;
+  #             margin-bottom: 10px !important;
+  #           }
 
 
 

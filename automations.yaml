@@ -6530,3 +6530,198 @@
       value: 0
     action: input_number.set_value
   mode: single
+- id: '1776348913471'
+  alias: Heating
+  description: ''
+  triggers:
+  - trigger: time
+    at: 05:00:00
+    id: '5'
+  - trigger: time
+    at: 08:00:00
+    id: '8'
+  - trigger: time
+    at: '11:00:00'
+    id: '11'
+  - trigger: time
+    at: '13:00:00'
+    id: '13'
+  - trigger: time
+    at: '17:00:00'
+    id: '17'
+  - trigger: time
+    at: '20:00:00'
+    id: '20'
+  - trigger: time
+    at: '22:00:00'
+    id: '22'
+  conditions: []
+  actions:
+  - if:
+    - condition: state
+      entity_id: input_boolean.switch_hvac_spring
+      state:
+      - 'on'
+    then:
+    - if:
+      - condition: trigger
+        id:
+        - '5'
+      then:
+      - action: climate.set_hvac_mode
+        metadata: {}
+        target:
+          entity_id:
+          - climate.smart_radiator_thermostat_e1_10
+          - climate.smart_radiator_thermostat_e1_6
+          - climate.smart_radiator_thermostat_e1
+          - climate.smart_radiator_thermostat_e1_5
+        data:
+          hvac_mode: heat
+      - action: climate.set_hvac_mode
+        metadata: {}
+        target:
+          entity_id:
+          - climate.smart_radiator_thermostat_e1_9
+          - climate.smart_radiator_thermostat_e1_3
+        data:
+          hvac_mode: 'off'
+    - if:
+      - condition: trigger
+        id:
+        - '8'
+      then:
+      - action: climate.set_hvac_mode
+        metadata: {}
+        data:
+          hvac_mode: 'off'
+        target:
+          entity_id:
+          - climate.smart_radiator_thermostat_e1_6
+          - climate.smart_radiator_thermostat_e1_10
+          - climate.smart_radiator_thermostat_e1_9
+          - climate.smart_radiator_thermostat_e1_3
+      - action: climate.set_hvac_mode
+        metadata: {}
+        data:
+          hvac_mode: heat
+        target:
+          entity_id:
+          - climate.smart_radiator_thermostat_e1
+          - climate.smart_radiator_thermostat_e1_5
+    - if:
+      - condition: trigger
+        id:
+        - '11'
+      then:
+      - action: climate.set_hvac_mode
+        metadata: {}
+        target:
+          entity_id:
+          - climate.smart_radiator_thermostat_e1_9
+          - climate.smart_radiator_thermostat_e1_3
+          - climate.smart_radiator_thermostat_e1_10
+          - climate.smart_radiator_thermostat_e1_6
+        data:
+          hvac_mode: 'off'
+      - action: climate.set_hvac_mode
+        metadata: {}
+        target:
+          entity_id:
+          - climate.smart_radiator_thermostat_e1
+          - climate.smart_radiator_thermostat_e1_5
+        data:
+          hvac_mode: heat
+    - if:
+      - condition: trigger
+        id:
+        - '13'
+      then:
+      - action: climate.set_hvac_mode
+        metadata: {}
+        target:
+          entity_id:
+          - climate.smart_radiator_thermostat_e1_3
+          - climate.smart_radiator_thermostat_e1_10
+          - climate.smart_radiator_thermostat_e1_6
+          - climate.smart_radiator_thermostat_e1
+          - climate.smart_radiator_thermostat_e1_5
+        data:
+          hvac_mode: heat
+      - action: climate.set_hvac_mode
+        metadata: {}
+        target:
+          entity_id:
+          - climate.smart_radiator_thermostat_e1_9
+        data:
+          hvac_mode: 'off'
+    - if:
+      - condition: trigger
+        id:
+        - '17'
+      then:
+      - action: climate.set_hvac_mode
+        metadata: {}
+        target:
+          entity_id:
+          - climate.smart_radiator_thermostat_e1_3
+          - climate.smart_radiator_thermostat_e1_10
+          - climate.smart_radiator_thermostat_e1_6
+          - climate.smart_radiator_thermostat_e1
+          - climate.smart_radiator_thermostat_e1_5
+        data:
+          hvac_mode: heat
+      - action: climate.set_hvac_mode
+        metadata: {}
+        target:
+          entity_id:
+          - climate.smart_radiator_thermostat_e1_9
+        data:
+          hvac_mode: 'off'
+    - if:
+      - condition: trigger
+        id:
+        - '20'
+      then:
+      - action: climate.set_hvac_mode
+        metadata: {}
+        target:
+          entity_id:
+          - climate.smart_radiator_thermostat_e1_3
+        data:
+          hvac_mode: 'off'
+      - action: climate.set_hvac_mode
+        metadata: {}
+        data:
+          hvac_mode: heat
+        target:
+          entity_id:
+          - climate.smart_radiator_thermostat_e1_10
+          - climate.smart_radiator_thermostat_e1_6
+          - climate.smart_radiator_thermostat_e1
+          - climate.smart_radiator_thermostat_e1_5
+          - climate.smart_radiator_thermostat_e1_9
+    - if:
+      - condition: trigger
+        id:
+        - '19'
+      then:
+      - action: climate.set_hvac_mode
+        metadata: {}
+        target:
+          entity_id:
+          - climate.smart_radiator_thermostat_e1_3
+        data:
+          hvac_mode: 'off'
+      - action: climate.set_hvac_mode
+        metadata: {}
+        data:
+          hvac_mode: heat
+        target:
+          entity_id:
+          - climate.smart_radiator_thermostat_e1_10
+          - climate.smart_radiator_thermostat_e1_6
+          - climate.smart_radiator_thermostat_e1
+          - climate.smart_radiator_thermostat_e1_5
+          - climate.smart_radiator_thermostat_e1_9
+  mode: single

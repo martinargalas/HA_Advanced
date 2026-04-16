@@ -1,7 +1,7 @@
 ---
 wallpanel:
   enabled: true
-  hide_toolbar: true 
+  hide_toolbar: false 
   hide_sidebar: true
   fullscreen: false
   image_animation_ken_burns: true

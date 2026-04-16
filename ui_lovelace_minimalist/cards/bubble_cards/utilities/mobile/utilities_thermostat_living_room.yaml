@@ -4,12 +4,32 @@ type: custom:vertical-stack-in-card
 card_mod:
   style: |
     ha-card {
-        background-color: rgba(var(--color-background-black),0.4)
-        
-      }
+      border-radius: 34px;
+      background: none;
+      backdrop-filter: blur(35px) saturate(100%);
+      -webkit-backdrop-filter: blur(35px) saturate(100%);
+      border: 1px solid var(--mod-card-border);
+      box-shadow: 
+        0 15px 25px var(--mod-card-shadow), 
+        inset 0 2px 3px var(--mod-card-inset-shadow);
+    }
+    
+    ha-card::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: 34px;
+      box-shadow:
+        inset 0 0 0 1px var(--button-card-after-border),
+        inset 0 0 20px var(--button-card-after-shadow);
+      pointer-events: none;
+    }
+    ha-card:active {
+      transform: scale(0.97);
+    }
 cards:
   - type: custom:mushroom-climate-card
-    entity: climate.smart_radiator_thermostat_e1_10
+    entity: climate.smart_radiator_thermostat_e1_6
     show_temperature_control: true
     collapsible_controls: false
     secondary_info: none
@@ -27,11 +47,12 @@ cards:
           .primary {
             background: rgba(var(--color-background-black),0.3) !important;
             color: white;
-            margin-top: -73px !important;
+            margin-top: -76px !important;
             margin-left: -96px !important;
             
-            border-radius: 32px;
-            width: 168px !important;
+            
+            border-radius: 34px !important;
+            width: 155px !important;
             height: 58px !important;
             
             display: inline-flex;
@@ -55,12 +76,12 @@ cards:
         mushroom-climate-temperature-control$:
           mushroom-input-number$: |
             .container {
-              margin-top: -39px !important;
+              margin-top: -42px !important;
               margin-left: -0px !important;
-              border-radius: 20px;
+              border-radius: 34px important;
               background-color: rgba(var(--color-background-black), 0.3) !important;
               height: 38px !important;
-              width: 80px !important;
+              width: 70px !important;
               
             }
             .value {
@@ -68,7 +89,8 @@ cards:
             }
 
         mushroom-shape-icon$: |
-          {% set hvac = state_attr('climate.smart_radiator_thermostat_e1_10', 'hvac_action') %}
+        
+          {% set hvac = state_attr('climate.smart_radiator_thermostat_e1_6', 'hvac_action') %}
           {% set sun_state = states('sun.sun') %}
 
           {% set rgb = 'var(--color-background-theme)' %}
@@ -151,8 +173,8 @@ cards:
 
             padding-right: 20px;
             padding-bottom: 80px;
-            margin-top: 5px;
-            margin-left: 12px;
+            margin-top: -2px !important;
+            margin-left: 20px !important;
           }
 
           ha-card {
@@ -241,6 +263,7 @@ cards:
               bottom: -10px;
               right: -10px;
               pointer-events: none;
+              border-radius: 34px;
             }
 
 

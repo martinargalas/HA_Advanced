@@ -28,7 +28,7 @@ card_mod:
     }
 cards:
   - type: custom:mushroom-climate-card
-    entity: climate.smart_radiator_thermostat_e1_6
+    entity: climate.smart_radiator_thermostat_e1_3
     show_temperature_control: true
     collapsible_controls: false
     secondary_info: none
@@ -81,7 +81,7 @@ cards:
             }
 
         mushroom-shape-icon$: |
-          {% set hvac = state_attr('climate.smart_radiator_thermostat_e1_6', 'hvac_action') %}
+          {% set hvac = state_attr('climate.smart_radiator_thermostat_e1_3', 'hvac_action') %}
           {% set sun_state = states('sun.sun') %}
 
           {% set rgb = 'var(--color-background-theme)' %}
