@@ -383,6 +383,8 @@
       state: >-
         {{ (strptime(states("input_datetime.lightalarm_time"), "%H:%M:%S") - timedelta(minutes=(states("input_number.lightalarm_duration") | int) )).strftime("%H:%M") }}
 
+
+
     - name: "day_month_name_shifted"
       state: >-
         {% set date = now().date() %} 
@@ -1120,6 +1122,7 @@
     - name: "something_playing_living_room"
       state: >-
         {% set app = state_attr('media_player.apple_tv_4k', 'app_name') %}
+        {% set state = states('media_player.apple_tv_4k') %}
         {% set valid = [
           'Netflix',
           'YouTube',
@@ -1127,7 +1130,7 @@
           'SledovaniTV',
           'overseerrTV'
         ] %}
-        {% if app in valid %}
+        {% if app in valid and state == 'playing' %}
           on
         {% else %}
           off

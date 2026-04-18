@@ -141,6 +141,7 @@ minimalist-desktop-light:
   macos-green-background: rgba(50,215,75,0.68)
   macos-gray-background: rgba(142,142,147,0.68)
   macos-orange-background: rgba(255,149,0,0.68)
+  macos-blueorange-background: rgba(255,149,0,0.68)
 
   color-background-macos-red: "var(--macos-red-rgb)"
   color-background-macos-yellow: "var(--macos-yellow-rgb)"

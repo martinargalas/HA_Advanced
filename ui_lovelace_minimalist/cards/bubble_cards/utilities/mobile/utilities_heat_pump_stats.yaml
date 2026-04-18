@@ -1,9 +1,6 @@
 view_layout:
   grid-area: heat_pump_stats
-type: custom:vertical-stack-in-card
 type: custom:button-card
-name: Koupelna
-icon: mdi:shower
 show_state: false
 show_label: false
 show_name: false
@@ -18,18 +15,18 @@ styles:
   card:
     - max-width: calc(100% - 20px)
     - border-radius: 26px
-    - padding: 10px
-    - margin: 10px
-    - overflow: hidden
-    - transition: transform 0.25s ease   
+    - margin: 5px
+    - padding-left: 10px
+    - padding-right: 10px
+    - padding-bottom: 25px
+    - padding-top: 10px
   grid:
     
     - grid-template-rows: "min-content"
     - grid-template-columns: 1fr 1fr 1fr 1fr 
-    - grid-template-rows: 1fr 1fr
-    - grid-template-areas: >
+    - grid-template-rows: 1fr
+    - grid-template-areas: >  
         "water compressor pump frost"
-        "hvac_mode hvac_mode hvac_mode hvac_mode"
 
   custom_fields:
     water:
@@ -42,9 +39,6 @@ styles:
       - place-self:  center
       - justify-self: center
     frost:
-      - place-self:  center
-      - justify-self: center
-    hvac_mode:
       - place-self:  center
       - justify-self: center
 
@@ -64,24 +58,12 @@ custom_fields:
       hold_action:
         action: none
 
-      state:
-        - value: "on"
-          styles:
-            card:
-              - background: var(--macos-red-background) 
-              - animation: glow 3s infinite
-        - value: "off"
-          styles:
-            card:
-              - background: none
-              - animation: none
-
       styles:
         card:
           - border-radius: "42px"
           - height: "52px"
           - width: "52px"
-          - background: var(--button-card-background)
+          - background: var(--macos-red-background)
           - backdrop-filter: blur(20px) saturate(180%)
           - -webkit-backdrop-filter: blur(20px) saturate(180%)
           - border: 1px solid var(--button-card-border)
@@ -89,33 +71,39 @@ custom_fields:
               - 0 10px 25px var(--button-card-shadow)
               - inset 0 1px 1px var(--button-card-inset-shadow)
           - position: relative
-          - overflow: hidden
+          - overflow: visible
           - transition: transform 0.25s ease
+          - animation: none
 
         icon:
           - width: 28px
           - color: var(--button-card-icon)
           - filter: drop-shadow(0 2px 6px var(--button-card-icon-shadow))
 
+      state:
+        - value: "on"
+          styles:
+            card:
+              - background: var(--macos-blueorange-background)
+              - animation: "glow-card 2s ease-in-out infinite"
+        - value: "off"
+          styles:
+            card:
+              - background: none
+              - animation: none
+
       extra_styles: |
-        @keyframes glow {
-          0% {
+        @keyframes glow-card {
+          0%, 100% {
             box-shadow:
-              0 0 0px var(--macos-red-background),
-              0 0 0px var(--macos-red-background),
-              0 0 0px var(--macos-red-background);
+              0 10px 25px var(--button-card-shadow),
+              inset 0 1px 1px var(--button-card-inset-shadow);
           }
           50% {
             box-shadow:
-              0 0 5px var(--macos-red-background),
-              0 0 10px var(--macos-red-background),
-              0 0 15px var(--macos-red-background);
-          }
-          100% {
-            box-shadow:
-              0 0 0px var(--macos-red-background),
-              0 0 0px var(--macos-red-background),
-              0 0 0px var(--macos-red-background);
+              0 10px 25px var(--button-card-shadow),
+              inset 0 2px 1px var(--button-card-inset-shadow),
+              0 0 6px 6px var(--macos-blueorange-background);
           }
         }
 
@@ -134,18 +122,6 @@ custom_fields:
       hold_action:
         action: none
 
-      state:
-        - value: "on"
-          styles:
-            card:
-              - background: var(--macos-orange-background) 
-              - animation: glow 3s infinite
-        - value: "off"
-          styles:
-            card:
-              - background: none
-              - animation: none
-
       styles:
         card:
           - border-radius: "42px"
@@ -159,33 +135,39 @@ custom_fields:
               - 0 10px 25px var(--button-card-shadow)
               - inset 0 1px 1px var(--button-card-inset-shadow)
           - position: relative
-          - overflow: hidden
+          - overflow: visible
           - transition: transform 0.25s ease
+          - animation: none
 
         icon:
           - width: 28px
           - color: var(--button-card-icon)
           - filter: drop-shadow(0 2px 6px var(--button-card-icon-shadow))
 
+      state:
+        - value: "on"
+          styles:
+            card:
+              - background: var(--macos-blueorange-background)
+              - animation: "glow-card 2s ease-in-out infinite"
+        - value: "off"
+          styles:
+            card:
+              - background: none
+              - animation: none
+
       extra_styles: |
-        @keyframes glow {
-          0% {
+        @keyframes glow-card {
+          0%, 100% {
             box-shadow:
-              0 0 0px var(--macos-orange-background),
-              0 0 0px var(--macos-orange-background),
-              0 0 0px var(--macos-orange-background);
+              0 10px 25px var(--button-card-shadow),
+              inset 0 1px 1px var(--button-card-inset-shadow);
           }
           50% {
             box-shadow:
-              0 0 5px var(--macos-orange-background),
-              0 0 10px var(--macos-orange-background),
-              0 0 15px var(--macos-orange-background);
-          }
-          100% {
-            box-shadow:
-              0 0 0px var(--macos-orange-background),
-              0 0 0px var(--macos-orange-background),
-              0 0 0px var(--macos-orange-background);
+              0 10px 25px var(--button-card-shadow),
+              inset 0 2px 1px var(--button-card-inset-shadow),
+              0 0 6px 6px var(--macos-blueorange-background);
           }
         }
 
@@ -210,12 +192,12 @@ custom_fields:
           styles:
             icon:
               - animation: spin 1.7s linear infinite
-              - filter: drop-shadow(0 0 6px var(--macos-orange-background)) drop-shadow(0 2px 6px var(--button-card-icon-shadow))
+              - filter: drop-shadow(0 0 6px var(--macos-blueorange-background)) drop-shadow(0 2px 6px var(--button-card-icon-shadow))
             card:
               - background: var(--macos-orange-background) 
               - box-shadow:
                   - 0 10px 25px var(--button-card-shadow)
-                  - 0 0 18px var(--macos-orange-background)
+                  - 0 0 18px var(--macos-blueorange-background)
                   - inset 0 1px 1px var(--button-card-inset-shadow)
 
         - value: "off"
@@ -269,17 +251,6 @@ custom_fields:
         action: none
       hold_action:
         action: none
-      state:
-        - value: "on"
-          styles:
-            card:
-              - background: var(--macos-blue-background) 
-              - animation: glow 3s infinite
-        - value: "off"
-          styles:
-            card:
-              - background: none
-              - animation: none
 
       styles:
         card:
@@ -294,423 +265,410 @@ custom_fields:
               - 0 10px 25px var(--button-card-shadow)
               - inset 0 1px 1px var(--button-card-inset-shadow)
           - position: relative
-          - overflow: hidden
+          - overflow: visible
           - transition: transform 0.25s ease
+          - animation: none
 
         icon:
           - width: 28px
           - color: var(--button-card-icon)
           - filter: drop-shadow(0 2px 6px var(--button-card-icon-shadow))
 
+      state:
+        - value: "on"
+          styles:
+            card:
+              - background: var(--macos-blueorange-background)
+              - animation: "glow-card 2s ease-in-out infinite"
+        - value: "off"
+          styles:
+            card:
+              - background: none
+              - animation: none
+
       extra_styles: |
-        @keyframes glow {
-          0% {
+        @keyframes glow-card {
+          0%, 100% {
             box-shadow:
-              0 0 0px var(--macos-blue-background),
-              0 0 0px var(--macos-blue-background),
-              0 0 0px var(--macos-blue-background);
+              0 10px 25px var(--button-card-shadow),
+              inset 0 1px 1px var(--button-card-inset-shadow);
           }
           50% {
             box-shadow:
-              0 0 10px var(--macos-blue-background),
-              0 0 20px var(--macos-blue-background),
-              0 0 30px var(--macos-blue-background);
-          }
-          100% {
-            box-shadow:
-              0 0 0px var(--macos-blue-background),
-              0 0 0px var(--macos-blue-background),
-              0 0 0px var(--macos-blue-background);
+              0 10px 25px var(--button-card-shadow),
+              inset 0 2px 1px var(--button-card-inset-shadow),
+              0 0 6px 6px var(--macos-blueorange-background);
           }
         }
 
-  hvac_mode:
-    card:
-      type: custom:button-card
-      entity: input_boolean.alarmed_toggle
-      show_icon: false
-      show_label: false
-      show_name: false
-      tap_action:
-        action: none    
-      custom_fields:
-        spring:
-          card:
-            type: custom:button-card
-            entity: switch.switch_hvac_spring
+  # hvac_mode:
+  #   card:
+  #     type: custom:button-card
+  #     entity: input_boolean.alarmed_toggle
+  #     show_icon: false
+  #     show_label: false
+  #     show_name: false
+  #     tap_action:
+  #       action: none    
+  #     custom_fields:
+  #       spring:
+  #         card:
+  #           type: custom:button-card
+  #           entity: switch.switch_hvac_spring
 
-            show_name: false
-            show_label: true
-            show_icon: false
-            label: Jaro
+  #           show_name: false
+  #           show_label: true
+  #           show_icon: false
+  #           label: Jaro
 
-            tap_action:
-              action: call-service
-              service: script.multi_tap_action
-              data:
-                actions:
-                  - service: input_boolean.turn_on
-                    entity_id: input_boolean.switch_hvac_spring
-                  - service: input_boolean.turn_off
-                    entity_id: input_boolean.switch_hvac_summer
-                  - service: input_boolean.turn_off
-                    entity_id: input_boolean.switch_hvac_autumn
-                  - service: input_boolean.turn_off
-                    entity_id: input_boolean.switch_hvac_winter
+  #           tap_action:
+  #             action: call-service
+  #             service: script.multi_tap_action
+  #             data:
+  #               actions:
+  #                 - service: input_boolean.turn_on
+  #                   entity_id: input_boolean.switch_hvac_spring
+  #                 - service: input_boolean.turn_off
+  #                   entity_id: input_boolean.switch_hvac_summer
+  #                 - service: input_boolean.turn_off
+  #                   entity_id: input_boolean.switch_hvac_autumn
+  #                 - service: input_boolean.turn_off
+  #                   entity_id: input_boolean.switch_hvac_winter
 
-            hold_action:
-              action: none
+  #           hold_action:
+  #             action: none
 
-            double_tap_action:
-              action: none
+  #           double_tap_action:
+  #             action: none
 
-            card_mod:
-              style: |
-                @keyframes ping {
-                  0% {
-                    box-shadow: 0 0 0 0 rgba(var(--color-background-theme), 0.9);
-                  }
-                  70% {
-                    box-shadow: 0 0 0 12px rgba(var(--color-background-theme), 0);
-                  }
-                  100% {
-                    box-shadow: 0 0 0 0 rgba(var(--color-background-theme), 0);
-                  }
-                }
+  #           card_mod:
+  #             style: |
+  #               @keyframes ping {
+  #                 0% {
+  #                   box-shadow: 0 0 0 0 rgba(var(--color-background-theme), 0.9);
+  #                 }
+  #                 70% {
+  #                   box-shadow: 0 0 0 12px rgba(var(--color-background-theme), 0);
+  #                 }
+  #                 100% {
+  #                   box-shadow: 0 0 0 0 rgba(var(--color-background-theme), 0);
+  #                 }
+  #               }
 
-                ha-card {
-                  z-index: 2 !important;
-                }
+  #               ha-card {
+  #                 z-index: 2 !important;
+  #               }
 
-            styles:
-              card:
-                - border-radius: 42px
-                - height: 42px
-                - width: 60px  
-                - box-shadow: "none"
-                - margin-left: 10px
-                - margin-right: 5px
-                - animation: >-
-                    [[[
-                      if (states['input_boolean.switch_hvac_spring'].state == 'on') {
-                        return "ping 0.8s ease-out 1";
-                      }
-                      return "none";
-                    ]]]
+  #           styles:
+  #             card:
+  #               - border-radius: 42px
+  #               - height: 42px
+  #               - width: 60px  
+  #               - box-shadow: "none"
+  #               - margin-left: 10px
+  #               - margin-right: 5px
+  #               - animation: >-
+  #                   [[[
+  #                     if (states['input_boolean.switch_hvac_spring'].state == 'on') {
+  #                       return "ping 0.8s ease-out 1";
+  #                     }
+  #                     return "none";
+  #                   ]]]
 
-                - background-color: >-
-                    [[[
-                      return states['input_boolean.switch_hvac_spring'].state == 'on'
-                        ? "var(--macos-orange-background)"
-                        : "rgba(var(--color-grey), 0.2)";
-                    ]]]
+  #               - background-color: >-
+  #                   [[[
+  #                     return states['input_boolean.switch_hvac_spring'].state == 'on'
+  #                       ? "var(--macos-orange-background)"
+  #                       : "rgba(var(--color-grey), 0.2)";
+  #                   ]]]
 
-              label:
-                - justify-self: center
-                - font-size: 14px
-                - font-weight: 430
-                - text-overflow: ellipsis
-                - color: var(--text-color)
-                - overflow: hidden
+  #             label:
+  #               - justify-self: center
+  #               - font-size: 14px
+  #               - font-weight: 430
+  #               - text-overflow: ellipsis
+  #               - color: var(--text-color)
+  #               - overflow: hidden
 
-        summer:
-          card:
-            type: custom:button-card
-            entity: switch.switch_hvac_summer
+  #       summer:
+  #         card:
+  #           type: custom:button-card
+  #           entity: switch.switch_hvac_summer
 
-            show_name: false
-            show_label: true
-            show_icon: false
-            label: Léto
+  #           show_name: false
+  #           show_label: true
+  #           show_icon: false
+  #           label: Léto
 
-            tap_action:
-              action: call-service
-              service: script.multi_tap_action
-              data:
-                actions:
-                  - service: input_boolean.turn_off
-                    entity_id: input_boolean.switch_hvac_spring
-                  - service: input_boolean.turn_on
-                    entity_id: input_boolean.switch_hvac_summer
-                  - service: input_boolean.turn_off
-                    entity_id: input_boolean.switch_hvac_autumn
-                  - service: input_boolean.turn_off
-                    entity_id: input_boolean.switch_hvac_winter
+  #           tap_action:
+  #             action: call-service
+  #             service: script.multi_tap_action
+  #             data:
+  #               actions:
+  #                 - service: input_boolean.turn_off
+  #                   entity_id: input_boolean.switch_hvac_spring
+  #                 - service: input_boolean.turn_on
+  #                   entity_id: input_boolean.switch_hvac_summer
+  #                 - service: input_boolean.turn_off
+  #                   entity_id: input_boolean.switch_hvac_autumn
+  #                 - service: input_boolean.turn_off
+  #                   entity_id: input_boolean.switch_hvac_winter
 
-            hold_action:
-              action: none
+  #           hold_action:
+  #             action: none
 
-            double_tap_action:
-              action: none
+  #           double_tap_action:
+  #             action: none
 
-            card_mod:
-              style: |
-                @keyframes ping {
-                  0% {
-                    box-shadow: 0 0 0 0 rgba(var(--color-background-theme), 0.9);
-                  }
-                  70% {
-                    box-shadow: 0 0 0 12px rgba(var(--color-background-theme), 0);
-                  }
-                  100% {
-                    box-shadow: 0 0 0 0 rgba(var(--color-background-theme), 0);
-                  }
-                }
+  #           card_mod:
+  #             style: |
+  #               @keyframes ping {
+  #                 0% {
+  #                   box-shadow: 0 0 0 0 rgba(var(--color-background-theme), 0.9);
+  #                 }
+  #                 70% {
+  #                   box-shadow: 0 0 0 12px rgba(var(--color-background-theme), 0);
+  #                 }
+  #                 100% {
+  #                   box-shadow: 0 0 0 0 rgba(var(--color-background-theme), 0);
+  #                 }
+  #               }
 
-                ha-card {
-                  z-index: 2 !important;
-                }
+  #               ha-card {
+  #                 z-index: 2 !important;
+  #               }
 
-            styles:
-              card:
-                - border-radius: 42px
-                - height: 42px
-                - width: 60px
-                - margin-left: 5px
-                - margin-right: 5px
-                - box-shadow: "none"
+  #           styles:
+  #             card:
+  #               - border-radius: 42px
+  #               - height: 42px
+  #               - width: 60px
+  #               - margin-left: 5px
+  #               - margin-right: 5px
+  #               - box-shadow: "none"
 
-                - animation: >-
-                    [[[
-                      if (states['input_boolean.switch_hvac_summer'].state == 'on') {
-                        return "ping 0.8s ease-out 1";
-                      }
-                      return "none";
-                    ]]]
+  #               - animation: >-
+  #                   [[[
+  #                     if (states['input_boolean.switch_hvac_summer'].state == 'on') {
+  #                       return "ping 0.8s ease-out 1";
+  #                     }
+  #                     return "none";
+  #                   ]]]
 
-                - background-color: >-
-                    [[[
-                      return states['input_boolean.switch_hvac_summer'].state == 'on'
-                        ? "var(--macos-orange-background)"
-                        : "rgba(var(--color-grey), 0.3)";
-                    ]]]
+  #               - background-color: >-
+  #                   [[[
+  #                     return states['input_boolean.switch_hvac_summer'].state == 'on'
+  #                       ? "var(--macos-orange-background)"
+  #                       : "rgba(var(--color-grey), 0.3)";
+  #                   ]]]
 
-              label:
-                - justify-self: center
-                - font-size: 14px
-                - font-weight: 430
-                - text-overflow: ellipsis
-                - overflow: hidden
-                - color: var(--text-color)
+  #             label:
+  #               - justify-self: center
+  #               - font-size: 14px
+  #               - font-weight: 430
+  #               - text-overflow: ellipsis
+  #               - overflow: hidden
+  #               - color: var(--text-color)
 
-        autumn:
-          card:
-            type: custom:button-card
-            entity: switch.switch_hvac_summer
+  #       autumn:
+  #         card:
+  #           type: custom:button-card
+  #           entity: switch.switch_hvac_summer
 
-            show_name: false
-            show_label: true
-            show_icon: false
-            label: Podzim
+  #           show_name: false
+  #           show_label: true
+  #           show_icon: false
+  #           label: Podzim
 
-            tap_action:
-              action: call-service
-              service: script.multi_tap_action
-              data:
-                actions:
-                  - service: input_boolean.turn_off
-                    entity_id: input_boolean.switch_hvac_spring
-                  - service: input_boolean.turn_off
-                    entity_id: input_boolean.switch_hvac_summer
-                  - service: input_boolean.turn_on
-                    entity_id: input_boolean.switch_hvac_autumn
-                  - service: input_boolean.turn_off
-                    entity_id: input_boolean.switch_hvac_winter
+  #           tap_action:
+  #             action: call-service
+  #             service: script.multi_tap_action
+  #             data:
+  #               actions:
+  #                 - service: input_boolean.turn_off
+  #                   entity_id: input_boolean.switch_hvac_spring
+  #                 - service: input_boolean.turn_off
+  #                   entity_id: input_boolean.switch_hvac_summer
+  #                 - service: input_boolean.turn_on
+  #                   entity_id: input_boolean.switch_hvac_autumn
+  #                 - service: input_boolean.turn_off
+  #                   entity_id: input_boolean.switch_hvac_winter
 
-            hold_action:
-              action: none
+  #           hold_action:
+  #             action: none
 
-            double_tap_action:
-              action: none
+  #           double_tap_action:
+  #             action: none
 
-            card_mod:
-              style: |
-                @keyframes ping {
-                  0% {
-                    box-shadow: 0 0 0 0 rgba(var(--color-background-theme), 0.9);
-                  }
-                  70% {
-                    box-shadow: 0 0 0 12px rgba(var(--color-background-theme), 0);
-                  }
-                  100% {
-                    box-shadow: 0 0 0 0 rgba(var(--color-background-theme), 0);
-                  }
-                }
+  #           card_mod:
+  #             style: |
+  #               @keyframes ping {
+  #                 0% {
+  #                   box-shadow: 0 0 0 0 rgba(var(--color-background-theme), 0.9);
+  #                 }
+  #                 70% {
+  #                   box-shadow: 0 0 0 12px rgba(var(--color-background-theme), 0);
+  #                 }
+  #                 100% {
+  #                   box-shadow: 0 0 0 0 rgba(var(--color-background-theme), 0);
+  #                 }
+  #               }
 
-                ha-card {
-                  z-index: 2 !important;
-                }
+  #               ha-card {
+  #                 z-index: 2 !important;
+  #               }
 
-            styles:
-              card:
-                - border-radius: 42px
-                - height: 42px
-                - width: 60px
-                - box-shadow: "none"
-                - margin-left: 5px
-                - margin-right: 5px
-                - animation: >-
-                    [[[
-                      if (states['input_boolean.switch_hvac_autumn'].state == 'on') {
-                        return "ping 0.8s ease-out 1";
-                      }
-                      return "none";
-                    ]]]
+  #           styles:
+  #             card:
+  #               - border-radius: 42px
+  #               - height: 42px
+  #               - width: 60px
+  #               - box-shadow: "none"
+  #               - margin-left: 5px
+  #               - margin-right: 5px
+  #               - animation: >-
+  #                   [[[
+  #                     if (states['input_boolean.switch_hvac_autumn'].state == 'on') {
+  #                       return "ping 0.8s ease-out 1";
+  #                     }
+  #                     return "none";
+  #                   ]]]
 
-                - background-color: >-
-                    [[[
-                      return states['input_boolean.switch_hvac_autumn'].state == 'on'
-                        ? "var(--macos-orange-background)"
-                        : "rgba(var(--color-grey), 0.3)";
-                    ]]]
+  #               - background-color: >-
+  #                   [[[
+  #                     return states['input_boolean.switch_hvac_autumn'].state == 'on'
+  #                       ? "var(--macos-orange-background)"
+  #                       : "rgba(var(--color-grey), 0.3)";
+  #                   ]]]
 
-              label:
-                - justify-self: center
-                - font-size: 14px
-                - font-weight: 430
-                - text-overflow: ellipsis
-                - overflow: hidden
-                - color: var(--text-color)
+  #             label:
+  #               - justify-self: center
+  #               - font-size: 14px
+  #               - font-weight: 430
+  #               - text-overflow: ellipsis
+  #               - overflow: hidden
+  #               - color: var(--text-color)
         
-        winter:
-          card:
-            type: custom:button-card
-            entity: switch.switch_hvac_summer
+  #       winter:
+  #         card:
+  #           type: custom:button-card
+  #           entity: switch.switch_hvac_summer
 
-            show_name: false
-            show_label: true
-            show_icon: false
-            label: Zima
+  #           show_name: false
+  #           show_label: true
+  #           show_icon: false
+  #           label: Zima
 
-            tap_action:
-              action: call-service
-              service: script.multi_tap_action
-              data:
-                actions:
-                  - service: input_boolean.turn_off
-                    entity_id: input_boolean.switch_hvac_spring
-                  - service: input_boolean.turn_off
-                    entity_id: input_boolean.switch_hvac_summer
-                  - service: input_boolean.turn_off
-                    entity_id: input_boolean.switch_hvac_autumn
-                  - service: input_boolean.turn_on
-                    entity_id: input_boolean.switch_hvac_winter
+  #           tap_action:
+  #             action: call-service
+  #             service: script.multi_tap_action
+  #             data:
+  #               actions:
+  #                 - service: input_boolean.turn_off
+  #                   entity_id: input_boolean.switch_hvac_spring
+  #                 - service: input_boolean.turn_off
+  #                   entity_id: input_boolean.switch_hvac_summer
+  #                 - service: input_boolean.turn_off
+  #                   entity_id: input_boolean.switch_hvac_autumn
+  #                 - service: input_boolean.turn_on
+  #                   entity_id: input_boolean.switch_hvac_winter
 
-            hold_action:
-              action: none
+  #           hold_action:
+  #             action: none
 
-            double_tap_action:
-              action: none
+  #           double_tap_action:
+  #             action: none
 
-            card_mod:
-              style: |
-                @keyframes ping {
-                  0% {
-                    box-shadow: 0 0 0 0 rgba(var(--color-background-theme), 0.9);
-                  }
-                  70% {
-                    box-shadow: 0 0 0 12px rgba(var(--color-background-theme), 0);
-                  }
-                  100% {
-                    box-shadow: 0 0 0 0 rgba(var(--color-background-theme), 0);
-                  }
-                }
+  #           card_mod:
+  #             style: |
+  #               @keyframes ping {
+  #                 0% {
+  #                   box-shadow: 0 0 0 0 rgba(var(--color-background-theme), 0.9);
+  #                 }
+  #                 70% {
+  #                   box-shadow: 0 0 0 12px rgba(var(--color-background-theme), 0);
+  #                 }
+  #                 100% {
+  #                   box-shadow: 0 0 0 0 rgba(var(--color-background-theme), 0);
+  #                 }
+  #               }
 
-                ha-card {
-                  z-index: 2 !important;
-                }
+  #               ha-card {
+  #                 z-index: 2 !important;
+  #               }
 
-            styles:
-              card:
-                - border-radius: 42px
-                - height: 42px
-                - width: 60px
-                - box-shadow: "none"
-                - margin-left: 5px
-                - margin-right: 10px
-                - animation: >-
-                    [[[
-                      if (states['input_boolean.switch_hvac_winter'].state == 'on') {
-                        return "ping 0.8s ease-out 1";
-                      }
-                      return "none";
-                    ]]]
+  #           styles:
+  #             card:
+  #               - border-radius: 42px
+  #               - height: 42px
+  #               - width: 60px
+  #               - box-shadow: "none"
+  #               - margin-left: 5px
+  #               - margin-right: 10px
+  #               - animation: >-
+  #                   [[[
+  #                     if (states['input_boolean.switch_hvac_winter'].state == 'on') {
+  #                       return "ping 0.8s ease-out 1";
+  #                     }
+  #                     return "none";
+  #                   ]]]
 
-                - background-color: >-
-                    [[[
-                      return states['input_boolean.switch_hvac_winter'].state == 'on'
-                        ? "var(--macos-orange-background)"
-                        : "rgba(var(--color-grey), 0.3)";
-                    ]]]
+  #               - background-color: >-
+  #                   [[[
+  #                     return states['input_boolean.switch_hvac_winter'].state == 'on'
+  #                       ? "var(--macos-orange-background)"
+  #                       : "rgba(var(--color-grey), 0.3)";
+  #                   ]]]
 
-              label:
-                - justify-self: center
-                - font-size: 14px
-                - font-weight: 430
-                - text-overflow: ellipsis
-                - overflow: hidden
-                - color: var(--text-color)
+  #             label:
+  #               - justify-self: center
+  #               - font-size: 14px
+  #               - font-weight: 430
+  #               - text-overflow: ellipsis
+  #               - overflow: hidden
+  #               - color: var(--text-color)
 
-      styles:
-        card:
-          - padding: 0px
-          - height: 56px
-          - overflow: hidden
-          - box-shadow: "var(--box-shadow)"
-          - background-color: rgba(var(--color-background-black),0.2);
-          - max-width: calc(100% - 10px)
-          - margin: 5px
-        grid:
-          - overflow: hidden
-          - grid-template-areas: 
-              '"spring summer autumn winter"'
-          - grid-template-columns: 1fr 1fr 1fr 1fr
-          - grid-template-rows: 1fr
+  #     styles:
+  #       card:
+  #         - padding: 0px
+  #         - height: 56px
+  #         - overflow: hidden
+  #         - box-shadow: "var(--box-shadow)"
+  #         - background-color: rgba(var(--color-background-black),0.2);
+  #         - max-width: calc(100% - 10px)
+  #         - margin: 5px
+  #       grid:
+  #         - overflow: hidden
+  #         - grid-template-areas: 
+  #             '"spring summer autumn winter"'
+  #         - grid-template-columns: 1fr 1fr 1fr 1fr
+  #         - grid-template-rows: 1fr
 
-        custom_fields:
-          spring:
-            - place-self:  center
-            - justify-self: center
-          summer:
-            - place-self:  center
-            - justify-self: center
-          autumn:
-            - place-self:  center
-            - justify-self: center
-          winter:
-            - place-self:  center
-            - justify-self: center 
+  #       custom_fields:
+  #         spring:
+  #           - place-self:  center
+  #           - justify-self: center
+  #         summer:
+  #           - place-self:  center
+  #           - justify-self: center
+  #         autumn:
+  #           - place-self:  center
+  #           - justify-self: center
+  #         winter:
+  #           - place-self:  center
+  #           - justify-self: center 
           
-      card_mod:
-        style: |
-          ha-card {
-            border-radius: 99px !important;
-            overflow: hidden !important;
-          }
+  #   card_mod:
+  #     style: |
+  #       ha-card {
+  #         border-radius: 26px !important;
+  #         overflow: hidden !important;
+  #       }
 
 card_mod:
   style: |
-    ha-card::before {
-      content: "";
-      position: absolute;
-      inset: 0;
-      border-radius: 26px;
-      background: linear-gradient(
-        120deg,
-        var(--button-card-before-gradient-start),
-        var(--button-card-before-gradient-mid) 30%,
-        var(--button-card-before-gradient-end) 60%
-      );
-      opacity: 0.35;
-      pointer-events: none;
+    ha-card {
+      background: transparent;
+      box-shadow: none;
     }
-    ha-card::after {
-      content: "";
-      position: absolute;
-      inset: 0;
-      border-radius: 26px;
-      box-shadow:
-        inset 0 0 0 1.5px var(--button-card-after-border),
-        inset 0 0 20px var(--button-card-after-shadow);
-      pointer-events: none;
-    } 
+    

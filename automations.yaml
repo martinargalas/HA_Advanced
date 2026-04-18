@@ -1509,12 +1509,6 @@
   alias: Washer finished running
   description: ''
   triggers:
-  - type: turned_off
-    device_id: b96f9a85981abf8d77e941c57fdcb9d1
-    entity_id: 674a44e56c815ba03627972ddfcb16c8
-    domain: switch
-    trigger: device
-    enabled: false
   - trigger: state
     entity_id:
     - sensor.pracka_washer_job_state
@@ -6724,4 +6718,235 @@
           - climate.smart_radiator_thermostat_e1
           - climate.smart_radiator_thermostat_e1_5
           - climate.smart_radiator_thermostat_e1_9
+  mode: single
+- id: '1776353921987'
+  alias: Mowing complete
+  description: ''
+  triggers:
+  - type: value
+    device_id: 195c485f3dd213604c380c2e22cbc2bd
+    entity_id: 17b317cbf90c09aea458c52d3205c0b5
+    domain: sensor
+    trigger: device
+    above: 99.99
+  conditions: []
+  actions:
+  - data:
+      volume_level: 0.3
+    target:
+      device_id: ae50bd762f43b9cf4e4479c0b9934e60
+    action: media_player.volume_set
+  - data:
+      message: Tráva je posekaná.
+      chime_path: chime
+    target:
+      entity_id:
+      - media_player.office
+    action: chime_tts.say
+  mode: single
+- id: '1776354822306'
+  alias: Water heating evening
+  description: ''
+  triggers:
+  - trigger: time
+    at: '18:00:00'
+    id: start
+  - trigger: numeric_state
+    entity_id:
+    - sensor.e3_vitocal_dhw_storage_temperature
+    id: stop
+    above: 46
+  conditions: []
+  actions:
+  - if:
+    - condition: trigger
+      id:
+      - start
+    - condition: numeric_state
+      entity_id: sensor.e3_vitocal_dhw_storage_temperature
+      below: 46
+    then:
+    - action: water_heater.set_temperature
+      metadata: {}
+      target:
+        device_id: c64da23c2f06bcac02ed2dcc70e86725
+      data:
+        temperature: 52
+    - delay:
+        hours: 0
+        minutes: 5
+        seconds: 0
+        milliseconds: 0
+    - action: water_heater.set_temperature
+      metadata: {}
+      target:
+        device_id: c64da23c2f06bcac02ed2dcc70e86725
+      data:
+        temperature: 47
+  - if:
+    - condition: trigger
+      id:
+      - stop
+    then:
+    - action: water_heater.set_temperature
+      metadata: {}
+      target:
+        device_id: c64da23c2f06bcac02ed2dcc70e86725
+      data:
+        temperature: 47
+  mode: single
+- id: '1776423498531'
+  alias: Heat Mode Select
+  description: ''
+  triggers:
+  - entity_id:
+    - input_select.utilities_heat_pump_mode
+    from:
+    to:
+    trigger: state
+  conditions: []
+  actions:
+  - if:
+    - condition: state
+      entity_id: input_select.utilities_heat_pump_mode
+      state:
+      - Jaro
+    then:
+    - action: input_boolean.turn_on
+      metadata: {}
+      target:
+        entity_id: input_boolean.switch_hvac_spring
+      data: {}
+    - action: input_boolean.turn_off
+      metadata: {}
+      data: {}
+      target:
+        entity_id:
+        - input_boolean.switch_hvac_summer
+        - input_boolean.switch_hvac_autumn
+        - input_boolean.switch_hvac_winter
+    - action: input_text.set_value
+      target:
+        entity_id:
+        - input_text.heat_pump_text
+      data:
+        value: '{{"Jaro"}}'
+  - if:
+    - condition: state
+      entity_id: input_select.utilities_heat_pump_mode
+      state:
+      - Léto
+    then:
+    - action: input_boolean.turn_on
+      metadata: {}
+      target:
+        entity_id:
+        - input_boolean.switch_hvac_summer
+      data: {}
+    - action: input_boolean.turn_off
+      metadata: {}
+      data: {}
+      target:
+        entity_id:
+        - input_boolean.switch_hvac_autumn
+        - input_boolean.switch_hvac_winter
+        - input_boolean.switch_hvac_spring
+    - action: input_text.set_value
+      target:
+        entity_id:
+        - input_text.heat_pump_text
+      data:
+        value: '{{"Léto"}}'
+  - if:
+    - condition: state
+      entity_id: input_select.utilities_heat_pump_mode
+      state:
+      - Podzim
+    then:
+    - action: input_boolean.turn_on
+      metadata: {}
+      target:
+        entity_id:
+        - input_boolean.switch_hvac_autumn
+      data: {}
+    - action: input_boolean.turn_off
+      metadata: {}
+      data: {}
+      target:
+        entity_id:
+        - input_boolean.switch_hvac_summer
+        - input_boolean.switch_hvac_winter
+        - input_boolean.switch_hvac_spring
+    - action: input_text.set_value
+      target:
+        entity_id:
+        - input_text.heat_pump_text
+      data:
+        value: '{{"Podzim"}}'
+  - if:
+    - condition: state
+      entity_id: input_select.utilities_heat_pump_mode
+      state:
+      - Zima
+    then:
+    - action: input_boolean.turn_on
+      metadata: {}
+      target:
+        entity_id: input_boolean.switch_hvac_winter
+      data: {}
+    - action: input_boolean.turn_off
+      metadata: {}
+      data: {}
+      target:
+        entity_id:
+        - input_boolean.switch_hvac_summer
+        - input_boolean.switch_hvac_autumn
+        - input_boolean.switch_hvac_spring
+    - action: input_text.set_value
+      target:
+        entity_id:
+        - input_text.heat_pump_text
+      data:
+        value: '{{"Zima"}}'
+  - delay:
+      hours: 0
+      minutes: 0
+      seconds: 0
+      milliseconds: 100
+  mode: single
+- id: '1776440224052'
+  alias: Tablet Reboot
+  description: ''
+  triggers:
+  - trigger: state
+    entity_id:
+    - binary_sensor.192_168_4_20
+    to:
+    - 'off'
+    for:
+      hours: 0
+      minutes: 10
+      seconds: 0
+  - trigger: state
+    entity_id:
+    - binary_sensor.192_168_4_20
+    to:
+    - unknown
+    for:
+      hours: 0
+      minutes: 10
+      seconds: 0
+  - trigger: state
+    entity_id:
+    - binary_sensor.192_168_4_20
+    to:
+    - unavailable
+    for:
+      hours: 0
+      minutes: 10
+      seconds: 0
+  conditions: []
+  actions:
+  - action: rest_command.restart_tablet
+    data: {}
   mode: single

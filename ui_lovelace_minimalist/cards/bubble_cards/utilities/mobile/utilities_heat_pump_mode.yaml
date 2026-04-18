@@ -1,0 +1,178 @@
+view_layout:
+  grid-area: heat_pump_mode
+type: custom:vertical-stack-in-card
+card_mod:
+  style: |
+    ha-card {
+        background-color: transparent;
+        box-shadow: none;
+        padding: 0px !important;
+      }
+cards:
+- type: custom:button-card
+  entity: input_boolean.alarmed_toggle
+  show_icon: false
+  show_label: false
+  show_name: false
+  tap_action:
+    action: none    
+  custom_fields:
+    item4:
+      card:
+        type: "custom:button-card"
+        show_name: false
+        show_label: true
+        show_icon: false
+        label: Režim topení
+        entity: input_number.counter_graph
+        icon: mdi:alpha-d-box-outline
+        tap_action:
+          action: none
+        hold_action:
+          action: none
+        double_tap_action:
+          action: none
+        styles:
+          card:
+            - box-shadow: "none"
+            - border-radius: "42px"
+            - background-color: "transparent"            
+            - height: "42px"
+            - width: "150px"
+            - padding: "10px"
+            - left: 10px
+          
+          label:
+            - justify-self: "center"
+            - font-size: "15px"
+            - font-weight: 530
+            - text-overflow: "ellipsis"
+            - overflow: "hidden"
+            - color: "var(--text-color)"
+            - font-family: "Roboto"
+    item5:
+      card:
+        type: "custom:button-card"
+        show_name: false
+        show_label: false
+        show_icon: false
+        tap_action:
+          action: none
+        hold_action:
+          action: none
+        double_tap_action:
+          action: none
+        card_mod:
+          style: |
+            ha-card {
+              border-radius: 42px !important;
+              z-index: 0 !important;
+            }
+        styles:
+          card:
+            - border-radius: "50%"
+            - background: var(--button-card-background)
+            - backdrop-filter: blur(20px) saturate(180%)
+            - -webkit-backdrop-filter: blur(20px) saturate(180%)
+            - border: 1px solid var(--button-card-border)
+            - box-shadow: none
+            - position: relative
+            - overflow: hidden
+            - transition: transform 0.25s ease               
+            - height: 48px
+            - width: 173px
+            - padding: 10px
+            - left: 10px
+    item6:
+          card:
+            type: "custom:button-card"
+            show_name: false
+            show_label: true
+            show_icon: false
+            label: >-
+              [[[ 
+                return (states['input_text.heat_pump_text'].state)
+              ]]]
+            entity: input_number.counter_graph
+            icon: mdi:alpha-d-box-outline
+            tap_action:
+              action: none
+            hold_action:
+              action: none
+            double_tap_action:
+              action: none
+            styles:
+              card:
+                - box-shadow: "none"
+                - border-radius: "42px"
+                - background-color: "transparent"            
+                - height: "42px"
+                - width: "100px"
+                - padding: "0px"
+                - left: "-135px"
+              
+              label:
+                - justify-self: "center"
+                - font-size: "15px"
+                - font-weight: 530
+                - text-overflow: "ellipsis"
+                - overflow: "hidden"
+                - color: "var(--text-color)"
+                - font-family: "Roboto"
+
+  styles:
+    card:
+      - padding: 0px
+      - overflow: hidden
+      - box-shadow: "var(--box-shadow)"
+      - background-color: rgba(var(--color-background-black),0.2);
+    grid:
+      - overflow: hidden
+      - grid-template-areas: 
+          '"item4 item5 item6"'
+      - grid-template-columns: 1fr 1fr 1fr
+      - grid-template-rows: 1fr
+
+    custom_fields:
+      item4:
+        - place-self:  center
+        - justify-self: right
+      item5:
+        - place-self:  center
+        - justify-self: left
+        
+      
+  card_mod:
+    style: |
+      ha-card {
+        height: 56px;
+        border-radius: 99px !important;
+        overflow: hidden !important;
+        max-width: calc(100% - 20px) !important;
+        margin: 10px !important;
+        padding: 0px !important;
+      }
+      ha-card::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        border-radius: 26px;
+        background: linear-gradient(
+          120deg,
+          var(--button-card-before-gradient-start),
+          var(--button-card-before-gradient-mid) 30%,
+          var(--button-card-before-gradient-end) 60%
+        );
+        opacity: 0.35;
+        pointer-events: none;
+      }
+      ha-card::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        border-radius: 26px;
+        box-shadow:
+          inset 0 0 0 1px var(--button-card-after-border),
+          inset 0 0 20px var(--button-card-after-shadow);
+        pointer-events: none;
+      }

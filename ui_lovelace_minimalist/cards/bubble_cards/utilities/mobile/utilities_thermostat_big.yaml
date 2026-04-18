@@ -26,6 +26,8 @@ card_mod:
     }
       
 cards:
+  - !include /config/ui_lovelace_minimalist/cards/bubble_cards/utilities/mobile/utilities_heat_pump_mode.yaml
+
   - !include /config/ui_lovelace_minimalist/cards/bubble_cards/utilities/mobile/utilities_heat_pump_stats.yaml
 
   # - type: horizontal-stack
@@ -377,7 +379,7 @@ cards:
       - type: custom:bubble-card
         card_type: separator
         name: Teplota v topení
-        icon: mdi:radiator
+        icon: mdi:thermometer
         rows: 1
         styles: |
           .bubble-line {
@@ -389,6 +391,7 @@ cards:
             ha-card {
                 background-color: transparent;
                 box-shadow: none;
+                color: var(--text-color);
               }
 
       - type: custom:stack-in-card
@@ -457,6 +460,7 @@ cards:
                   top: 10px;               /* odsazení od horního okraje */
                   left: auto;
                   text-align: right;       /* aby text byl opravdu vpravo */
+                  color: var(--text-color);
                 }
 
           ############################################################
@@ -495,6 +499,7 @@ cards:
                   top: -13px;
                   z-index: 1;
                   margin-top: -100%;  /* překrytí spodního grafu */
+                  var(--text-color);
 
                   mask-image: linear-gradient(
                     to right,
@@ -512,13 +517,20 @@ cards:
       - type: custom:bubble-card
         card_type: separator
         name: Teplota vody
-        icon: mdi:water-boiler
+        icon: mdi:thermometer-water
         rows: 1
         styles: |
           .bubble-line {
             background: var(--primary-text-color);
             opacity: 0.1;
           }
+        card_mod:
+          style: |
+            ha-card {
+                background-color: transparent;
+                box-shadow: none;
+                color: var(--text-color);
+              }
 
       - type: custom:stack-in-card
         mode: vertical
@@ -562,6 +574,7 @@ cards:
                   position: relative;
                   margin-top: -10px;
                   z-index: 2;
+                  color: var(--text-color);
 
                   mask-image: linear-gradient(
                     to right,
@@ -620,6 +633,7 @@ cards:
                   position: relative;
                   top: -13px;
                   z-index: 1;
+                  color: var(--text-color);
 
                   mask-image: linear-gradient(
                     to right,

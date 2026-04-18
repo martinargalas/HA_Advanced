@@ -70,14 +70,19 @@ cards:
                 - height: 48px
                 - width: 48px
                 - left: "4px"
-                - color: var(--text-color)
               icon:
                 - justify-self: "start"
                 - line-height: "0"
                 - height: "48px"
                 - width: "48px"
-                - color: var(--text-color)
                 - filter: drop-shadow(0 2px 6px var(--button-card-icon-shadow))
+                - color: >-
+                    [[[
+                      if (states['input_number.counter_graph'].state == -5.0 )
+                        return "rgba(var(--macos-gray-rgb), 0.8)";
+                      else
+                        return "var(--text-color)";
+                    ]]]
 
               label:
                 - justify-self: "start"
@@ -87,7 +92,6 @@ cards:
                 - text-overflow: "ellipsis"
                 - overflow: "hidden"
                 - margin-top: "-33%"     
-                - color: var(--text-color)
         item2:
           card:
             type: "custom:button-card"
@@ -118,13 +122,18 @@ cards:
                 - height: 48px
                 - width: 48px
                 - left: "5px"
-                - color: var(--text-color)
               icon:
                 - justify-self: "start"
                 - line-height: "0"
                 - height: "48px"
                 - width: "48px"
-                - color: var(--text-color)
+                - color: >-
+                    [[[
+                      if (states['input_number.counter_graph'].state == 0 )
+                        return "rgba(var(--macos-gray-rgb), 0.8)";
+                      else
+                        return "var(--text-color)";
+                    ]]]
                 - filter: drop-shadow(0 2px 6px var(--button-card-icon-shadow))
               label:
                 - justify-self: "start"
@@ -134,7 +143,7 @@ cards:
                 - text-overflow: "ellipsis"
                 - overflow: "hidden"
                 - margin-top: "-33%"   
-                - color: var(--text-color)
+
         item3:
           card:
             type: custom:button-card
@@ -356,9 +365,6 @@ cards:
               inset 0 0 0 1px var(--button-card-after-border),
               inset 0 0 20px var(--button-card-after-shadow);
             pointer-events: none;
-          }
-          ha-card:active {
-            transform: scale(0.97);
           }
 
     - !include /config/ui_lovelace_minimalist/cards/bubble_cards/energy/prod_cons_chart_title.yaml
