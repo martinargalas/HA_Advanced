@@ -488,7 +488,7 @@ cards:
             card_mod:
               style: |
                 {% set sun_state = states('sun.sun') %}
-                {% set graph_color = 'var(--color-background-theme)' %}
+                {% set graph_color = 'var(--color-background-macos-blueorange)' %}
                 ha-card {
                   --graph-color2: rgb({{ graph_color }});
                   background: none;
@@ -622,7 +622,7 @@ cards:
             card_mod:
               style: |
                 {% set sun_state = states('sun.sun') %}
-                {% set graph_color = 'var(--color-background-theme)' %}
+                {% set graph_color = 'var(--color-background-macos-blueorange)' %}
                 ha-card {
                   --graph-color2: rgb({{ graph_color }});
                   background: none;

@@ -130,7 +130,7 @@
     then:
     - if:
       - condition: template
-        value_template: '{% set n = now() %} {{ 3 <= n.month <= 11}}
+        value_template: '{% set n = now() %} {{ 5 <= n.month <= 11}}
 
           '
       - condition: numeric_state
@@ -160,7 +160,7 @@
         milliseconds: 0
     - if:
       - condition: template
-        value_template: '{% set n = now() %} {{ 3 <= n.month <= 11}}
+        value_template: '{% set n = now() %} {{ 5 <= n.month <= 11}}
 
           '
       - condition: numeric_state
@@ -208,7 +208,7 @@
     then:
     - if:
       - condition: template
-        value_template: '{% set n = now() %} {{ 3 <= n.month <= 11}}
+        value_template: '{% set n = now() %} {{ 5 <= n.month <= 11}}
 
           '
       - condition: numeric_state
@@ -241,7 +241,7 @@
         milliseconds: 0
     - if:
       - condition: template
-        value_template: '{% set n = now() %} {{ 3 <= n.month <= 11}}
+        value_template: '{% set n = now() %} {{ 5 <= n.month <= 11}}
 
           '
       - condition: numeric_state
@@ -311,7 +311,7 @@
     then:
     - if:
       - condition: template
-        value_template: '{% set n = now() %} {{ 3 <= n.month <= 11}}
+        value_template: '{% set n = now() %} {{ 5 <= n.month <= 11}}
 
           '
       then:
@@ -340,7 +340,7 @@
         milliseconds: 0
     - if:
       - condition: template
-        value_template: '{% set n = now() %} {{ 3 <= n.month <= 11}}
+        value_template: '{% set n = now() %} {{ 5 <= n.month <= 11}}
 
           '
       then:
@@ -423,7 +423,7 @@
     then:
     - if:
       - condition: template
-        value_template: '{% set n = now() %} {{ 3 <= n.month <= 11}}
+        value_template: '{% set n = now() %} {{ 5 <= n.month <= 11}}
 
           '
       then:
@@ -450,7 +450,7 @@
         milliseconds: 0
     - if:
       - condition: template
-        value_template: '{% set n = now() %} {{ 3 <= n.month <= 11}}
+        value_template: '{% set n = now() %} {{ 5 <= n.month <= 11}}
 
           '
       then:
@@ -515,7 +515,7 @@
     then:
     - if:
       - condition: template
-        value_template: '{% set n = now() %} {{ 3 <= n.month <= 11}}
+        value_template: '{% set n = now() %} {{ 5 <= n.month <= 11}}
 
           '
       then:
@@ -547,7 +547,7 @@
         milliseconds: 0
     - if:
       - condition: template
-        value_template: '{% set n = now() %} {{ 3 <= n.month <= 11}}
+        value_template: '{% set n = now() %} {{ 5 <= n.month <= 11}}
 
           '
       then:
@@ -632,7 +632,7 @@
     then:
     - if:
       - condition: template
-        value_template: '{% set n = now() %} {{ 3 <= n.month <= 11}}
+        value_template: '{% set n = now() %} {{ 5 <= n.month <= 11}}
 
           '
       then:
@@ -659,7 +659,7 @@
         milliseconds: 0
     - if:
       - condition: template
-        value_template: '{% set n = now() %} {{ 3 <= n.month <= 11}}
+        value_template: '{% set n = now() %} {{ 5 <= n.month <= 11}}
 
           '
       then:
@@ -3111,6 +3111,10 @@
     - sensor.luba_vsqcfhrv_progress
     above: 99.99
     id: complete
+    for:
+      hours: 0
+      minutes: 10
+      seconds: 0
   - trigger: state
     entity_id:
     - lawn_mower.luba_vsqcfhrv
@@ -3517,7 +3521,7 @@
           osob/psa, místo čárky jako oddělovač, použij u poslední osoby nebo psa písmeno
           \"a\" jako oddělovač. Příklad \"Martin, Babička a Gary\" nebo \"Martin,
           Osoba a Kristýna\" nebo \"Ema a Babička\"\n\nOdpovídej v češtině."
-        provider: 01JVHS9ESV9P1VFPC03NY28T7T
+        provider: 01KPNJ2CXE4HFHSW2ZXFXRJEZZ
         image_entity:
         - camera.frontdoor
         max_tokens: 50
@@ -3613,10 +3617,14 @@
               více osob nebo psa, které máš ve své paměti,  zobraz jejich jména s
               velkými počátečními písmeny a odděl je čárkou a mezerou. Pokud rozpoznáš
               tři a více osob/psa, místo čárky jako oddělovač, použij u poslední osoby
-              nebo psa písmeno \"a\" jako oddělovač. Příklad \"Martin, Babička a Gary\"
-              nebo \"Martin, Osoba a Kristýna\" nebo \"Ema a Babička\"\n\nOdpovídej
-              v češtině."
-            provider: 01JVHS9ESV9P1VFPC03NY28T7T
+              nebo psa písmeno \"a\" jako oddělovač. Pokud je ve skupině někdo, koho
+              neznáš, napiš \"neznámá osoba\" Příklad \"Martin, Babička a Gary\" nebo
+              \"Martin, Osoba a Kristýna\"  nebo \"Ema a Babička\" nebo \"Ema, Babička
+              a neznámá osoba\"\nPokud registruješ neznámou osobu, nezačínej větou
+              \"Na smímku vidím ...\", odpověď formuluj například jako \"Žena v květované
+              košili ...\" nebo například \"Muž v mikině s kapucí a tmavě modrými
+              kalhotami.\"\nOdpovídej v češtině."
+            provider: 01KPNJ2CXE4HFHSW2ZXFXRJEZZ
             image_entity:
             - camera.frontdoor
           response_variable: llm_text
@@ -5371,7 +5379,7 @@
           oddělovač, použij u poslední osoby nebo psa písmeno \"a\" jako oddělovač.
           Příklad \"Martin, Babička a Gary\" nebo \"Martin, Osoba a Kristýna\" nebo
           \"Ema a Babička\"\n\nOdpovídej v češtině."
-        provider: 01JVHS9ESV9P1VFPC03NY28T7T
+        provider: 01KPNJ2CXE4HFHSW2ZXFXRJEZZ
         image_entity:
         - camera.garden_2
         max_tokens: 50
@@ -5460,19 +5468,23 @@
               začínající velkým písmenem.  Příklad \"Martin\" nebo \"Děda\"\n\nPokud
               vidíš někoho, koho neznáš, popiš osobu nebo osoby ve 120 znacích.\n\nPokud
               na snímku nevidíš nikoho, ale přesto registruješ pohyb, napiš jednu
-              větu \"Něco je na zahradě.\"\n\nPokud na snímku vidíš psa, napiš jedno
+              větu \"Něco je před vchodem.\"\n\nPokud na snímku vidíš psa, napiš jedno
               slovo \"Gary\"\n\nPokud na snímku vidíš auto, napiš jedno slovo \"Auto\"
-              Robotická sekačka není auto.\n\nPokud na snímku vidíš kočku, napiš \"Kočka\"\n\nPokud
+              Robotická sekačka není auto.\nPokud na snímku vidíš kočku, napiš \"Kočka\"\n\nPokud
               rozpoznáš robotickou sekačku, napiš jedno slovo \"Luba\"\nPokud rozpoznáš
               více osob nebo psa, které máš ve své paměti,  zobraz jejich jména s
               velkými počátečními písmeny a odděl je čárkou a mezerou. Pokud rozpoznáš
               tři a více osob/psa, místo čárky jako oddělovač, použij u poslední osoby
-              nebo psa písmeno \"a\" jako oddělovač. Příklad \"Martin, Babička a Gary\"
-              nebo \"Martin, Osoba a Kristýna\" nebo \"Ema a Babička\"\n\nOdpovídej
-              v češtině."
-            provider: 01JVHS9ESV9P1VFPC03NY28T7T
+              nebo psa písmeno \"a\" jako oddělovač. Pokud je ve skupině někdo, koho
+              neznáš, napiš \"neznámá osoba\" Příklad \"Martin, Babička a Gary\" nebo
+              \"Martin, Osoba a Kristýna\"  nebo \"Ema a Babička\" nebo \"Ema, Babička
+              a neznámá osoba\"\nPokud registruješ neznámou osobu, nezačínej větou
+              \"Na smímku vidím ...\", odpověď formuluj například jako \"Žena v květované
+              košili ...\" nebo například \"Muž v mikině s kapucí a tmavě modrými
+              kalhotami.\"\nOdpovídej v češtině."
             image_entity:
             - camera.garden_2
+            provider: 01KPNJ2CXE4HFHSW2ZXFXRJEZZ
           response_variable: llm_text
           enabled: false
         - choose:
@@ -6729,6 +6741,10 @@
     domain: sensor
     trigger: device
     above: 99.99
+    for:
+      hours: 0
+      minutes: 10
+      seconds: 0
   conditions: []
   actions:
   - data:
@@ -6949,4 +6965,129 @@
   actions:
   - action: rest_command.restart_tablet
     data: {}
+  mode: single
+- id: '1776606788947'
+  alias: Ema povinnosti
+  description: ''
+  triggers:
+  - trigger: time
+    at: '17:30:00'
+    weekday:
+    - mon
+    id: umyvadlo a zbytky
+  - trigger: time
+    at: '17:30:00'
+    weekday:
+    - thu
+    id: zbytky
+  conditions: []
+  actions:
+  - action: media_player.turn_off
+    metadata: {}
+    target:
+      entity_id: media_player.kids2
+    data: {}
+  - delay:
+      hours: 0
+      minutes: 0
+      seconds: 2
+      milliseconds: 0
+  - data:
+      volume_level: 0.3
+    target:
+      device_id:
+      - ae50bd762f43b9cf4e4479c0b9934e60
+      - b5c967923fb40327841614287f91c3f7
+    action: media_player.volume_set
+  - if:
+    - condition: trigger
+      id:
+      - umyvadlo a zbytky
+    then:
+    - data:
+        message: "{{ [\n  \"Myslím, že by bylo dobré zajít se zbytkama a uklidit umyvadlo.
+          Čí pak je to asi úkol?\",\n  \"Hlásí domácí centrála: zbytky se samy nevypaří
+          a umyvadlo se samo neuklidí. Prosíme operátora - ano, tebe Emi - aby zasáhl.\",\n
+          \ \"Detekována vysoká koncentrace zbytků a chaosu v umyvadle. Hrdinka domácnosti
+          je povolána k akci. Odměna: čistý klid a dobrý pocit.\",\n  \"Emi, domácnost
+          hlásí nouzi o spolupráci. Zbytky čekají na svůj osud – ideálně venku. Tam,
+          kde hrabou slepičky.\",\n  \"Pozor Emi: umyvadlo se samo neuklidí. Ověřeno
+          vědou, zkušeností i rodiči.\",\n  \"Emi, systém domácí pohody detekoval
+          nevyřešené zbytky. Doporučený zásah: ty.\",\n  \"Hlásím robotický servis:
+          zbytky jsou stále na svobodě. Emi, čas je zadržet.\",\n  \"Emi, kuchyň ti
+          posílá tichou prosbu o pomoc. (Není to drama… ale skoro jo.)\",\n  \"Nouzové
+          hlášení: umyvadlo ztratilo svou čistou identitu. Emi, obnov ji prosím.\",\n
+          \ \"Emi, zbytky se začínají tvářit, že tam bydlí. To musíme ukončit.\",\n
+          \ \"Emi, tvůj hrdinský quest je připraven: zbytky + umyvadlo = vítězství
+          čistoty.\",\n  \"Oficiální zpráva: lenost nebyla detekována jako platná
+          výmluva. Emi, akce povolena.\"\n] | random }}\n"
+        chime_path: chime
+      target:
+        entity_id:
+        - media_player.office
+        - media_player.kids2
+      action: chime_tts.say
+  - if:
+    - condition: trigger
+      id:
+      - zbytky
+    then:
+    - data:
+        message: "{{ [\n  \"Emi, zbytky v kuchyni se začínají nudit. Je čas je poslat
+          dál!\",\n        \"Hlásím: zbytky stále okupují pracovní plochu. Emi, zásah
+          je povolen!\",\n        \"Eminko, zbytky nemají prodloužený pobyt. Prosím
+          o jejich vystěhování.\",\n        \"Pozor: zbytky se pokouší vytvořit trvalé
+          bydliště. Emi, zastav je!\",\n        \"Emi, kuchyň eviduje zbytky bez budoucnosti.
+          Správné řešení znáš.\",\n        \"Zbytky hlásí, že už tu byly dlouho. Emi,
+          je čas se s nimi rozloučit.\",\n        \"Eminko, zbytky čekají na transport
+          ke slepičkám. Logistika je na tobě.\",\n        \"Systém hlásí: zbytky,
+          rovná se nechtěný inventář. Emi, proveď úklid.\",\n        \"Eminko, zbytky
+          se tváří nevinně, ale jejich osud je jasný.\",\n        \"Kuchyňský protokol:
+          zbytky nesplňují podmínky další existence na lince.\"\n] | random }}\n"
+        chime_path: chime
+        target:
+          entity_id:
+          - media_player.office
+          - media_player.kids2
+        action: chime_tts.say
+      target:
+        entity_id:
+        - media_player.assistant_media_player
+      action: chime_tts.say
+  mode: single
+- id: '1776700814272'
+  alias: _test
+  description: ''
+  triggers: []
+  conditions: []
+  actions:
+  - action: llmvision.image_analyzer
+    metadata: {}
+    data:
+      use_memory: true
+      include_filename: false
+      target_width: 1920
+      temperature: 0.5
+      message: "Situace: Dostáváš video z kamery, která se nachází u mého domu, na
+        mém pozemku. Kamera byla spuštěna pohybovým čidlem. \n\nPokud rozpoznáš někoho
+        ze své paměti, jako je děda, babička, Ema, Ondra, Kristýna nebo Martin, neber
+        tyto jako podezřelé a do své odpovědi napiš jejich jméno začínající velkým
+        písmenem.  Příklad \"Martin\" nebo \"Děda\"\n\nPokud vidíš někoho, koho neznáš,
+        popiš vzhled osoby a její oblečení ve 120 znacích.\n\nPokud na snímku nevidíš
+        nikoho, ale přesto registruješ pohyb, napiš jednu větu \"Něco je před vchodem.\"\n\nPokud
+        na snímku vidíš psa, napiš jedno slovo \"Gary\"\n\nPokud na snímku vidíš auto,
+        napiš jedno slovo \"Auto\" Robotická sekačka není auto.\nPokud na snímku vidíš
+        kočku, napiš \"Kočka\"\n\nPokud rozpoznáš robotickou sekačku, napiš jedno
+        slovo \"Luba\"\nPokud rozpoznáš více osob nebo psa, které máš ve své paměti,
+        \ zobraz jejich jména s velkými počátečními písmeny a odděl je čárkou a mezerou.
+        Pokud rozpoznáš tři a více osob/psa, místo čárky jako oddělovač, použij u
+        poslední osoby nebo psa písmeno \"a\" jako oddělovač. Příklad \"Martin, Babička
+        a Gary\" nebo \"Martin, Osoba a Kristýna\" nebo \"Ema a Babička\"\n\nOdpovídej
+        v češtině."
+      provider: 01KPNJ2CXE4HFHSW2ZXFXRJEZZ
+      image_entity:
+      - camera.frontdoor
+      max_tokens: 50
+    response_variable: llm_text
+    enabled: true
   mode: single

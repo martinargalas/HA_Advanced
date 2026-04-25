@@ -1,0 +1,84 @@
+view_layout:
+  grid-area: "solar_arc_mobile"
+type: custom:solar-arc-card
+arc:
+  solar_production: sensor.pv_power
+  house_consumption: sensor.house_consumption
+  grid_power: sensor.active_power
+  arc_show: true
+  arc_title_show: true
+  arc_title_icon_show: true
+  arc_title_text: Current State
+  style:
+    arc_title_icon: mdi:flash
+    arc_title_icon_color: ""
+    arc_title_text_color: ""
+    arc_text_color: ""
+    arc_icon_color: ""
+    arc_grid_color: ""
+    arc_inactive_color: transparent
+    arc_inverter_color: ""
+    arc_sun_flow_color: ""
+    arc_moon_flow_color: ""
+    arc_home_color: ""
+sankey:
+  sankey_show: true
+  layout: horizontal
+  sankey_title_show: true
+  sankey_title_icon_show: true
+  sankey_title_text: Energy Flow
+  style:
+    sankey_title_icon: mdi:lightning-bolt
+    sankey_title_icon_color: ""
+    sankey_title_text_color: ""
+    sankey_text_color_primary: ""
+    sankey_text_color_secondary: ""
+  sections:
+    - entities:
+        - entity_id: sensor.grid_consumption
+          name: Grid
+          color: "#007AFF"
+          children:
+            - sensor.house_consumption
+        - entity_id: sensor.pv_power
+          name: Sun
+          color: "#FFD60A"
+          children:
+            - sensor.house_consumption
+            - sensor.power_sell
+    - entities:
+        - entity_id: sensor.house_consumption
+          name: Home
+          color: "#FF9500"
+          children:
+            - sensor.house_consumption_1floor
+            - sensor.house_consumption_0floor
+            - sensor.house_consumption_rest
+            - sensor.consumption_inverter
+        - entity_id: sensor.power_sell
+          type: remaining_parent_state
+          name: Export
+          color: "#30D158"
+    - entities:
+        - entity_id: sensor.house_consumption_1floor
+          name: Phase 1
+          color: "#5AC8FA"
+          children:
+            - sensor.smart_plug_office_power
+            - sensor.smart_plug_3_power
+        - entity_id: sensor.house_consumption_0floor
+          name: Phase 2
+          color: "#5AC8FA"
+        - entity_id: sensor.house_consumption_rest
+          name: Phase 3
+          color: "#5AC8FA"
+        - entity_id: sensor.consumption_inverter
+          name: Inverter
+          color: "#5AC8FA"
+    - entities:
+        - entity_id: sensor.smart_plug_office_power
+          name: PC
+          color: "#32ADE6"
+        - entity_id: sensor.smart_plug_3_power
+          name: TV
+          color: "#32ADE6"

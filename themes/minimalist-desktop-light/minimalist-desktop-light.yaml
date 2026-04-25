@@ -114,7 +114,7 @@ minimalist-desktop-light:
   mod-card-border: "rgba(255,255,255,0.25)"
   mod-card-shadow: "rgba(0,0,0,0.08)"       # lehký vnější stín
   mod-card-inset-shadow: "rgba(0,0,0,0.03)" # lehký vnitřní stín
-  mod-card-gradient-start: "rgba(255,255,255,0.55)"
+  mod-card-gradiet-start: "rgba(255,255,255,0.55)"
   mod-card-gradient-mid: "rgba(255,255,255,0.15)"
   mod-card-gradient-end: "rgba(255,255,255,0.05)"
 
@@ -134,6 +134,8 @@ minimalist-desktop-light:
   macos-green-rgb: "50,215,75"
   macos-gray-rgb: "142,142,147"
   macos-orange-rgb: "255,149,0"
+  macos-blueorange-rgb: "255,149,0"
+  macos-text-rgb: "255,255,255"
 
   macos-red-background: rgba(255,69,58,0.68)
   macos-yellow-background: rgba(255,214,10,0.68)
@@ -149,3 +151,5 @@ minimalist-desktop-light:
   color-background-macos-green: "var(--macos-green-rgb)"
   color-background-macos-gray: "var(--macos-gray-rgb)"
   color-background-macos-orange: "var(--macos-orange-rgb)"
+  color-background-macos-blueorange: "var(--macos-blueorange-rgb)"
+  color-background-macos-text: "var(--macos-text-rgb)"

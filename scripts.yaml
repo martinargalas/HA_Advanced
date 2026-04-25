@@ -134,7 +134,7 @@ luba_spodni:
         metadata: {}
         data: {}
         target:
-          entity_id: switch.luba_vsqcfhrv_area_spodni
+          entity_id: switch.luba_vsqcfhrv_area_spodni_2
     else:
       - action: number.set_value
         metadata: {}
@@ -151,7 +151,7 @@ luba_spodni:
         metadata: {}
         data: {}
         target:
-          entity_id: switch.luba_vsqcfhrv_area_spodni
+          entity_id: switch.luba_vsqcfhrv_area_spodni_2
 
 luba_prostredni:
   alias: prostredni
@@ -312,16 +312,16 @@ luba_reset_settings_manual:
       - condition: or
         conditions:
           - condition: state
-            entity_id: switch.luba_vsqcfhrv_prostredni
+            entity_id: switch.luba_vsqcfhrv_area_prostredni
             state: "on"
           - condition: state
-            entity_id: switch.luba_vsqcfhrv_spodni
+            entity_id: switch.luba_vsqcfhrv_area_spodni_2
             state: "on"
           - condition: state
-            entity_id: switch.luba_vsqcfhrv_predzahradka
+            entity_id: switch.luba_vsqcfhrv_area_predzahradka
             state: "on"
           - condition: state
-            entity_id: switch.luba_vsqcfhrv_skalka
+            entity_id: switch.luba_vsqcfhrv_area_skalka
             state: "on"
           - condition: state
             entity_id: switch.luba_vsqcfhrv_u_cesty_1
@@ -337,10 +337,10 @@ luba_reset_settings_manual:
             data: {}
             target:
               entity_id:
-                - switch.luba_vsqcfhrv_horni
+                - switch.luba_vsqcfhrv_area_horni
       - if:
           - condition: state
-            entity_id: switch.luba_vsqcfhrv_horni
+            entity_id: switch.luba_vsqcfhrv_area_horni
             state: "on"
         then:
           - action: switch.turn_off
@@ -635,63 +635,63 @@ luba_reset_settings:
   sequence:
   - if:
       - condition: state
-        entity_id: switch.luba_vsqcfhrv_horni
+        entity_id: switch.luba_vsqcfhrv_area_horni
         state: "on"
     then:
       - action: switch.turn_off
         target:
           entity_id:
-            - switch.luba_vsqcfhrv_horni
+            - switch.luba_vsqcfhrv_area_horni
         data: {}
   - if:
       - condition: state
-        entity_id: switch.luba_vsqcfhrv_spodni
+        entity_id: switch.luba_vsqcfhrv_area_spodni_2
         state: "on"
     then:
       - action: switch.turn_off
         target:
           entity_id:
-            - switch.luba_vsqcfhrv_spodni
+            - switch.luba_vsqcfhrv_area_spodni_2
         data: {}
   - if:
       - condition: state
-        entity_id: switch.luba_vsqcfhrv_prostredni
+        entity_id: switch.luba_vsqcfhrv_area_prostredni
         state: "on"
     then:
       - action: switch.turn_off
         target:
           entity_id:
-            - switch.luba_vsqcfhrv_prostredni
+            - switch.luba_vsqcfhrv_area_prostredni
         data: {}
   - if:
       - condition: state
-        entity_id: switch.luba_vsqcfhrv_spodni
+        entity_id: switch.luba_vsqcfhrv_area_spodni_2
         state: "on"
     then:
       - action: switch.turn_off
         target:
           entity_id:
-            - switch.luba_vsqcfhrv_spodni
+            - switch.luba_vsqcfhrv_area_spodni_2
         data: {}
   - if:
       - condition: state
-        entity_id: switch.luba_vsqcfhrv_predzahradka
+        entity_id: switch.luba_vsqcfhrv_area_predzahradka
         state: "on"
     then:
       - action: switch.turn_off
         target:
           entity_id:
-            - switch.luba_vsqcfhrv_predzahradka
+            - switch.luba_vsqcfhrv_area_predzahradka
         data: {}
   - if:
       - condition: state
-        entity_id: switch.luba_vsqcfhrv_skalka
+        entity_id: switch.luba_vsqcfhrv_area_skalka
         state: "on"
     then:
       - action: switch.turn_off
         target:
           entity_id:
-            - switch.luba_vsqcfhrv_skalka
+            - switch.luba_vsqcfhrv_area_skalka
         data: {}
   - if:
       - condition: state
@@ -735,13 +735,13 @@ luba_reset_settings:
         data: {}
   - if:
       - condition: state
-        entity_id: switch.luba_vsqcfhrv_u_cesty_5
+        entity_id: switch.luba_vsqcfhrv_u_cesty_2
         state: "on"
     then:
       - action: switch.turn_off
         target:
           entity_id:
-            - switch.luba_vsqcfhrv_u_cesty_5
+            - switch.luba_vsqcfhrv_u_cesty_2
         data: {}
 
   - action: number.set_value

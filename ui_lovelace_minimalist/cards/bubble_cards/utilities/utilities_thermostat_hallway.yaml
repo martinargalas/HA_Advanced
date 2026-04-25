@@ -84,6 +84,7 @@ cards:
           {% set sun_state = states('sun.sun') %}
 
           {% set rgb = 'var(--color-background-theme)' %}
+          {% set rgbicon = 'var(--macos-text-rgb)' %}
 
           ::part(badge) {
             display: none !important;
@@ -93,8 +94,8 @@ cards:
             --temp-rgb: {{ rgb }};
 
             {% if hvac == 'heating' %}
-              --icon-color: rgba({{ rgb }}, 1);
-              background-color: rgba({{ rgb }}, 0.18) !important;
+              --icon-color: rgba({{ rgbicon }}, 0.8);
+              background-color: rgba(var(--color-background-macos-blueorange),0.7) !important;
             {% else %}
               --icon-color: rgba(160,160,160,0.7);
               background-color: rgba(160,160,160,0.7);
@@ -106,6 +107,9 @@ cards:
 
             border: 1px solid rgba(255,255,255,0.06);
             transform-origin: 50% 60%;
+            backdrop-filter: blur(20px) saturate(180%);
+            -webkit-backdrop-filter: blur(20px) saturate(180%);
+            order: 1px solid var(--button-card-border);
           }
 
           /* ========== STATIC GLOW / HALO (PEAK STATE) ========== */
@@ -226,14 +230,16 @@ cards:
             ha-card .state {
               font-size: 0.7rem;
               font-weight: 700;
-              right: -61px !important;
+              right: -81px !important;
               top: -21px !important;
               left: auto !important;
               text-align: right;
+              color: rgba(var(--macos-text-rgb),0.8) !important;
+              filter: drop-shadow(0 2px 6px var(--button-card-icon-shadow))
             }
 
             .name {
-              color: rgba(var(--primary-text-color),0.7);
+              color: rgba(var(--primary-text-color),1);
               font-size: 14px;
               font-weight: 700;
             }

@@ -93,7 +93,8 @@ cards:
           {% set hvac = state_attr('climate.smart_radiator_thermostat_e1_2', 'hvac_action') %}
           {% set sun_state = states('sun.sun') %}
 
-          {% set rgb = 'var(--color-background-theme)' %}
+          {% set rgb = 'var(--color-background-macos-blueorange)' %}
+          {% set rgbicon = 'var(--macos-text-rgb)' %}
 
           ::part(badge) {
             display: none !important;
@@ -103,8 +104,8 @@ cards:
             --temp-rgb: {{ rgb }};
 
             {% if hvac == 'heating' %}
-              --icon-color: rgba({{ rgb }}, 1);
-              background-color: rgba({{ rgb }}, 0.18) !important;
+              --icon-color: rgba({{ rgbicon }}, 0.8);
+              background-color: rgba(var(--color-background-macos-blueorange),0.7) !important;
             {% else %}
               --icon-color: rgba(160,160,160,0.7);
               background-color: rgba(160,160,160,0.7);
@@ -116,6 +117,9 @@ cards:
 
             border: 1px solid rgba(255,255,255,0.06);
             transform-origin: 50% 60%;
+            backdrop-filter: blur(20px) saturate(180%);
+            -webkit-backdrop-filter: blur(20px) saturate(180%);
+            order: 1px solid var(--button-card-border);
           }
 
           /* ========== STATIC GLOW / HALO (PEAK STATE) ========== */
@@ -175,6 +179,7 @@ cards:
             padding-bottom: 80px;
             margin-top: -2px !important;
             margin-left: 20px !important;
+            
           }
 
           ha-card {
@@ -242,6 +247,8 @@ cards:
               top: 10px !important;
               left: auto !important;
               text-align: right;
+              color: rgba(var(--macos-text-rgb),0.8) !important;
+              filter: drop-shadow(0 2px 6px var(--button-card-icon-shadow))
             }
 
             .name {

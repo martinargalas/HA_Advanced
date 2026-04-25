@@ -7,8 +7,7 @@ layout:
   grid-template-areas: >
     
     "statistics statistics"
-    "flow_sankey_card_title flow_sankey_card_title"
-    "flow_sankey_card_mobile flow_sankey_card_mobile"
+    "solar_arc_mobile solar_arc_mobile"
     "prod_cons_chart_title prod_cons_chart_title"
     "virtual_baterry1 virtual_baterry1"
     "statistics_export statistics_consumption"
@@ -208,11 +207,8 @@ cards:
   - !include /config/ui_lovelace_minimalist/cards/bubble_cards/energy/statistics_production.yaml
   - !include /config/ui_lovelace_minimalist/cards/bubble_cards/energy/statistics_consumption.yaml
 
-# FLOW SANKEY CARD TITLE
-  - !include /config/ui_lovelace_minimalist/cards/bubble_cards/energy/flow_sankey_card_title.yaml
-
-# FLOW SANKEY CARD
-  - !include /config/ui_lovelace_minimalist/cards/bubble_cards/energy/flow_sankey_card_mobile.yaml
+# SOLAR ARC CARD
+  - !include /config/ui_lovelace_minimalist/cards/bubble_cards/energy/mobile/solar_arc.yaml
 
 # OVERVIEW BIG MOBILE
   - !include /config/ui_lovelace_minimalist/cards/bubble_cards/energy/mobile/overview_big_mobile.yaml

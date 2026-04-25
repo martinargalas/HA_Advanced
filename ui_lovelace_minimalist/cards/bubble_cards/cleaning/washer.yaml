@@ -5,7 +5,7 @@ cards:
 - type: "custom:button-card"
   template: "custom_card_haven_washer"
   variables:
-    ulm_custom_card_washer_power: switch.pracka
+    ulm_custom_card_washer_power: binary_sensor.pracka_power
     ulm_custom_card_washer_remote_control: sensor.pracka_remote_control
     ulm_custom_card_washer_machine_state: sensor.pracka_washer_machine_state
     ulm_custom_card_washer_job_state: sensor.pracka_washer_job_state
@@ -29,7 +29,7 @@ cards:
         var name = states["sensor.pracka_energy"].attributes.friendly_name;
         var value = states["sensor.pracka_energy"].state;
         var measurement = states["sensor.pracka_energy"].attributes.unit_of_measurement;
-        if (states["switch.pracka"].state == "on")
+        if (states["binary_sensor.pracka_power"].state == "on")
         return "Spuštěno. Program skončí za " + states["sensor.washer_remaining_time"].state + ".";
         else
         return "Vypnuto";

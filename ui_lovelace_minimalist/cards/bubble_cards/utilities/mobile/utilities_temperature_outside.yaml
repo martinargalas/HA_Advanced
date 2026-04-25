@@ -86,7 +86,8 @@ cards:
             }
         mushroom-shape-icon$: |
           {% set sun_state = states('sun.sun') %}
-          {% set rgb = 'var(--color-background-theme)' %}
+          {% set rgb = 'var(--color-background-macos-blueorange)' %}
+          {% set rgbicon = 'var(--macos-text-rgb)' %}
 
           ::part(badge) {
             display: none !important;
@@ -95,8 +96,8 @@ cards:
           .shape {
             --temp-rgb: {{ rgb }};
 
-            --icon-color: rgba({{ rgb }}, 1);
-            background-color: rgba({{ rgb }}, 0.18) !important;
+            --icon-color: rgba({{ rgbicon }}, 0.8);
+            background-color: rgba(var(--color-background-macos-blueorange),0.7) !important;
 
             opacity: 1;
             position: relative;
@@ -104,6 +105,9 @@ cards:
 
             border: 1px solid rgba(255,255,255,0.06);
             transform-origin: 50% 60%;
+            backdrop-filter: blur(20px) saturate(180%);
+            -webkit-backdrop-filter: blur(20px) saturate(180%);
+            order: 1px solid var(--button-card-border);
           }
 
           /* ========== STATIC GLOW / HALO (PEAK STATE) ========== */
@@ -213,6 +217,8 @@ cards:
               top: 10px !important;
               left: auto !important;
               text-align: right;
+              color: rgba(var(--macos-text-rgb),0.8) !important;
+              filter: drop-shadow(0 2px 6px var(--button-card-icon-shadow))
             }
 
             .name {

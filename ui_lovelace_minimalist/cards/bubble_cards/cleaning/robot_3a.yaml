@@ -305,7 +305,7 @@ cards:
               }
 
         - type: tile
-          entity: switch.luba_vsqcfhrv_area_spodni
+          entity: switch.luba_vsqcfhrv_area_spodni_2
           name: Spodní zóna
           layout: horizontal
           icon: mdi:map-marker-outline
@@ -326,7 +326,7 @@ cards:
               }
 
         - type: tile
-          entity: switch.luba_vsqcfhrv_skalka
+          entity: switch.luba_vsqcfhrv_area_skalka
           name: Skalka
           layout: horizontal
           icon: mdi:map-marker-outline
@@ -347,7 +347,7 @@ cards:
               }
 
         - type: tile
-          entity: switch.luba_vsqcfhrv_predzahradka
+          entity: switch.luba_vsqcfhrv_area_predzahradka
           name: Předzahrádka
           layout: horizontal
           icon: mdi:map-marker-outline
