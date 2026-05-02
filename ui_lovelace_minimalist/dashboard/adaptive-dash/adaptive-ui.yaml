@@ -16,15 +16,90 @@ wallpanel:
   hide_toolbar: true
   hide_sidebar: true
   fullscreen: false
-  image_animation_ken_burns: true
-  image_animation_ken_burns_zoom: 1.3
-  image_animation_ken_burns_delay: 15
+  #image_animation_ken_burns: true
+  #image_animation_ken_burns_zoom: 1.3
+  #image_animation_ken_burns_delay: 15
   stop_screensaver_on_mouse_move: false
   idle_time: 120
   display_time: 180
   show_progress_bar: true
   card_interaction: false
   cards:
+    - type: conditional
+      conditions:
+        - condition: state
+          entity: media_player.office
+          state: "playing"
+      card:
+        type: entities
+        card_mod:
+            style: |
+              ha-card {
+                
+                background: var(--mod-card-background);
+                z-index: 1 !important;
+                
+                margin-right: -60px !important;
+                backdrop-filter: blur(35px) saturate(100%);
+                -webkit-backdrop-filter: blur(35px) saturate(200%);
+                border: 1px solid var(--mod-card-border);
+                box-shadow: 
+                  0 15px 25px var(--mod-card-shadow), 
+                  inset 0 2px 3px var(--mod-card-inset-shadow);
+                left: -480px !important;
+                top: -50px !important;
+              }
+
+
+        entities:
+        - type: custom:sonos-card
+          mediaBrowser:
+            itemsPerRow: 4
+            hideHeader: true
+            hideActivePlayerName: true
+            onlyFavorites: true
+            favorites:
+              exclude: []
+              topItems: []
+              hideTitleForThumbnailIcons: true
+          sections:
+            - player
+          startSection: player
+          player:
+            artworkAsBackgroundBlur: 21
+            artworkAsBackground: true
+            artworkBorderRadius: 30
+            controlsAndHeaderBackgroundOpacity: 0.8
+            controlsLargeIcons: false
+            hideArtistAlbum: false
+            hideArtwork: false
+            backgroundOverlayColor: rgba(142,142,147,0.58)
+            hideControlPowerButton: true
+            hideControls: true
+            hideControlNextTrackButton: true
+          showNonSonosPlayers: false
+          excludeItemsInEntitiesList: false
+          queue:
+            hideActivePlayerName: false
+          entities: []
+          entityId: media_player.office
+          widthPercentage: 95
+          heightPercentage: 65
+          card_mod:
+            style: |
+              ha-card {
+                --accent-color: white;
+                --primary-color: white;
+                --secondary-text-color: white;
+                --secondary-background-color: white;
+                border-radius: 26px !important;
+                background: transparent !important;
+
+                box-shadow: none !important;
+              }
+
+
+
     - type: custom:button-card
       styles:
         card:
@@ -529,43 +604,6 @@ wallpanel:
                 box-shadow: 0 0 20px 5px purple,0 0 1600px 100px green;
               }
             }
-      - view_layout:
-          grid-area: "player"
-          place-self: left stretch end
-        type: conditional
-        conditions:
-          - condition: state
-            entity: media_player.kitchen_player
-            state: "playing"
-        card:
-          type: entities
-          entities:
-          - type: custom:mini-media-player
-            entity: media_player.kitchen_player
-            name: 'Hudba'
-            icon: mdi:music
-            group: false
-            source: icon
-            artwork: full-cover 
-            sound_mode: full
-            info: short
-            volume_stateless: true
-            hide:
-              volume: true
-              source: true
-              power: true
-              controls: true
-            card_mod:
-              style: |
-                ha-card {
-                    top: -680px !important; 
-                    left: 350px !important; 
-                    background: transparent !important; 
-                    box-shadow: none !important;
-                    color: white !important; 
-                    font-weight: 500 !important;                      
-                  }
-
     
 button_card_templates: !include_dir_merge_named "../../../custom_components/ui_lovelace_minimalist/__ui_minimalist__/ulm_templates/"
 cards: !include_dir_merge_named "../../../ui_lovelace_minimalist/cards/"

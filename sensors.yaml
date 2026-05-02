@@ -53,3 +53,10 @@
   round: 0
   unit_time: s 
   time_window: "00:00:05"  
+
+- platform: derivative
+  source: sensor.e3_tcu10_x07_energy_consumption_today
+  name: tc_okamzity_prikon
+  unit_time: h
+  unit: W
+  time_window: "00:07:30"

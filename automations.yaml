@@ -5,6 +5,13 @@
   - value_template: '{{ states(''sensor.time'') == states(''sensor.lightalarm_time_start'')
       }}'
     trigger: template
+    id: Both
+  - device_id: 0e93f0cb979fddffa32c3dd9e6522ac1
+    domain: homekit_controller
+    type: button1
+    subtype: single_press
+    trigger: device
+    id: ema
   conditions:
   - condition: and
     conditions:
@@ -48,25 +55,50 @@
       - media_player.kids2
     data:
       volume_level: 0
-  - data:
-      media:
-        media_content_id: http://192.168.4.24:8123/local/community/spotify/alarm_birds_sound.mp3
-        media_content_type: music
-        metadata: {}
-    target:
-      entity_id: media_player.kids2
-    action: media_player.play_media
-  - delay:
-      hours: 0
-      minutes: 0
-      seconds: 1
-      milliseconds: 0
-  - action: media_player.volume_set
-    target:
-      entity_id:
-      - media_player.kids2
-    data:
-      volume_level: 0.6
+  - if:
+    - condition: trigger
+      id:
+      - ema
+    then:
+    - data:
+        media:
+          media_content_id: http://192.168.4.24:8123/local/community/spotify/alarm_trumpet.mp3
+          media_content_type: music
+          metadata: {}
+      target:
+        entity_id: media_player.kids2
+      action: media_player.play_media
+    - delay:
+        hours: 0
+        minutes: 0
+        seconds: 1
+        milliseconds: 0
+    - action: media_player.volume_set
+      target:
+        entity_id:
+        - media_player.kids2
+      data:
+        volume_level: 0.65
+    else:
+    - data:
+        media:
+          media_content_id: http://192.168.4.24:8123/local/community/spotify/alarm_birds_sound.mp3
+          media_content_type: music
+          metadata: {}
+      target:
+        entity_id: media_player.kids2
+      action: media_player.play_media
+    - delay:
+        hours: 0
+        minutes: 0
+        seconds: 1
+        milliseconds: 0
+    - action: media_player.volume_set
+      target:
+        entity_id:
+        - media_player.kids2
+      data:
+        volume_level: 0.6
   - action: spotcast.start
     data:
       limit: 20
@@ -1118,12 +1150,14 @@
     subtype: single_press
     trigger: device
     id: wet
+    enabled: false
   - device_id: 0e93f0cb979fddffa32c3dd9e6522ac1
     domain: homekit_controller
     type: button1
     subtype: double_press
     trigger: device
     id: dry
+    enabled: false
   - trigger: state
     entity_id:
     - event.switch_button3
@@ -2931,7 +2965,7 @@
   alias: Luba Mowing
   description: ''
   triggers:
-  - at: '13:30:00'
+  - at: '11:10:00'
     trigger: time
   conditions:
   - condition: state
@@ -3521,7 +3555,8 @@
           osob/psa, místo čárky jako oddělovač, použij u poslední osoby nebo psa písmeno
           \"a\" jako oddělovač. Příklad \"Martin, Babička a Gary\" nebo \"Martin,
           Osoba a Kristýna\" nebo \"Ema a Babička\"\n\nOdpovídej v češtině."
-        provider: 01KPNJ2CXE4HFHSW2ZXFXRJEZZ
+        provider: 01KQ741H2NSMM8X9P04ZE25W6G
+        model: gemini-2.5-flash-lite
         image_entity:
         - camera.frontdoor
         max_tokens: 50
@@ -3601,7 +3636,7 @@
             use_memory: true
             include_filename: false
             target_width: 1920
-            max_tokens: 200
+            max_tokens: 50
             temperature: 0.5
             message: "Situace: Dostáváš video z kamery, která se nachází u mého domu,
               na mém pozemku. Kamera byla spuštěna pohybovým čidlem. \n\nPokud rozpoznáš
@@ -3624,7 +3659,8 @@
               \"Na smímku vidím ...\", odpověď formuluj například jako \"Žena v květované
               košili ...\" nebo například \"Muž v mikině s kapucí a tmavě modrými
               kalhotami.\"\nOdpovídej v češtině."
-            provider: 01KPNJ2CXE4HFHSW2ZXFXRJEZZ
+            provider: 01KQ741H2NSMM8X9P04ZE25W6G
+            model: gemini-2.5-flash-lite
             image_entity:
             - camera.frontdoor
           response_variable: llm_text
@@ -5363,6 +5399,7 @@
         include_filename: false
         target_width: 1920
         temperature: 0.5
+        model: gemini-2.5-flash-lite
         message: "Situace: Dostáváš video z kamery, která se nachází u mého domu,
           na mém pozemku. Kamera byla spuštěna pohybovým čidlem. \n\nPokud rozpoznáš
           někoho ze své paměti, jako je děda, babička, Ema, Ondra, Kristýna nebo Martin,
@@ -5379,7 +5416,7 @@
           oddělovač, použij u poslední osoby nebo psa písmeno \"a\" jako oddělovač.
           Příklad \"Martin, Babička a Gary\" nebo \"Martin, Osoba a Kristýna\" nebo
           \"Ema a Babička\"\n\nOdpovídej v češtině."
-        provider: 01KPNJ2CXE4HFHSW2ZXFXRJEZZ
+        provider: 01KQ741H2NSMM8X9P04ZE25W6G
         image_entity:
         - camera.garden_2
         max_tokens: 50
@@ -5459,8 +5496,9 @@
             use_memory: true
             include_filename: false
             target_width: 1920
-            max_tokens: 200
+            max_tokens: 50
             temperature: 0.5
+            model: gemini-2.5-flash-lite
             message: "Situace: Dostáváš video z kamery, která se nachází u mého domu,
               na mém pozemku. Kamera byla spuštěna pohybovým čidlem. \n\nPokud rozpoznáš
               někoho ze své paměti, jako je děda, babička, Ema, Ondra, Kristýna nebo
@@ -5484,7 +5522,7 @@
               kalhotami.\"\nOdpovídej v češtině."
             image_entity:
             - camera.garden_2
-            provider: 01KPNJ2CXE4HFHSW2ZXFXRJEZZ
+            provider: 01KQ741H2NSMM8X9P04ZE25W6G
           response_variable: llm_text
           enabled: false
         - choose:
@@ -6100,14 +6138,15 @@
     from: unknown
     trigger: state
   - entity_id:
-    - media_player.shield_2
+    - media_player.apple_tv_4k
     to:
     - 'off'
     trigger: state
   conditions:
   - condition: state
-    entity_id: media_player.shield_2
-    state: 'off'
+    entity_id: media_player.apple_tv_4k
+    state:
+    - 'off'
   - condition: state
     entity_id: sensor.playstation_5_online_status
     state:
@@ -6134,8 +6173,10 @@
   alias: PS5 – konec herní session
   description: End PS5 session when shield is on
   triggers:
-  - entity_id: media_player.shield_2
-    to: 'on'
+  - entity_id:
+    - media_player.apple_tv_4k
+    to:
+    - 'on'
     trigger: state
   conditions: []
   actions:
@@ -6220,7 +6261,7 @@
     entity_id: f8b253b39e590febf78b392348e1a4b3
     type: is_playing
   - condition: state
-    entity_id: media_player.shield_2
+    entity_id: media_player.apple_tv_4k
     state:
     - 'off'
   actions:
@@ -6245,7 +6286,7 @@
   - action: media_player.turn_on
     metadata: {}
     target:
-      entity_id: media_player.shield_2
+      entity_id: media_player.apple_tv_4k
     data: {}
   - delay:
       hours: 0
@@ -6255,7 +6296,7 @@
   - action: media_player.turn_off
     metadata: {}
     target:
-      entity_id: media_player.shield_2
+      entity_id: media_player.apple_tv_4k
     data: {}
   mode: single
 - id: '1772216590545'
@@ -7090,4 +7131,44 @@
       max_tokens: 50
     response_variable: llm_text
     enabled: true
+  mode: single
+- id: '1777306084425'
+  alias: KidsShower
+  description: ''
+  triggers:
+  - trigger: time
+    at: '18:00:00'
+    weekday:
+    - mon
+    - tue
+    - wed
+    - thu
+    - fri
+    - sat
+    - sun
+  conditions: []
+  actions:
+  - action: media_player.volume_set
+    metadata: {}
+    data:
+      volume_level: 0.3
+    target:
+      device_id: ae50bd762f43b9cf4e4479c0b9934e60
+  - data:
+      message: "{{ [\n  \"Pozor, nastal čas presunu do koupelny. Mise: umyt se!\",\n
+        \ \"Všichni pasažéři, směr koupelna - mytí právě začíná!\",\n  \"Teď se jde
+        do koupelny. Opakuji: teď se jde umýt!\",\n  \"Konec hraní, start mytí. Koupelna
+        vás očekává!\",\n  \"Vstávat a do koupelny - mycí režim aktivován!\",\n  \"Prosím
+        všechny děti, přesun do koupelny na umytí.\",\n  \"Mytí zahájeno za 3 2 1
+        běžte do koupelny!\",\n  \"Teď je ten moment: Deti, běžte se umýt!\",\n  \"Koupelna
+        volá. Odpověď: jdu se umýt.\",\n  \"Rychlá kontrola: děti, koupelna, mytí.
+        Start!\",\n  \"Ema a Ondra do koupelny, mytí nepočká!\",\n  \"Je čas se umyt.
+        Ano, právě teď!\",\n  \"Kdo ještě není v koupelně, právě tam míří!\",\n  \"Mise
+        čisté ruce a obličej právě začíná! Děti do koupelny!\",\n  \"Koupelna je otevřená,
+        mytí čeká na zahájení, tak šup šup!\"\n] | random }}\n"
+      chime_path: chime
+    target:
+      entity_id:
+      - media_player.office
+    action: chime_tts.say
   mode: single

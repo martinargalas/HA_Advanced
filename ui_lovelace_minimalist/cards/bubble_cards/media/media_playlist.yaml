@@ -1,5 +1,5 @@
 view_layout:
-  grid-area: "media_hub"  
+  grid-area: "media_hub_playlist2"  
 type: custom:vertical-stack-in-card
 card_mod:
   style: |
@@ -32,6 +32,15 @@ card_mod:
     }
 cards:
   - type: custom:sonos-card
+    card_mod:
+      style: |
+        ha-card {
+          max-height: 350px !important;
+          
+          background: transparent !important;
+          
+          box-shadow: none !important;
+        }
     mediaBrowser:
       itemsPerRow: 4
       hideHeader: true
@@ -42,58 +51,51 @@ cards:
         topItems: []
         hideTitleForThumbnailIcons: true
     sections:
-    - player
-    startSection: player
+      - media browser
+    widthPercentage: 50
+    minWidth: 50
+    startSection: media browser
+    entityId: media_player.office
+  
+  - type: custom:sonos-card
+    mediaBrowser:
+      itemsPerRow: 4
+      hideHeader: true
+      hideActivePlayerName: true
+      onlyFavorites: true
+      favorites:
+        exclude: []
+        topItems: []
+        hideTitleForThumbnailIcons: true
+    sections:
+      - queue
+    startSection: queue
+    widthPercentage: 125.5
     player:
       artworkAsBackgroundBlur: 21
       artworkAsBackground: true
       artworkBorderRadius: 30
       controlsAndHeaderBackgroundOpacity: 0.8
-      controlsLargeIcons: false
-      hideArtistAlbum: false
-      hideArtwork: false
+      controlsLargeIcons: true
+      hideArtistAlbum: true
+      hideArtwork: true
       backgroundOverlayColor: rgba(142,142,147,0.58)
-      hideControlPowerButton: false
-      hideControls: false
-      hideControlNextTrackButton: false
-    showNonSonosPlayers: false
+      hideControlPowerButton: true
+      hideControls: true
+      hideControlNextTrackButton: true
+    showNonSonosPlayers: true
     excludeItemsInEntitiesList: false
     queue:
-      hideActivePlayerName: false
+      hideActivePlayerName: true
     entities: []
     entityId: media_player.office
-    widthPercentage: 100
-    heightPercentage: 96.5
-    minWidth: 1
     card_mod:
       style: |
         ha-card {
-          margin: 10px !important;
-          border-radius: 26px !important;
-          background: var(--button-card-background)
-          backdrop-filter: blur(35px) saturate(100%);
-          -webkit-backdrop-filter: blur(35px) saturate(200%);
-          border: 1px solid var(--mod-card-border);
-          box-shadow: 
-            0 15px 25px var(--mod-card-shadow), 
-            inset 0 2px 3px var(--mod-card-inset-shadow);
-          --accent-color: rgba(var(--macos-text-rgb), 0.8) ;
-          --primary-color: rgba(var(--macos-text-rgb), 0.8) ;
-          --secondary-text-color: rgba(var(--macos-text-rgb), 0.8) ;
-          --secondary-background-color: rgba(var(--macos-blue-rgb), 0.2) ;
-        }
-
-        ha-card::before {
+          max-height: 190px !important;
+          margin-top: 20px !important;
+          margin-left: -1px !important;
+          background: transparent !important;
           
-          inset: 0;
-          border-radius: 26px;
-          background: linear-gradient(
-            120deg,
-            var(--mod-card-gradient-start),
-            var(--mod-card-gradient-mid) 25%,
-            var(--mod-card-gradient-end) 50%,
-            transparent 70%
-          );
-          opacity: 0.35;
-          pointer-events: none;
+          box-shadow: none !important;
         }

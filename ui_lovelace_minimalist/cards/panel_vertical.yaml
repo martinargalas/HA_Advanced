@@ -127,83 +127,171 @@ cards:
           --bubble-line-background-color: var(--text-color) !important;
         }
 
-  - type: custom:atomic-calendar-revive
-    name: 
-    showLoader: true
-    enableModeChange: true
-    card_mod:
-      style: |       
-        ha-card {
-          max-height: 300px !important;
-          top: -110px !important;
-          background: none !important;
-          box-shadow: none !important;
-          font-family: "Roboto", sans-serif !important;
-          font-weight: 300 !important;
-        }
-        .event-title {
-          color: var(--text-color) !important;
-          font-weight: 400 !important;
-        }
-        .event-date-day {
-          color: var(--text-color) !important;
-          font-weight: 400 !important;
-        }
-        .time-remaining {
-          color: var(--text-color) !important;
-          font-weight: 400 !important;
-        }
-        ha-icon.event-icon {
-          color: var(--text-color) !important;
-        }
-        .event-icon {
-          margin-right: 5px !important;
-        }
-        .single-event-container {
-          grid-template-columns: 0.6fr 2fr !important;
-        }
-        .cal-eventContainer {
-          color: var(--text-color) !important;
-        }
-    entities:
-      - entity: automation.refresh_calendar
-        icon: ''
-      - entity: calendar.family
-        name: Family
-        maxDaysToShow: 3
-      - entity: calendar.utilities
-        name: Utilities
-        maxDaysToShow: 3
-      - entity: calendar.ceske_statni_svatky
-        name: České státní svátky
-        
-    defaultMode: Event
-    showHiddenText: true
-    showEventIcon: true
-    calShowDescription: false
-    disableCalEventLink: false
-    showLastCalendarWeek: false
-    disableCalLink: false
-    dimFinishedEvents: true
-    showRelativeTime: false
-    showDate: false
-    showCurrentEventLine: false
-    showMonth: true
-    showHours: false
-    showWeekDay: true
-    showDescription: false
-    disableLocationLink: false
-    showNoEventsForToday: false
-    showFullDayProgress: false
-    showCalendarName: false
-    showWeekNumber: false
-    showEventDate: true
-    showDatePerEvent: false
-    showAllDayHours: false
-    hoursOnSameLine: false
-    maxDaysToShow: 3
-    showTimeRemaining: false
-    disableEventLink: false
+  - type: conditional
+    conditions:
+      - condition: state
+        entity: media_player.office
+        state: "playing"
+    card:
+      type: custom:sonos-card
+      sections:
+        - player
+      startSection: player
+      player:
+        artworkAsBackgroundBlur: 0
+        artworkAsBackground: false
+        artworkBorderRadius: 27
+        controlsAndHeaderBackgroundOpacity: 0.8
+        controlsLargeIcons: false
+        hideArtistAlbum: true
+        hideArtwork: true
+        backgroundOverlayColor: rgba(142,142,147,0.68)
+        hideControlPowerButton: false
+        hideControls: false
+        hideControlNextTrackButton: false
+        showAudioInputFormat: false
+        hideVolumePercentage: false
+        hidePlaylist: true
+        hideHeader: true
+        hideEntityName: true
+        hideControlShuffleButton: false
+        hideControlRepeatButton: false
+        volumeSliderHeight: 1.5
+        showChannel: false
+      showNonSonosPlayers: false
+      excludeItemsInEntitiesList: false
+      queue:
+        hideActivePlayerName: false
+      entities: []
+      entityId: media_player.office
+      heightPercentage: -1
+      card_mod:
+        style: |
+          ha-card {
+            top: -90px !important;
+            border-radius: 26px !important;
+            background: var(--button-card-background)
+            backdrop-filter: blur(35px) saturate(100%);
+            -webkit-backdrop-filter: blur(35px) saturate(200%);
+            
+            box-shadow: 
+              0 15px 25px var(--mod-card-shadow), 
+              inset 0 2px 3px var(--mod-card-inset-shadow);
+            --accent-color: rgba(var(--macos-text-rgb), 0.8) ;
+            --primary-color: rgba(var(--macos-text-rgb), 0.8) ;
+            --secondary-text-color: rgba(var(--macos-text-rgb), 0.8) ;
+            --secondary-background-color: rgba(var(--macos-blue-rgb), 0.2) ;
+          }
+
+          ha-card::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            border-radius: 26px;
+            background: linear-gradient(
+              120deg,
+              var(--button-card-before-gradient-start),
+              var(--button-card-before-gradient-mid) 30%,
+              var(--button-card-before-gradient-end) 60%
+            );
+            opacity: 0.35;
+            pointer-events: none;
+          }
+          ha-card::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            border-radius: 26px;
+            box-shadow:
+              inset 0 0 0 1.5px var(--button-card-after-border),
+              inset 0 0 20px var(--button-card-after-shadow);
+            pointer-events: none;
+          } 
+          }
+
+  - type: conditional
+    conditions:
+      - condition: state
+        entity: media_player.office
+        state: "idle"
+    card:
+      type: custom:atomic-calendar-revive
+      name: 
+      showLoader: true
+      enableModeChange: true
+      card_mod:
+        style: |       
+          ha-card {
+            max-height: 300px !important;
+            top: -110px !important;
+            background: none !important;
+            box-shadow: none !important;
+            font-family: "Roboto", sans-serif !important;
+            font-weight: 300 !important;
+          }
+          .event-title {
+            color: var(--text-color) !important;
+            font-weight: 400 !important;
+          }
+          .event-date-day {
+            color: var(--text-color) !important;
+            font-weight: 400 !important;
+          }
+          .time-remaining {
+            color: var(--text-color) !important;
+            font-weight: 400 !important;
+          }
+          ha-icon.event-icon {
+            color: var(--text-color) !important;
+          }
+          .event-icon {
+            margin-right: 5px !important;
+          }
+          .single-event-container {
+            grid-template-columns: 0.6fr 2fr !important;
+          }
+          .cal-eventContainer {
+            color: var(--text-color) !important;
+          }
+      entities:
+        - entity: automation.refresh_calendar
+          icon: ''
+        - entity: calendar.family
+          name: Family
+          maxDaysToShow: 3
+        - entity: calendar.utilities
+          name: Utilities
+          maxDaysToShow: 3
+        - entity: calendar.ceske_statni_svatky
+          name: České státní svátky
+          
+      defaultMode: Event
+      showHiddenText: true
+      showEventIcon: true
+      calShowDescription: false
+      disableCalEventLink: false
+      showLastCalendarWeek: false
+      disableCalLink: false
+      dimFinishedEvents: true
+      showRelativeTime: false
+      showDate: false
+      showCurrentEventLine: false
+      showMonth: true
+      showHours: false
+      showWeekDay: true
+      showDescription: false
+      disableLocationLink: false
+      showNoEventsForToday: false
+      showFullDayProgress: false
+      showCalendarName: false
+      showWeekNumber: false
+      showEventDate: true
+      showDatePerEvent: false
+      showAllDayHours: false
+      hoursOnSameLine: false
+      maxDaysToShow: 3
+      showTimeRemaining: false
+      disableEventLink: false
   
 
       

@@ -589,7 +589,7 @@ luba_reset_settings_manual:
   - action: select.select_option
     metadata: {}
     data:
-      option: slow_touch
+      option: direct_touch
     target:
       entity_id: select.luba_vsqcfhrv_obstacle_avoidance_mode
   - action: select.select_option
@@ -781,7 +781,7 @@ luba_reset_settings:
   - action: select.select_option
     metadata: {}
     data:
-      option: slow_touch
+      option: direct_touch
     target:
       entity_id: select.luba_vsqcfhrv_obstacle_avoidance_mode
   - action: select.select_option

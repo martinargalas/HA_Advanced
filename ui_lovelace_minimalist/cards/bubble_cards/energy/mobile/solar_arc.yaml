@@ -9,6 +9,9 @@ arc:
   arc_title_show: true
   arc_title_icon_show: true
   arc_title_text: Current State
+  flow_count_slow: 2
+  flow_count_fast: 1
+  flow_style: laser
   style:
     arc_title_icon: mdi:flash
     arc_title_icon_color: ""
